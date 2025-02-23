@@ -35,8 +35,8 @@ permalink: /projects/Terraform/
 
 # Investment Calculator
 
-<label for="years" style="color: #333;">Years:</label>
-<select id="years" onchange="calculateFutureValue()" style="color: #333;">
+<label for="years" style="color: #000;">Years:</label>
+<select id="years" onchange="calculateFutureValue()" style="color: #000;">
   <option value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -57,8 +57,8 @@ permalink: /projects/Terraform/
   <option value="100">100</option>
 </select><br>
 
-<label for="monthlyInvestment" style="color: #333;">Monthly Investment:</label>
-<select id="monthlyInvestment" onchange="calculateFutureValue()" style="color: #333;">
+<label for="monthlyInvestment" style="color: #000;">Monthly Investment:</label>
+<select id="monthlyInvestment" onchange="calculateFutureValue()" style="color: #000;">
   <option value="10">10</option>
   <option value="20">20</option>
   <option value="50">50</option>
@@ -71,8 +71,8 @@ permalink: /projects/Terraform/
   <option value="10000">10000</option>
 </select><br>
 
-<label for="annualInterest" style="color: #333;">Annual Interest:</label>
-<select id="annualInterest" onchange="calculateFutureValue()" style="color: #333;">
+<label for="annualInterest" style="color: #000;">Annual Interest:</label>
+<select id="annualInterest" onchange="calculateFutureValue()" style="color: #000;">
   <option value="0.0">0.0</option>
   <option value="0.5">0.5</option>
   <option value="1.0">1.0</option>
@@ -97,7 +97,7 @@ permalink: /projects/Terraform/
   <option value="10.5">10.5</option>
 </select><br>
 
-<div id="result" style="color: #333;">
+<div id="result" style="color: #000;">
   <p id="futureValue"></p>
   <p id="totalInvestment"></p>
   <p id="profit"></p>
@@ -190,7 +190,7 @@ permalink: /projects/Terraform/
     var layout = {
       xaxis: {
         title: xLabels === 'Months' ? 'Months' : 'Years',
-        color: '#333',
+        color: '#000',
         tickmode: 'array',
         tickvals: months,
         ticktext: months.map(m => (m % 12 === 0) ? Math.floor(m / 12) + ' Yr ' + (m % 12 || 12) + ' Mo' : ''),
@@ -200,14 +200,14 @@ permalink: /projects/Terraform/
       },
       yaxis: {
         title: 'Amount ($)',
-        color: '#333',
+        color: '#000',
         tickfont: {
           family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
         }
       },
       title: title,
-      paper_bgcolor: '#f8f8f8',
-      plot_bgcolor: '#f8f8f8',
+      paper_bgcolor: '#FFF',
+      plot_bgcolor: '#FFF',
       font: {
         family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
       }
@@ -228,8 +228,8 @@ permalink: /projects/Terraform/
 
     var pieLayout = {
       title: 'Investment Distribution',
-      paper_bgcolor: '#f8f8f8',
-      plot_bgcolor: '#f8f8f8',
+      paper_bgcolor: '#FFF',
+      plot_bgcolor: '#FFF',
       font: {
         family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
       }
