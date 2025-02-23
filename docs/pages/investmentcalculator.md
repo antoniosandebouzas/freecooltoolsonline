@@ -124,42 +124,6 @@ permalink: /projects/investmentcalculator/
 <div class="card" id="annualChart"></div>
 
 <script>
-// Modified chart layout configurations
-function drawHistogram(values, totalInvestments, profits, xLabels, chartId, title, displayMonths = values.length) {
-  const layout = {
-    // Remove title
-    title: '',
-    // Add top legend
-    showlegend: true,
-    legend: {
-      orientation: 'h',
-      yanchor: 'bottom',
-      y: 1.05,
-      xanchor: 'center',
-      x: 0.5
-    },
-    // Adjust margins for legend space
-    margin: { t: 40, b: 60 }
-  };
-}
-
-function drawPieChart(totalInvestment, profit) {
-  const pieLayout = {
-    // Remove title
-    title: '',
-    // Add top legend
-    showlegend: true,
-    legend: {
-      orientation: 'h',
-      yanchor: 'bottom',
-      y: 1.1,
-      xanchor: 'center',
-      x: 0.5
-    }
-  };
-}
-</script>
-<script>
   function calculateFutureValue() {
     var years = parseFloat(document.getElementById('years').value);
     var monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value);
