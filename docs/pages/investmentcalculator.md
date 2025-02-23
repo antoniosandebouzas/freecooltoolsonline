@@ -35,64 +35,64 @@ permalink: /projects/investmentcalculator/
 
 <label for="years">Years:</label>
 <select id="years" onchange="calculateFutureValue()">
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="10">10</option>
-  <option value="15">15</option>
-  <option value="20" selected="selected" >20</option>
-  <option value="25">25</option>
-  <option value="30">30</option>
-  <option value="35">35</option>
-  <option value="40">40</option>
-  <option value="50">50</option>
-  <option value="60">60</option>
-  <option value="70">70</option>
-  <option value="80">80</option>
-  <option value="90">90</option>
-  <option value="100">100</option>
+  <option value="1">1yr</option>
+  <option value="2">2yr</option>
+  <option value="3">3yr</option>
+  <option value="4">4yr</option>
+  <option value="5">5yr</option>
+  <option value="10">10yr</option>
+  <option value="15">15yr</option>
+  <option value="20" selected="selected" >20yr</option>
+  <option value="25">25yr</option>
+  <option value="30">30yr</option>
+  <option value="35">35yr</option>
+  <option value="40">40yr</option>
+  <option value="50">50yr</option>
+  <option value="60">60yr</option>
+  <option value="70">70yr</option>
+  <option value="80">80yr</option>
+  <option value="90">90yr</option>
+  <option value="100">100yr</option>
 </select><br>
 
 <label for="monthlyInvestment">Monthly Investment:</label>
 <select id="monthlyInvestment" onchange="calculateFutureValue()">
-  <option value="10">10</option>
-  <option value="20">20</option>
-  <option value="50">50</option>
-  <option value="100" selected="selected" >100</option>
-  <option value="200">200</option>
-  <option value="500">500</option>
-  <option value="1000">1000</option>
-  <option value="2000">2000</option>
-  <option value="5000">5000</option>
-  <option value="10000">10000</option>
+  <option value="10">$10</option>
+  <option value="20">$20</option>
+  <option value="50">$50</option>
+  <option value="100" selected="selected" >$100</option>
+  <option value="200">$200</option>
+  <option value="500">$500</option>
+  <option value="1000">$1000</option>
+  <option value="2000">$2000</option>
+  <option value="5000">$5000</option>
+  <option value="10000">$10000</option>
 </select><br>
 
 <label for="annualInterest">Annual Interest:</label>
 <select id="annualInterest" onchange="calculateFutureValue()">
-  <option value="0.0">0.0</option>
-  <option value="0.5">0.5</option>
-  <option value="1.0">1.0</option>
-  <option value="1.5">1.5</option>
-  <option value="2.0">2.0</option>
-  <option value="2.5">2.5</option>
-  <option value="3.0">3.0</option>
-  <option value="3.5">3.5</option>
-  <option value="4.0">4.0</option>
-  <option value="4.5">4.5</option>
-  <option value="5.0" selected="selected" >5.0</option>
-  <option value="5.5">5.5</option>
-  <option value="6.0">6.0</option>
-  <option value="6.5">6.5</option>
-  <option value="7.0">7.0</option>
-  <option value="7.5">7.5</option>
-  <option value="8.0">8.0</option>
-  <option value="8.5">8.5</option>
-  <option value="9.0">9.0</option>
-  <option value="9.5">9.5</option>
-  <option value="10.0">10.0</option>
-  <option value="10.5">10.5</option>
+  <option value="0.0">0.0%</option>
+  <option value="0.5">0.5%</option>
+  <option value="1.0">1.0%</option>
+  <option value="1.5">1.5%</option>
+  <option value="2.0">2.0%</option>
+  <option value="2.5">2.5%</option>
+  <option value="3.0">3.0%</option>
+  <option value="3.5">3.5%</option>
+  <option value="4.0">4.0%</option>
+  <option value="4.5">4.5%</option>
+  <option value="5.0" selected="selected" >5.0%</option>
+  <option value="5.5">5.5%</option>
+  <option value="6.0">6.0%</option>
+  <option value="6.5">6.5%</option>
+  <option value="7.0">7.0%</option>
+  <option value="7.5">7.5%</option>
+  <option value="8.0">8.0%</option>
+  <option value="8.5">8.5%</option>
+  <option value="9.0">9.0%</option>
+  <option value="9.5">9.5%</option>
+  <option value="10.0">10.0%</option>
+  <option value="10.5">10.5%</option>
 </select><br>
 
 <div id="result">
