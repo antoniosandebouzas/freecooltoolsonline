@@ -24,17 +24,17 @@ permalink: /projects/investmentcalculator/
     /* Hide the button */
   }
 
-  #result {
+  /* #result {
     margin-top: 20px;
     font-weight: bold;
     font-size: 18px;
-  }
+  } */
 
-  #investmentPie,
+  /* #investmentPie,
   #investmentChart,
   #annualChart {
     margin-top: 20px;
-  }
+  } */
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
