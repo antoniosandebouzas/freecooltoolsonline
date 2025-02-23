@@ -1,0 +1,30 @@
+---
+layout: base
+---
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    let numbering = [0, 0, 0, 0, 0, 0];
+
+    headings.forEach(heading => {
+      const level = parseInt(heading.tagName.substring(1)) - 1;
+      numbering[level]++;
+      for (let i = level + 1; i < numbering.length; i++) {
+        numbering[i] = 0;
+      }
+      heading.innerHTML = numbering.slice(0, level + 1).join('.') + ' ' + heading.innerHTML;
+    });
+  });
+</script>
+
+<article class="post">
+
+  <!-- <header class="post-header">
+    <h1 class="post-title">{{ page.title | escape }}</h1>
+  </header> -->
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+</article>
