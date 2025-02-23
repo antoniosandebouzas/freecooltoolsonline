@@ -178,21 +178,21 @@ permalink: /projects/Terraform/
         tickvals: months,
         ticktext: months.map(m => (m % 12 === 0) ? Math.floor(m / 12) + ' Yr ' + (m % 12 || 12) + ' Mo' : ''),
         tickfont: {
-          family: 'Rethink Sans, sans-serif'
+          family: -apple-system, BlinkMacSystemFont, "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif
         }
       },
       yaxis: {
         title: 'Amount ($)',
         color: '#333',
         tickfont: {
-          family: 'Rethink Sans, sans-serif'
+          family: -apple-system, BlinkMacSystemFont, "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif
         }
       },
       title: title,
       paper_bgcolor: '#f8f8f8',
       plot_bgcolor: '#f8f8f8',
       font: {
-        family: 'Rethink Sans, sans-serif'
+        family: -apple-system, BlinkMacSystemFont, "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif
       }
     };
 
@@ -214,7 +214,7 @@ permalink: /projects/Terraform/
       paper_bgcolor: '#f8f8f8',
       plot_bgcolor: '#f8f8f8',
       font: {
-        family: 'Rethink Sans, sans-serif'
+        family: -apple-system, BlinkMacSystemFont, "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif
       }
     };
 
