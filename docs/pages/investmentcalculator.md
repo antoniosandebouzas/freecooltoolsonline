@@ -33,8 +33,6 @@ permalink: /projects/investmentcalculator/
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-# Investment Calculator
-
 <label for="years">Years:</label>
 <select id="years" onchange="calculateFutureValue()">
   <option value="1">1</option>
