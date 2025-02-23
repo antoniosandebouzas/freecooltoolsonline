@@ -113,10 +113,52 @@ permalink: /projects/investmentcalculator/
   <p id="profit" style="color: rgb(63, 255, 127);"></p>
 </div>
 
+<!-- Add these markdown headings before each chart -->
+## Investment Breakdown
 <div class="card" id="investmentPie"></div>
+
+## Growth Timeline
 <div class="card" id="investmentChart"></div>
+
+## Annual Progress
 <div class="card" id="annualChart"></div>
 
+<script>
+// Modified chart layout configurations
+function drawHistogram(values, totalInvestments, profits, xLabels, chartId, title, displayMonths = values.length) {
+  const layout = {
+    // Remove title
+    title: '',
+    // Add top legend
+    showlegend: true,
+    legend: {
+      orientation: 'h',
+      yanchor: 'bottom',
+      y: 1.05,
+      xanchor: 'center',
+      x: 0.5
+    },
+    // Adjust margins for legend space
+    margin: { t: 40, b: 60 }
+  };
+}
+
+function drawPieChart(totalInvestment, profit) {
+  const pieLayout = {
+    // Remove title
+    title: '',
+    // Add top legend
+    showlegend: true,
+    legend: {
+      orientation: 'h',
+      yanchor: 'bottom',
+      y: 1.1,
+      xanchor: 'center',
+      x: 0.5
+    }
+  };
+}
+</script>
 <script>
   function calculateFutureValue() {
     var years = parseFloat(document.getElementById('years').value);
@@ -198,6 +240,11 @@ permalink: /projects/investmentcalculator/
     };
 
     var layout = {
+        title: '',
+      showlegend: true,
+      legend: {
+        orientation: 'h'
+      },
       xaxis: {
         title: xLabels === 'Months' ? 'Months' : 'Years',
         color: '#000',
@@ -215,7 +262,6 @@ permalink: /projects/investmentcalculator/
           family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
         }
       },
-      title: title,
       paper_bgcolor: '#FFF',
       plot_bgcolor: '#FFF',
       font: {
@@ -237,7 +283,11 @@ permalink: /projects/investmentcalculator/
     }];
 
     var pieLayout = {
-      title: 'Investment Distribution',
+      title: '',
+      showlegend: true,
+      legend: {
+        orientation: 'h'
+      },
       paper_bgcolor: '#FFF',
       plot_bgcolor: '#FFF',
       font: {
