@@ -96,9 +96,9 @@ permalink: /projects/investmentcalculator/
 </select><br>
 
 <div id="result">
-  <p id="futureValue" style="color: rgb(20, 133, 204);"></p>
-  <p id="totalInvestment" style="color: rgb(204, 204, 204);"></p>
-  <p id="profit" style="color: rgb(112, 173, 71);"></p>
+  <p id="futureValue" style="color: rgb(128, 128, 0);"></p>
+  <p id="totalInvestment" style="color: rgb(128, 128, 128);"></p>
+  <p id="profit" style="color: rgb(0, 128, 0);"></p>
 </div>
 
 <div id="investmentPie"></div>
@@ -161,7 +161,7 @@ permalink: /projects/investmentcalculator/
       type: 'bar',
       name: 'Future Value',
       marker: {
-        color: 'rgb(20, 133, 204)' // Apple-like blue
+        color: 'rgb(128, 128, 0)' // Apple-like blue
       }
     };
 
@@ -171,7 +171,7 @@ permalink: /projects/investmentcalculator/
       type: 'bar',
       name: 'Total Investment',
       marker: {
-        color: 'rgb(204, 204, 204)' // Light gray
+        color: 'rgb(128, 128, 128)' // Light gray
       }
     };
 
@@ -181,7 +181,7 @@ permalink: /projects/investmentcalculator/
       type: 'bar',
       name: 'Profit',
       marker: {
-        color: 'rgb(112, 173, 71)' // Apple-like green
+        color: 'rgb(0, 255, 0)' // Apple-like green
       }
     };
 
@@ -220,7 +220,7 @@ permalink: /projects/investmentcalculator/
       values: [totalInvestment, profit],
       type: 'pie',
       marker: {
-        colors: ['rgb(204, 204, 204)', 'rgb(112, 173, 71)'] // Light gray and Apple-like green
+        colors: ['rgb(128, 128, 128)', 'rgb(0, 255, 0)'] // Light gray and Apple-like green
       }
     }];
 
