@@ -36,6 +36,7 @@ permalink: /projects/Terraform/
     #annualChart {
       margin-top: 20px;
     }
+  </style>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <h1 style="color: #333;">Investment Calculator</h1>
