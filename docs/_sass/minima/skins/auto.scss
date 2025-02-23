@@ -22,7 +22,7 @@ $color-galaic-brightgray: #E6E6E6;
 $color-galaic-brightblack: #0D0D0D;
 $color-galaic-darkgray: #1A1A1A;
 
-$color-galaic-main: $color-galaic-black;
+$color-galaic-main: $color-galaic-brightblack;
 
 $lm-brand-color: $color-galaic-main !default;
 $lm-brand-color-light: $color-galaic-darkwhite !default;
@@ -30,15 +30,15 @@ $lm-brand-color-dark: $color-galaic-brightblack !default;
 
 $lm-site-title-color: $lm-brand-color !default;
 
-$lm-text-color: $color-galaic-black !default;
-$lm-background-color: $color-galaic-white !default;
-$lm-code-background-color: $color-galaic-darkwhite !default;
+$lm-text-color: $color-galaic-brightblack !default;
+$lm-background-color: $color-galaic-darkwhite !default;
+$lm-code-background-color: $color-galaic-white !default;
 
 $lm-link-base-color: $color-galaic-blue !default;
 $lm-link-visited-color: $color-galaic-blue !default;
 $lm-link-hover-color: $color-galaic-green !default;
 
-$lm-border-color-01: $color-galaic-black !default;
+$lm-border-color-01: $color-galaic-brightblack !default;
 
 $lm-table-text-color: $lm-text-color !default;
 $lm-table-zebra-color: $color-galaic-darkwhite !default;
