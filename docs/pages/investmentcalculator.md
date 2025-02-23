@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Terraform
-permalink: /projects/Terraform/
+title: Investment Calculator
+permalink: /projects/investmentcalculator/
 ---
 
 <style>

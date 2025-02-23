@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Projects
-permalink: /projects/
+title: Money
+permalink: /money/
 subpage_paths:
   - pages/python.md
-  - pages/terraform.md
+  - pages/investmentcalculator.md
 ---
 
 # Our Projects
