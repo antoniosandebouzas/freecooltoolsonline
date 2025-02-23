@@ -6,9 +6,9 @@ permalink: /projects/investmentcalculator/
 
 <style>
   select {
-    padding: 0px;
-    padding-left: 10px;
-    margin: 10px;
+    margin: 0px;
+    margin-left: 10px;
+    padding: 10px;
     /* font-size: 16px; */
     /* border: 1px solid #ccc; */
     border: 0px;
