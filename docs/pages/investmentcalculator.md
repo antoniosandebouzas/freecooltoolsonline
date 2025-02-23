@@ -35,6 +35,13 @@ permalink: /projects/investmentcalculator/
   #annualChart {
     margin-top: 20px;
   } */
+
+   .card {
+    border: 0px;
+    outline: none;
+    border-radius: 18px;
+    box-shadow: 2px 4px 12px #00000014;
+   }
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -106,9 +113,9 @@ permalink: /projects/investmentcalculator/
   <p id="profit" style="color: rgb(63, 255, 127);"></p>
 </div>
 
-<div id="investmentPie"></div>
-<div id="investmentChart"></div>
-<div id="annualChart"></div>
+<div class="card" id="investmentPie"></div>
+<div class="card" id="investmentChart"></div>
+<div class="card" id="annualChart"></div>
 
 <script>
   function calculateFutureValue() {
