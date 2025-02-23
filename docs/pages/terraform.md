@@ -33,7 +33,7 @@ permalink: /projects/Terraform/
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<h1 style="color: #333;">Investment Calculator</h1>
+# Investment Calculator
 
 <label for="years" style="color: #333;">Years:</label>
 <select id="years" onchange="calculateFutureValue()" style="color: #333;">
