@@ -35,8 +35,8 @@ permalink: /projects/Terraform/
 
 # Investment Calculator
 
-<label for="years" style="color: #000;">Years:</label>
-<select id="years" onchange="calculateFutureValue()" style="color: #000;">
+<label for="years">Years:</label>
+<select id="years" onchange="calculateFutureValue()">
   <option value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -57,8 +57,8 @@ permalink: /projects/Terraform/
   <option value="100">100</option>
 </select><br>
 
-<label for="monthlyInvestment" style="color: #000;">Monthly Investment:</label>
-<select id="monthlyInvestment" onchange="calculateFutureValue()" style="color: #000;">
+<label for="monthlyInvestment">Monthly Investment:</label>
+<select id="monthlyInvestment" onchange="calculateFutureValue()">
   <option value="10">10</option>
   <option value="20">20</option>
   <option value="50">50</option>
@@ -71,8 +71,8 @@ permalink: /projects/Terraform/
   <option value="10000">10000</option>
 </select><br>
 
-<label for="annualInterest" style="color: #000;">Annual Interest:</label>
-<select id="annualInterest" onchange="calculateFutureValue()" style="color: #000;">
+<label for="annualInterest">Annual Interest:</label>
+<select id="annualInterest" onchange="calculateFutureValue()">
   <option value="0.0">0.0</option>
   <option value="0.5">0.5</option>
   <option value="1.0">1.0</option>
@@ -97,7 +97,7 @@ permalink: /projects/Terraform/
   <option value="10.5">10.5</option>
 </select><br>
 
-<div id="result" style="color: #000;">
+<div id="result">
   <p id="futureValue"></p>
   <p id="totalInvestment"></p>
   <p id="profit"></p>
