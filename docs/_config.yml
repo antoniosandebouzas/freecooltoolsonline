@@ -1,12 +1,12 @@
-title: GALAIC
+title: FreeCoolToolsOnline
 author:
-  name: Antonio Sande Bouzas
-  email: toni@galaic.net
+  name: Toni
+  email: toni@freecooltoolsonline.com
 
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
-  An iniciative of Alberto, Gabriel and Toni
+  Toni's free cool tools you can use online
 
 # Build settings
 
