@@ -195,21 +195,21 @@ permalink: /projects/Terraform/
         tickvals: months,
         ticktext: months.map(m => (m % 12 === 0) ? Math.floor(m / 12) + ' Yr ' + (m % 12 || 12) + ' Mo' : ''),
         tickfont: {
-          family: "JetBrains Mono"
+          family: 'JetBrains Mono'
         }
       },
       yaxis: {
         title: 'Amount ($)',
         color: '#333',
         tickfont: {
-          family: "JetBrains Mono"
+          family: 'JetBrains Mono'
         }
       },
       title: title,
       paper_bgcolor: '#f8f8f8',
       plot_bgcolor: '#f8f8f8',
       font: {
-        family: "JetBrains Mono"
+        family: 'JetBrains Mono'
       }
     };
 
