@@ -14,8 +14,8 @@ permalink: /projects/investmentcalculator/
     border: 0px;
     /* border-radius: 5px; */
     outline: none;
-    border-radius: 18px;
-    box-shadow: 2px 4px 12px #00000010;
+    border-radius: 15px;
+    box-shadow: 2.5px 5px 10px #00000010;
 
   }
 
@@ -39,8 +39,8 @@ permalink: /projects/investmentcalculator/
   .card {
     border: 0px;
     outline: none;
-    border-radius: 18px;
-    box-shadow: 2px 4px 12px #00000010;
+    border-radius: 15px;
+    box-shadow: 2.5px 5px 10px #00000010;
   }
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
