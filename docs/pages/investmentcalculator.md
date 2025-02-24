@@ -9,7 +9,7 @@ permalink: /projects/investmentcalculator/
     display: none;
   }
 </style>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
 
 <label for="years">Years investing:</label>
 <select id="years" onchange="calculateFutureValue()">
