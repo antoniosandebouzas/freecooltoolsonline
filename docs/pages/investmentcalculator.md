@@ -75,8 +75,8 @@ permalink: /projects/investmentcalculator/
 
 <div id="result">
   <p id="totalInvestment" style="color: rgb(127, 127, 127);"></p>
-  <p id="futureValue" style="color: rgb(0, 127, 255);"></p>
-  <p id="profit" style="color: rgb(0, 255, 127);"></p>
+  <p id="futureValue" style="color: rgb(63, 127, 191);"></p>
+  <p id="profit" style="color: rgb(63, 191, 127);"></p>
 </div>
 
 <!-- Add these markdown headings before each chart -->
@@ -155,7 +155,7 @@ permalink: /projects/investmentcalculator/
       type: 'bar',
       name: 'Future value',
       marker: {
-        color: 'rgb(0, 127, 255)' // Apple-like blue
+        color: 'rgb(63, 127, 191)' // Apple-like blue
       }
     };
 
@@ -175,7 +175,7 @@ permalink: /projects/investmentcalculator/
       type: 'bar',
       name: 'Profit from interests',
       marker: {
-        color: 'rgb(0, 255, 127)' // Apple-like green
+        color: 'rgb(63, 191, 127)' // Apple-like green
       }
     };
 
@@ -222,7 +222,7 @@ permalink: /projects/investmentcalculator/
       values: [totalInvestment, profit],
       type: 'pie',
       marker: {
-        colors: ['rgb(127, 127, 127)', 'rgb(0, 255, 127)'] // Light gray and Apple-like green
+        colors: ['rgb(127, 127, 127)', 'rgb(63, 191, 127)'] // Light gray and Apple-like green
       }
     }];
 
