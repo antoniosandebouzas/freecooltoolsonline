@@ -434,12 +434,12 @@ select {
 }
 
 select:hover {
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 select:focus {
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.2);
-  color:  $code-background-color;
+  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.02);
+  // color:  $code-background-color;
   transition: color 0.25s;
 }
 
