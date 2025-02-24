@@ -74,8 +74,8 @@ permalink: /projects/investmentcalculator/
 </select><br>
 
 <div id="result">
-  <p id="futureValue" style="color: rgb(63, 127, 255);"></p>
   <p id="totalInvestment" style="color: rgb(191, 191, 191);"></p>
+  <p id="futureValue" style="color: rgb(63, 127, 255);"></p>
   <p id="profit" style="color: rgb(63, 255, 127);"></p>
 </div>
 

@@ -423,7 +423,8 @@ select {
   margin: 0px;
   margin-left: 10px;
   padding: 10px;
-  /* font-size: 16px; */
+  font-size: $base-font-size;
+  font-family: $base-font-family;
   border: 0px;
   outline: none;
   border-radius: 15px;
