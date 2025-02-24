@@ -41,10 +41,10 @@ permalink: /projects/investmentcalculator/
   <option value="100" selected="selected" >$100</option>
   <option value="200">$200</option>
   <option value="500">$500</option>
-  <option value="1,000">$1000</option>
-  <option value="2,000">$2000</option>
-  <option value="5,000">$5000</option>
-  <option value="10,000">$10000</option>
+  <option value="1000">$1,000</option>
+  <option value="2000">$2,000</option>
+  <option value="5000">$5,000</option>
+  <option value="10000">$10,000</option>
 </select><br>
 
 <label for="annualInterest">Annual interest rate:</label>
