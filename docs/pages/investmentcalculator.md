@@ -74,7 +74,7 @@ permalink: /projects/investmentcalculator/
 </select><br>
 
 <div id="result">
-  <p id="totalInvestment" style="color: rgb(191, 191, 191);"></p>
+  <p id="totalInvestment" style="color: rgb(127, 127, 127);"></p>
   <p id="futureValue" style="color: rgb(0, 127, 255);"></p>
   <p id="profit" style="color: rgb(0, 255, 127);"></p>
 </div>
@@ -165,7 +165,7 @@ permalink: /projects/investmentcalculator/
       type: 'bar',
       name: 'Total money invested',
       marker: {
-        color: 'rgb(191, 191, 191)' // Light gray
+        color: 'rgb(127, 127, 127)' // Light gray
       }
     };
 
@@ -222,7 +222,7 @@ permalink: /projects/investmentcalculator/
       values: [totalInvestment, profit],
       type: 'pie',
       marker: {
-        colors: ['rgb(191, 191, 191)', 'rgb(0, 255, 127)'] // Light gray and Apple-like green
+        colors: ['rgb(127, 127, 127)', 'rgb(0, 255, 127)'] // Light gray and Apple-like green
       }
     }];
 
