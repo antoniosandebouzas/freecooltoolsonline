@@ -418,3 +418,22 @@ h3 {
   font-variant-ligatures: none;
   -webkit-font-smoothing: antialiased;
 }
+
+select {
+  margin: 0px;
+  margin-left: 10px;
+  padding: 10px;
+  /* font-size: 16px; */
+  border: 0px;
+  outline: none;
+  border-radius: 15px;
+  box-shadow: 2.5px 5px 10px #00000010;
+  background-color: $code-background-color
+}
+
+.card {
+  border: 0px;
+  outline: none;
+  border-radius: 15px;
+  box-shadow: 2.5px 5px 10px #00000010;
+}

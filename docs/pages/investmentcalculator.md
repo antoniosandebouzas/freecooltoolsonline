@@ -5,42 +5,8 @@ permalink: /projects/investmentcalculator/
 ---
 
 <style>
-  select {
-    margin: 0px;
-    margin-left: 10px;
-    padding: 10px;
-    /* font-size: 16px; */
-    /* border: 1px solid #ccc; */
-    border: 0px;
-    /* border-radius: 5px; */
-    outline: none;
-    border-radius: 15px;
-    box-shadow: 2.5px 5px 10px #00000010;
-
-  }
-
   button {
     display: none;
-    /* Hide the button */
-  }
-
-  /* #result {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 18px;
-  } */
-
-  /* #investmentPie,
-  #investmentChart,
-  #annualChart {
-    margin-top: 20px;
-  } */
-
-  .card {
-    border: 0px;
-    outline: none;
-    border-radius: 15px;
-    box-shadow: 2.5px 5px 10px #00000010;
   }
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
