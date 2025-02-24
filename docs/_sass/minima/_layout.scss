@@ -430,16 +430,15 @@ select {
   border-radius: 15px;
   box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.1);
   background-color: $code-background-color;
+  transition: 0.25s;
 }
 
 select:hover {
   box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.25s;
 }
 
 select:focus {
   box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.25s;
   color:  $code-background-color;
   transition: color 0.25s;
 }
@@ -449,9 +448,10 @@ select:focus {
   outline: none;
   border-radius: 15px;
   box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.25s;
 }
 
 .card:hover {
   box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.25s;
 }
+
