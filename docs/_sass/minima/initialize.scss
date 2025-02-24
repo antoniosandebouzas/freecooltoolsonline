@@ -1,9 +1,9 @@
 @charset "utf-8";
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 // Define defaults for each variable.
 
-$base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$base-font-family: -apple-system, BlinkMacSystemFont, "Rubik", "Host Grotesk", "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 $code-font-family: "SF Mono", "JetBrains Mono", monospace !default;
 $base-font-size: 16px !default;
 $base-font-weight: 400 !default;

@@ -230,20 +230,20 @@ permalink: /projects/investmentcalculator/
         tickvals: months,
         ticktext: months.map(m => (m % 12 === 0) ? Math.floor(m / 12) + ' Yr ' + (m % 12 || 12) + ' Mo' : ''),
         tickfont: {
-          family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
+          family: '-apple-system, BlinkMacSystemFont, "Rubik", "Host Grotesk", "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
         }
       },
       yaxis: {
         title: 'Amount ($)',
         color: '#000',
         tickfont: {
-          family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
+          family: '-apple-system, BlinkMacSystemFont, "Rubik", "Host Grotesk", "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
         }
       },
       paper_bgcolor: '#FFF',
       plot_bgcolor: '#FFF',
       font: {
-        family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
+        family: '-apple-system, BlinkMacSystemFont, "Rubik", "Host Grotesk", "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
       }
     };
 
@@ -273,7 +273,7 @@ permalink: /projects/investmentcalculator/
       paper_bgcolor: '#FFF',
       plot_bgcolor: '#FFF',
       font: {
-        family: '-apple-system, BlinkMacSystemFont, Segoe UI, SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
+        family: '-apple-system, BlinkMacSystemFont, "Rubik", "Host Grotesk", "Segoe UI", SegoeUI, "Helvetica Neue", Helvetica, Arial, sans-serif'
       }
     };
 
