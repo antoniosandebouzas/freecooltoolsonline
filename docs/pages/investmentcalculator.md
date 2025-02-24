@@ -75,10 +75,10 @@ permalink: /projects/investmentcalculator/
   <option value="100" selected="selected" >$100</option>
   <option value="200">$200</option>
   <option value="500">$500</option>
-  <option value="1000">$1000</option>
-  <option value="2000">$2000</option>
-  <option value="5000">$5000</option>
-  <option value="10000">$10000</option>
+  <option value="1,000">$1000</option>
+  <option value="2,000">$2000</option>
+  <option value="5,000">$5000</option>
+  <option value="10,000">$10000</option>
 </select><br>
 
 <label for="annualInterest">Annual Interest:</label>
@@ -124,6 +124,15 @@ permalink: /projects/investmentcalculator/
 <div class="card" id="annualChart"></div>
 
 <script>
+  function formatCurrency(value) {
+    return value.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
   function calculateFutureValue() {
     var years = parseFloat(document.getElementById('years').value);
     var monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value);
@@ -158,9 +167,10 @@ permalink: /projects/investmentcalculator/
       }
     }
 
-    document.getElementById('futureValue').innerText = 'Future Value: $' + futureValue.toFixed(2);
-    document.getElementById('totalInvestment').innerText = 'Total Investment: $' + totalInvestment.toFixed(2);
-    document.getElementById('profit').innerText = 'Profit: $' + (futureValue - totalInvestment).toFixed(2);
+    // Usage remains the same
+    document.getElementById('futureValue').innerText = 'Future Value: ' + formatCurrency(futureValue);
+    document.getElementById('totalInvestment').innerText = 'Total Investment: ' + formatCurrency(totalInvestment);
+    document.getElementById('profit').innerText = 'Profit: ' + formatCurrency(futureValue - totalInvestment);
 
     // Draw the histograms using Plotly
     drawHistogram(futureValues, totalInvestments, profits, totalMonths, 'investmentChart', 'Investment Analysis Over the Months');
@@ -204,10 +214,14 @@ permalink: /projects/investmentcalculator/
     };
 
     var layout = {
-        title: '',
+      title: '',
       showlegend: true,
       legend: {
-        orientation: 'h'
+        orientation: 'h',
+        yanchor: 'bottom',
+        y: 1.05,
+        xanchor: 'center',
+        x: 0.5
       },
       xaxis: {
         title: xLabels === 'Months' ? 'Months' : 'Years',
@@ -250,7 +264,11 @@ permalink: /projects/investmentcalculator/
       title: '',
       showlegend: true,
       legend: {
-        orientation: 'h'
+        orientation: 'h',
+        yanchor: 'bottom',
+        y: 1.05,
+        xanchor: 'center',
+        x: 0.5
       },
       paper_bgcolor: '#FFF',
       plot_bgcolor: '#FFF',
