@@ -45,7 +45,7 @@ permalink: /projects/investmentcalculator/
 </style>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<label for="years">Years:</label>
+<label for="years">Years investing:</label>
 <select id="years" onchange="calculateFutureValue()">
   <option value="1">1yr</option>
   <option value="2">2yr</option>
@@ -67,7 +67,7 @@ permalink: /projects/investmentcalculator/
   <option value="100">100yr</option>
 </select><br>
 
-<label for="monthlyInvestment">Monthly Investment:</label>
+<label for="monthlyInvestment">Money invested monthly:</label>
 <select id="monthlyInvestment" onchange="calculateFutureValue()">
   <option value="10">$10</option>
   <option value="20">$20</option>
@@ -81,7 +81,7 @@ permalink: /projects/investmentcalculator/
   <option value="10,000">$10000</option>
 </select><br>
 
-<label for="annualInterest">Annual Interest:</label>
+<label for="annualInterest">Annual interest rate:</label>
 <select id="annualInterest" onchange="calculateFutureValue()">
   <option value="0.0">0.0%</option>
   <option value="0.5">0.5%</option>
@@ -168,9 +168,9 @@ permalink: /projects/investmentcalculator/
     }
 
     // Usage remains the same
-    document.getElementById('futureValue').innerText = 'Future Value: ' + formatCurrency(futureValue);
-    document.getElementById('totalInvestment').innerText = 'Total Investment: ' + formatCurrency(totalInvestment);
-    document.getElementById('profit').innerText = 'Profit: ' + formatCurrency(futureValue - totalInvestment);
+    document.getElementById('futureValue').innerText = 'Future value: ' + formatCurrency(futureValue);
+    document.getElementById('totalInvestment').innerText = 'Total money invested: ' + formatCurrency(totalInvestment);
+    document.getElementById('profit').innerText = 'Profit from interests: ' + formatCurrency(futureValue - totalInvestment);
 
     // Draw the histograms using Plotly
     drawHistogram(futureValues, totalInvestments, profits, totalMonths, 'investmentChart', 'Investment Analysis Over the Months');
@@ -187,7 +187,7 @@ permalink: /projects/investmentcalculator/
       x: months,
       y: values.slice(0, displayMonths),
       type: 'bar',
-      name: 'Future Value',
+      name: 'Future value',
       marker: {
         color: 'rgb(63, 127, 255)' // Apple-like blue
       }
@@ -197,7 +197,7 @@ permalink: /projects/investmentcalculator/
       x: months,
       y: totalInvestments.slice(0, displayMonths),
       type: 'bar',
-      name: 'Total Investment',
+      name: 'Total money invested',
       marker: {
         color: 'rgb(191, 191, 191)' // Light gray
       }
@@ -207,7 +207,7 @@ permalink: /projects/investmentcalculator/
       x: months,
       y: profits.slice(0, displayMonths),
       type: 'bar',
-      name: 'Profit',
+      name: 'Profit from interests',
       marker: {
         color: 'rgb(63, 255, 127)' // Apple-like green
       }
@@ -252,7 +252,7 @@ permalink: /projects/investmentcalculator/
 
   function drawPieChart(totalInvestment, profit) {
     var pieData = [{
-      labels: ['Total Investment', 'Profit'],
+      labels: ['Total money invested', 'Profit from interests'],
       values: [totalInvestment, profit],
       type: 'pie',
       marker: {
