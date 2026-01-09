@@ -30,6 +30,7 @@ header_pages:
   - pages/money.md
   - pages/we.md
   - pages/about.md
+  - pages/organic-tech-squircles.md
 
 # Set to `true` to show excerpts on the homepage.
 #show_excerpts: false

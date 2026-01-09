@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Squircles - Organic Tech</title>
+
+  <!-- Google Fonts Connection -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      /* --- COLOR PALETTE --- */
+      /* Base Neutrals (Tech Foundation) */
+      --color-background-page: #ffffff;
+      --color-background-surface: #f8f9fa; /* Very light gray */
+      --color-border-subtle: #e0e0e0;
+      --color-text-primary: #202124;
+      --color-text-secondary: #5f6368;
+
+      /* Organic Accents (Symbolism: Grounding) */
+      --color-organic-beige: #e3dcd2;
+      --color-organic-brown: #8b7e74;
+      --color-organic-dark: #4a4542;
+
+      /* Action Accents (Symbolism: "Go" / "Valid") */
+      --color-signal-green: #1e8e3e; /* Google Green-ish but deeper */
+      --color-signal-green-light: #e6f4ea;
+
+      /* --- SPACING & TYPOGRAPHY --- */
+      --spacing-unit: 8px;
+      --border-radius-ui: 16px;
+      --font-family-ui: 'Google Sans', sans-serif;
+      --font-family-code: 'Google Sans Code', monospace;
+    }
+
+    body {
+      font-family: var(--font-family-ui);
+      background-color: var(--color-background-page);
+      color: var(--color-text-primary);
+      margin: 0;
+      padding: 40px 20px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* --- TYPOGRAPHY --- */
+    h1 {
+      font-weight: 400;
+      font-size: 2.5rem;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.5px;
+    }
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.25rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.875rem;
+    }
+
+    p.description {
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    /* Enforce Monospace for Data */
+    .squircle-label,
+    .input-value,
+    .slider-value-display {
+      font-family: var(--font-family-code);
+    }
+
+    /* --- CONTROLS SECTION --- */
+    .controls-panel {
+      background-color: var(--color-background-page);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 999px; /* Pill shape */
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 20px;
+      z-index: 100;
+      margin-bottom: 60px;
+      backdrop-filter: blur(8px); /* Frosted glass effect */
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .control-label {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+    }
+
+    .slider-value-display {
+      background-color: var(--color-text-primary);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* Styled Range Input */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 200px;
+      background: transparent;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: var(--color-signal-green);
+      cursor: pointer;
+      margin-top: -8px; /* Centers thumb on track */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: transform 0.1s ease;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+      background: var(--color-border-subtle);
+      border-radius: 2px;
+    }
+
+    /* --- SQUIRCLE VISUALIZATION --- */
+    .visualization-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      margin-bottom: 80px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .squircle-component {
+      /* Explicit CSS Variables for readability */
+      --squircle-width: 200px;
+      --squircle-height: 200px;
+      --squircle-background-color: var(--color-neutral-gray);
+      --squircle-text-color: var(--color-text-primary);
+      --squircle-clip-path: '';
+
+      width: var(--squircle-width);
+      height: var(--squircle-height);
+      background-color: var(--squircle-background-color);
+      clip-path: path(var(--squircle-clip-path));
+      
+      /* Smooth Physics-based Transitions */
+      transition: width 0.4s cubic-bezier(0.2, 0, 0, 1), 
+                  height 0.4s cubic-bezier(0.2, 0, 0, 1),
+                  background-color 0.3s ease;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--squircle-text-color);
+      position: relative;
+      user-select: none;
+    }
+
+    .squircle-label {
+      font-size: 0.75rem;
+      margin-top: 8px;
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+    }
+
+    .squircle-name {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    /* Aesthetic Variations */
+    .variant-neutral-1 { 
+      --squircle-width: 120px; --squircle-height: 120px; 
+      --squircle-background-color: var(--color-border-subtle); 
+    }
+    
+    .variant-neutral-2 { 
+      --squircle-width: 220px; --squircle-height: 160px; 
+      --squircle-background-color: #d0d0d0; 
+    }
+
+    .variant-organic-beige { 
+      --squircle-width: 300px; --squircle-height: 200px; 
+      --squircle-background-color: var(--color-organic-beige); 
+    }
+
+    .variant-organic-brown { 
+      --squircle-width: 250px; --squircle-height: 350px; 
+      --squircle-background-color: var(--color-organic-brown);
+      --squircle-text-color: #ffffff;
+    }
+
+    .variant-organic-dark { 
+      --squircle-width: 400px; --squircle-height: 100px; 
+      --squircle-background-color: var(--color-organic-dark);
+      --squircle-text-color: #ffffff;
+    }
+
+    /* --- GENERATOR SECTION --- */
+    .generator-section {
+      width: 100%;
+      max-width: 800px;
+      border-top: 1px solid var(--color-border-subtle);
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .generator-interface {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .text-input {
+      padding: 12px 16px;
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 8px;
+      font-size: 1rem;
+      width: 100px;
+      font-family: var(--font-family-code);
+      background-color: var(--color-background-surface);
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--color-signal-green);
+      background-color: #ffffff;
+    }
+
+    /* Custom Color Input Styling */
+    .color-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%; /* Make the picker circle */
+      cursor: pointer;
+      background: none;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; border: 1px solid var(--color-border-subtle); }
+
+  </style>
+</head>
+
+<body>
+
+  <h1>Organic Tech Squircles</h1>
+  <p class="description">
+    A mathematical exploration of form. These shapes transition linearly between diamond and square.
+    <br>Colors are chosen to represent stability (Beige/Brown) and execution (Green).
+  </p>
+
+  <!-- Floating Controls -->
+  <div class="controls-panel">
+    <label for="exponentSlider" class="control-label">Curvature</label>
+    <input type="range" id="exponentSlider" min="0.5" max="12" step="0.1" value="4">
+    <span id="exponentValueDisplay" class="slider-value-display">4.0</span>
+  </div>
+
+  <!-- Preset Grid -->
+  <div class="visualization-grid" id="presetContainer">
+    <div class="squircle-component variant-neutral-1">
+      <div class="squircle-name">Standard</div>
+      <div class="squircle-label">120×120</div>
+    </div>
+
+    <div class="squircle-component variant-neutral-2">
+      <div class="squircle-name">Medium</div>
+      <div class="squircle-label">220×160</div>
+    </div>
+
+    <div class="squircle-component variant-organic-beige">
+      <div class="squircle-name">Beige</div>
+      <div class="squircle-label">300×200</div>
+    </div>
+
+    <div class="squircle-component variant-organic-brown">
+      <div class="squircle-name">Earth</div>
+      <div class="squircle-label">250×350</div>
+    </div>
+
+    <div class="squircle-component variant-organic-dark">
+      <div class="squircle-name">Deep</div>
+      <div class="squircle-label">400×100</div>
+    </div>
+  </div>
+
+  <!-- Custom Generator -->
+  <section class="generator-section">
+    <h2>Custom Generator</h2>
+    
+    <div class="generator-interface">
+      <div class="input-group">
+        <div class="input-wrapper">
+          <label for="inputWidth" class="input-label">Width (px)</label>
+          <input type="number" id="inputWidth" class="text-input" value="250" min="50" max="600">
+        </div>
+
+        <div class="input-wrapper">
+          <label for="inputHeight" class="input-label">Height (px)</label>
+          <input type="number" id="inputHeight" class="text-input" value="250" min="50" max="600">
+        </div>
+
+        <div class="input-wrapper">
+          <label for="inputColor" class="input-label">Accent</label>
+          <div class="color-input-container">
+            <input type="color" id="inputColor" value="#1e8e3e">
+          </div>
+        </div>
+      </div>
+
+      <!-- The Custom Output Element -->
+      <div id="customSquircleElement" class="squircle-component"
+        style="--squircle-width: 250px; --squircle-height: 250px; --squircle-background-color: #1e8e3e; --squircle-text-color: #ffffff;">
+        <div class="squircle-name">Generated</div>
+        <div class="squircle-label">250×250</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    /**
+     * Determines the appropriate text color (black or white) 
+     * based on the background color's brightness.
+     * 
+     * @param {string} hexColor - The background color in hexadecimal format (e.g., "#ffffff").
+     * @returns {string} - Hex code for black or white.
+     */
+    function calculateContrastTextColor(hexColor) {
+      // Parse Hex
+      const red = parseInt(hexColor.substr(1, 2), 16);
+      const green = parseInt(hexColor.substr(3, 2), 16);
+      const blue = parseInt(hexColor.substr(5, 2), 16);
+      
+      // Calculate YIQ luminance
+      const yiqLuminance = ((red * 299) + (green * 587) + (blue * 114)) / 1000;
+      
+      // Return dark text for light backgrounds, white text for dark backgrounds
+      return (yiqLuminance >= 128) ? '#202124' : '#ffffff';
+    }
+
+    /**
+     * Generates an SVG path data string for a "Split Squircle".
+     * This logic keeps the corners fixed relative to the shortest side
+     * and extends straight lines to fill the remaining dimension.
+     * 
+     * Formula: |x|^n + |y|^n = r^n
+     * 
+     * @param {number} width - Total width of the shape.
+     * @param {number} height - Total height of the shape.
+     * @param {number} exponent - The curvature exponent (n).
+     * @returns {string} - The SVG path data string (d attribute).
+     */
+    function generateSquirclePathData(width, height, exponent) {
+      // Guard clause to prevent math errors
+      if (width <= 0 || height <= 0) {
+        return '';
+      }
+
+      // Determine dimensions for the corner calculations
+      const shortestSide = Math.min(width, height);
+      const cornerRadius = shortestSide / 2;
+      
+      // Calculate offsets to center the superellipse logic
+      const deltaX = (width - shortestSide) / 2;
+      const deltaY = (height - shortestSide) / 2;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      // Number of points to calculate for the curve (Resolution)
+      const pointsPerQuadrant = 30; 
+      let calculatedPoints = [];
+
+      // Calculate points for the first quadrant (0 to 90 degrees)
+      for (let i = 0; i <= pointsPerQuadrant; i++) {
+        // Calculate angle in radians
+        const theta = (i / pointsPerQuadrant) * (Math.PI / 2);
+        
+        // Trigonometric values
+        const cosineTheta = Math.cos(theta);
+        const sineTheta = Math.sin(theta);
+        
+        // Apply Superellipse formula
+        // x = r * cos(theta)^(2/n)
+        // y = r * sin(theta)^(2/n)
+        const xPosition = cornerRadius * Math.pow(Math.abs(cosineTheta), 2 / exponent);
+        const yPosition = cornerRadius * Math.pow(Math.abs(sineTheta), 2 / exponent);
+        
+        calculatedPoints.push({ x: xPosition, y: yPosition });
+      }
+
+      // Build the SVG Path String
+      // Command M: Move to start
+      let pathDataString = `M ${centerX + calculatedPoints[0].x + deltaX} ${centerY + calculatedPoints[0].y + deltaY}`;
+
+      // Quadrant 1: Bottom-Right
+      for(let point of calculatedPoints) {
+        pathDataString += ` L ${centerX + point.x + deltaX} ${centerY + point.y + deltaY}`;
+      }
+      
+      // Quadrant 2: Bottom-Left (Mirror X)
+      // Iterate backwards to maintain path continuity
+      for(let i = calculatedPoints.length - 1; i >= 0; i--) {
+         const point = calculatedPoints[i];
+         pathDataString += ` L ${centerX - point.x - deltaX} ${centerY + point.y + deltaY}`;
+      }
+
+      // Quadrant 3: Top-Left (Mirror X, Mirror Y)
+      for(let point of calculatedPoints) {
+        pathDataString += ` L ${centerX - point.x - deltaX} ${centerY - point.y - deltaY}`;
+      }
+
+      // Quadrant 4: Top-Right (Mirror Y)
+      for(let i = calculatedPoints.length - 1; i >= 0; i--) {
+        const point = calculatedPoints[i];
+        pathDataString += ` L ${centerX + point.x + deltaX} ${centerY - point.y - deltaY}`;
+      }
+
+      // Close the path
+      return pathDataString + ' Z';
+    }
+
+    // --- APPLICATION STATE ---
+    const applicationState = {
+      curvatureExponent: 4.0,
+      customShape: {
+        width: 250,
+        height: 250,
+        color: '#1e8e3e'
+      }
+    };
+
+    // --- DOM ELEMENTS REFERENCE ---
+    const uiElements = {
+      sliderInput: document.getElementById('exponentSlider'),
+      sliderValueDisplay: document.getElementById('exponentValueDisplay'),
+      presetSquircles: document.querySelectorAll('.visualization-grid .squircle-component'),
+      customSquircleElement: document.getElementById('customSquircleElement'),
+      inputs: {
+        width: document.getElementById('inputWidth'),
+        height: document.getElementById('inputHeight'),
+        color: document.getElementById('inputColor')
+      }
+    };
+
+    // Animation Frame ID for debouncing
+    let animationFrameId = null;
+
+    /**
+     * Main Render Function
+     * Updates CSS variables for all shapes based on current state.
+     */
+    function renderApplication() {
+      // 1. Update Preset Squircles
+      uiElements.presetSquircles.forEach(element => {
+        const computedStyle = getComputedStyle(element);
+        const width = parseFloat(computedStyle.getPropertyValue('--squircle-width'));
+        const height = parseFloat(computedStyle.getPropertyValue('--squircle-height'));
+        
+        const pathData = generateSquirclePathData(width, height, applicationState.curvatureExponent);
+        element.style.setProperty('--squircle-clip-path', `"${pathData}"`);
+      });
+
+      // 2. Update Custom Generator Squircle
+      const { width, height, color } = applicationState.customShape;
+      const customPathData = generateSquirclePathData(width, height, applicationState.curvatureExponent);
+      
+      const customElement = uiElements.customSquircleElement;
+      
+      // Update dimensions and color
+      customElement.style.setProperty('--squircle-width', `${width}px`);
+      customElement.style.setProperty('--squircle-height', `${height}px`);
+      customElement.style.setProperty('--squircle-background-color', color);
+      customElement.style.setProperty('--squircle-text-color', calculateContrastTextColor(color));
+      
+      // Update clip path
+      customElement.style.setProperty('--squircle-clip-path', `"${customPathData}"`);
+      
+      // Update text label
+      const labelElement = customElement.querySelector('.squircle-label');
+      if(labelElement) {
+        labelElement.textContent = `${width}×${height}`;
+      }
+    }
+
+    /**
+     * Schedules a render on the next available animation frame.
+     * Prevents layout thrashing during rapid input events.
+     */
+    function requestRenderUpdate() {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      animationFrameId = requestAnimationFrame(renderApplication);
+    }
+
+    // --- EVENT HANDLERS ---
+
+    // 1. Curvature Slider Handler
+    uiElements.sliderInput.addEventListener('input', (event) => {
+      const newValue = parseFloat(event.target.value);
+      applicationState.curvatureExponent = newValue;
+      uiElements.sliderValueDisplay.textContent = newValue.toFixed(1);
+      requestRenderUpdate();
+    });
+
+    // 2. Custom Input Handlers
+    function handleCustomInputUpdate() {
+      // Parse integers with fallback
+      let parsedWidth = parseInt(uiElements.inputs.width.value) || 100;
+      let parsedHeight = parseInt(uiElements.inputs.height.value) || 100;
+      
+      // Clamp values to sane limits (50px to 600px)
+      parsedWidth = Math.max(50, Math.min(600, parsedWidth));
+      parsedHeight = Math.max(50, Math.min(600, parsedHeight));
+
+      // Update State
+      applicationState.customShape.width = parsedWidth;
+      applicationState.customShape.height = parsedHeight;
+      applicationState.customShape.color = uiElements.inputs.color.value;
+      
+      requestRenderUpdate();
+    }
+
+    // Attach listeners to all generator inputs
+    Object.values(uiElements.inputs).forEach(inputElement => {
+      inputElement.addEventListener('input', handleCustomInputUpdate);
+    });
+
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', renderApplication);
+
+  </script>
+</body>
+</html>
