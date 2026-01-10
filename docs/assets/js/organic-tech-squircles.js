@@ -52,6 +52,7 @@
   let animationFrameId = null;
 
   function renderApplication() {
+    // Update preset squircles
     uiElements.presetSquircles.forEach(element => {
       const computedStyle = getComputedStyle(element);
       const width = parseFloat(computedStyle.getPropertyValue('--squircle-width'));
@@ -60,6 +61,7 @@
       element.style.setProperty('--squircle-clip-path', `"${pathData}"`);
     });
 
+    // Update custom generator squircle
     const { width, height, color } = applicationState.customShape;
     const customElement = uiElements.customSquircleElement;
     const customPathData = generateSquirclePathData(width, height, applicationState.curvatureExponent);
@@ -70,10 +72,14 @@
     customElement.style.setProperty('--squircle-clip-path', `"${customPathData}"`);
     const labelElement = customElement.querySelector('.squircle-label');
     if (labelElement) { labelElement.textContent = `${width}×${height}`; }
+
+    // Update any elements that should behave like squircled rectangles
+    applySquirclesToRects();
   }
 
   function requestRenderUpdate() { if (animationFrameId) cancelAnimationFrame(animationFrameId); animationFrameId = requestAnimationFrame(renderApplication); }
 
+  // Apply exponent slider
   if (uiElements.sliderInput) {
     uiElements.sliderInput.addEventListener('input', (event) => { const newValue = parseFloat(event.target.value); applicationState.curvatureExponent = newValue; uiElements.sliderValueDisplay.textContent = newValue.toFixed(1); requestRenderUpdate(); });
   }
@@ -93,5 +99,56 @@
   if (uiElements.inputs.height) uiElements.inputs.height.addEventListener('input', handleCustomInputUpdate);
   if (uiElements.inputs.color) uiElements.inputs.color.addEventListener('input', handleCustomInputUpdate);
 
-  document.addEventListener('DOMContentLoaded', renderApplication);
+  /* --- Squircled rectangle support --- */
+  function rgbToHex(rgb) {
+    if (!rgb) return null;
+    if (rgb[0] === '#') return rgb;
+    const m = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if (!m) return null;
+    const r = parseInt(m[1], 10); const g = parseInt(m[2], 10); const b = parseInt(m[3], 10);
+    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+
+  function applySquirclesToRects() {
+    const nodes = qAll('.squircle-rect');
+    nodes.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const w = Math.max(50, Math.round(rect.width));
+      const h = Math.max(24, Math.round(rect.height));
+      const path = generateSquirclePathData(w, h, applicationState.curvatureExponent);
+      el.style.setProperty('--squircle-clip-path', `"${path}"`);
+
+      // Prefer an explicit data attribute for color (dataset.squircleColor), otherwise read computed background
+      let hexColor = el.dataset.squircleColor || null;
+      if (!hexColor) {
+        const computedBg = getComputedStyle(el).backgroundColor;
+        hexColor = rgbToHex(computedBg);
+      }
+      if (hexColor) {
+        el.style.setProperty('--squircle-background-color', hexColor);
+        el.style.setProperty('--squircle-text-color', calculateContrastTextColor(hexColor));
+      }
+    });
+  }
+
+  // Auto-enable squircle class on typical elements (unless explicitly opted out)
+  document.addEventListener('DOMContentLoaded', function () {
+    const elementsToOptIn = qAll('pre, blockquote, code');
+    elementsToOptIn.forEach(el => {
+      if (!el.classList.contains('no-squircle')) {
+        el.classList.add('squircle-rect');
+      }
+    });
+
+    // Initial render
+    renderApplication();
+  });
+
+  // Recompute on resize (debounced)
+  let resizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(requestRenderUpdate, 120);
+  });
+
 })();

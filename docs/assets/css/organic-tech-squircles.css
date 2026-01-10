@@ -298,3 +298,48 @@ input[type=range] {
     padding: 10px 16px;
   }
 }
+
+/* --- Squircle-rect utilities (applies squircled corners to blocks & inline code) --- */
+.squircles-page .squircle-rect {
+  display: inline-block;
+  padding: 10px 14px;
+  background-color: var(--color-background-surface);
+  color: var(--color-text-primary);
+  border-radius: 12px;
+  /* graceful fallback */
+  clip-path: path(var(--squircle-clip-path));
+  transition: background-color 0.2s ease, color 0.2s ease, clip-path 0.2s ease;
+  position: relative;
+}
+
+.squircles-page .squircle-rect--accent {
+  background-color: var(--color-signal-green);
+  color: #ffffff;
+}
+
+/* Block-level adjustments */
+.squircles-page pre.squircle-rect {
+  display: block;
+  padding: 18px 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.squircles-page blockquote.squircle-rect {
+  display: block;
+  padding: 18px 22px;
+  border-left: none;
+  background-color: var(--color-background-surface);
+}
+
+/* Inline code marker fallback */
+.squircles-page code.squircle-rect {
+  font-family: var(--font-family-code);
+  font-size: 0.95rem;
+}
+
+/* Accessibility: ensure focus ring for keyboard users */
+.squircles-page .squircle-rect:focus {
+  outline: 3px solid rgba(30, 142, 62, 0.18);
+  outline-offset: 3px;
+}

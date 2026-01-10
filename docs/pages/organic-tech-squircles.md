@@ -70,4 +70,17 @@ squircles: true
       </div>
     </div>
   </section>
+
+  <section class="demo-section" aria-label="Code and blocks demo">
+    <h2>Code & Blocks Demo</h2>
+    <p>Inline example: <code class="inline">exponent: 4</code> — this inline code is styled with a squircle shape and font.</p>
+
+    <pre><code>/* CSS example */
+.squircle-rect { /* ... */ }
+</code></pre>
+
+    <blockquote class="squircle-rect squircle-rect--accent" data-squircle-color="#1e8e3e">These shapes create a softer, more organic UI language — great for small UI components and code blocks.</blockquote>
+
+    <p>Author: <strong>Toni</strong> — <a href="mailto:toni@freecooltoolsonline.com">toni@freecooltoolsonline.com</a></p>
+  </section>
 </div>
