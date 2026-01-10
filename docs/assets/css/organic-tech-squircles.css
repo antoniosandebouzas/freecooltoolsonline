@@ -334,6 +334,9 @@ input[type=range] {
 
 /* Inline code marker fallback */
 .squircles-page code.squircle-rect {
+  display: inline;
+  padding: 0 4px;
+  vertical-align: baseline;
   font-family: var(--font-family-code);
   font-size: 0.95rem;
 }
