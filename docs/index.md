@@ -1,23 +1,22 @@
-> Ideas Raining
+---
+layout: home
+title: Free Cool Tools Online
+---
 
-# Welcome to GALAIC
+# Free Cool Tools Online
 
-### GALician Artificial Intelligence & Cloud
+Welcome to **FreeCoolToolsOnline**, your go-to hub for free, useful online tools. Whether you're calculating investments, formatting files, or exploring other utilities, we've got you covered with simple, powerful tools designed for everyday use.
 
-Welcome to the official site of **GALAIC**, a leading company specializing in Artificial Intelligence and Cloud solutions based in Galicia. We combine cutting-edge technology with our passion for innovation, offering state-of-the-art AI and cloud services to empower businesses and industries.
+## Explore Our Tools
+
+- **[Money Tools](/money/)**: Financial calculators like investment and mortgage planners.
+- **[File Tools](/files/)**: Formatters and processors for your files.
+
+More categories coming soon!
 
 ---
 
-## Who We Are
-
-At **GALAIC**, we are proud to represent Galicia in the global tech scene. Our mission is to deliver powerful, scalable, and efficient AI-driven solutions that cater to the needs of the modern business landscape.
-
-- **Artificial Intelligence (AI)**: Advanced AI models, data analysis, and machine learning services to help businesses gain insights and automate processes.
-- **Cloud Solutions**: Secure and scalable cloud infrastructure to ensure seamless business operations and growth.
-
----
-
-## Our Vision
+*All tools are free to use. No sign-up required.*
 
 Our goal is to make **AI and Cloud technology** accessible to businesses of all sizes. We strive to empower organizations with the tools they need to innovate and succeed in an ever-changing technological landscape.
 
