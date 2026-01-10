@@ -23,7 +23,7 @@ body,
   box-sizing: border-box;
 }
 
-body {
+.page-content {
   font-family: var(--font-family-ui);
   background-color: var(--color-background-page);
   color: var(--color-text-primary);
@@ -291,7 +291,7 @@ input[type="color"]::-webkit-color-swatch {
 
 /* Responsive tweaks */
 @media (max-width: 640px) {
-  body {
+  .page-content {
     padding: 24px 16px;
   }
 
