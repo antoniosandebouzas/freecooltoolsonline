@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Calculator</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;700&display=swap">
+  <style>
+    body {
+      font-family: 'Rethink Sans', sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #f8f8f8;
+    }
+
+    select {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    button {
+      display: none;
+      /* Hide the button */
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #investmentPie,
+    #investmentChart,
+    #annualChart {
+      margin-top: 20px;
+    }
+  </style>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+
+  <h1 style="color: #333;">Investment Calculator</h1>
+
+  <label for="years" style="color: #333;">Years:</label>
+  <select id="years" onchange="calculateFutureValue()" style="color: #333;">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+    <option value="25">25</option>
+    <option value="30">30</option>
+    <option value="35">35</option>
+    <option value="40">40</option>
+    <option value="50">50</option>
+    <option value="60">60</option>
+    <option value="70">70</option>
+    <option value="80">80</option>
+    <option value="90">90</option>
+    <option value="100">100</option>
+  </select><br>
+
+  <label for="monthlyInvestment" style="color: #333;">Monthly Investment:</label>
+  <select id="monthlyInvestment" onchange="calculateFutureValue()" style="color: #333;">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    <option value="200">200</option>
+    <option value="500">500</option>
+    <option value="1000">1000</option>
+    <option value="2000">2000</option>
+    <option value="5000">5000</option>
+    <option value="10000">10000</option>
+  </select><br>
+
+  <label for="annualInterest" style="color: #333;">Annual Interest:</label>
+  <select id="annualInterest" onchange="calculateFutureValue()" style="color: #333;">
+    <script>
+      for (var i = 0.5; i <= 15; i += 0.5) {
+        document.write('<option value="' + i + '">' + i + '</option>');
+      }
+    </script>
+  </select><br>
+
+  <div id="result" style="color: #333;">
+    <p id="futureValue"></p>
+    <p id="totalInvestment"></p>
+    <p id="profit"></p>
+  </div>
+
+  <div id="investmentPie"></div>
+  <div id="investmentChart"></div>
+  <div id="annualChart"></div>
+
+  <script>
+    function calculateFutureValue() {
+      var years = parseFloat(document.getElementById('years').value);
+      var monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value);
+      var annualInterest = parseFloat(document.getElementById('annualInterest').value);
+
+      var monthlyInterestRate = (annualInterest / 100) / 12;
+      var totalMonths = years * 12;
+
+      var futureValues = [];
+      totalInvestments = [];
+      var profits = [];
+      var annualFutureValues = [];
+      var annualTotalInvestments = [];
+      var annualProfits = [];
+
+      var futureValue = 0;
+      var totalInvestment = 0;
+
+      for (var i = 0; i < totalMonths; i++) {
+        futureValue = (futureValue + monthlyInvestment) * (1 + monthlyInterestRate);
+        totalInvestment += monthlyInvestment;
+
+        futureValues.push(futureValue);
+        totalInvestments.push(totalInvestment);
+        profits.push(futureValue - totalInvestment);
+
+        // Track annual values
+        if ((i + 1) % 12 === 0) {
+          annualFutureValues.push(futureValue);
+          annualTotalInvestments.push(totalInvestment);
+          annualProfits.push(futureValue - totalInvestment);
+        }
+      }
+
+      document.getElementById('futureValue').innerText = 'Future Value: $' + futureValue.toFixed(2);
+      document.getElementById('totalInvestment').innerText = 'Total Investment: $' + totalInvestment.toFixed(2);
+      document.getElementById('profit').innerText = 'Profit: $' + (futureValue - totalInvestment).toFixed(2);
+
+      // Draw the histograms using Plotly
+      drawHistogram(futureValues, totalInvestments, profits, totalMonths, 'investmentChart', 'Investment Analysis Over the Months');
+      drawHistogram(annualFutureValues, annualTotalInvestments, annualProfits, years, 'annualChart', 'Annual Investment Analysis', totalMonths); // Display all months in the specified years
+
+      // Draw the pie chart
+      drawPieChart(totalInvestment, futureValue - totalInvestment);
+    }
+
+    function drawHistogram(values, totalInvestments, profits, xLabels, chartId, title, displayMonths = values.length) {
+      var months = Array.from({ length: displayMonths }, (_, i) => i + 1); // Start from 1
+
+      var valueTrace = {
+        x: months,
+        y: values.slice(0, displayMonths),
+        type: 'bar',
+        name: 'Future Value',
+        marker: {
+          color: 'rgba(20, 133, 204, 0.7)' // Apple-like blue
+        }
+      };
+
+      var totalInvestmentTrace = {
+        x: months,
+        y: totalInvestments.slice(0, displayMonths),
+        type: 'bar',
+        name: 'Total Investment',
+        marker: {
+          color: 'rgba(204, 204, 204, 0.7)' // Light gray
+        }
+      };
+
+      var profitTrace = {
+        x: months,
+        y: profits.slice(0, displayMonths),
+        type: 'bar',
+        name: 'Profit',
+        marker: {
+          color: 'rgba(112, 173, 71, 0.7)' // Apple-like green
+        }
+      };
+
+      var layout = {
+        xaxis: {
+          title: xLabels === 'Months' ? 'Months' : 'Years',
+          color: '#333',
+          tickmode: 'array',
+          tickvals: months,
+          ticktext: months.map(m => (m % 12 === 0) ? Math.floor(m / 12) + ' Yr ' + (m % 12 || 12) + ' Mo' : ''),
+          tickfont: {
+            family: 'Rethink Sans, sans-serif'
+          }
+        },
+        yaxis: {
+          title: 'Amount ($)',
+          color: '#333',
+          tickfont: {
+            family: 'Rethink Sans, sans-serif'
+          }
+        },
+        title: title,
+        paper_bgcolor: '#f8f8f8',
+        plot_bgcolor: '#f8f8f8',
+        font: {
+          family: 'Rethink Sans, sans-serif'
+        }
+      };
+
+      Plotly.newPlot(chartId, [valueTrace, totalInvestmentTrace, profitTrace], layout);
+    }
+
+    function drawPieChart(totalInvestment, profit) {
+      var pieData = [{
+        labels: ['Total Investment', 'Profit'],
+        values: [totalInvestment, profit],
+        type: 'pie',
+        marker: {
+          colors: ['rgba(204, 204, 204, 0.7)', 'rgba(112, 173, 71, 0.7)'] // Light gray and Apple-like green
+        }
+      }];
+
+      var pieLayout = {
+        title: 'Investment Distribution',
+        paper_bgcolor: '#f8f8f8',
+        plot_bgcolor: '#f8f8f8',
+        font: {
+          family: 'Rethink Sans, sans-serif'
+        }
+      };
+
+      Plotly.newPlot('investmentPie', pieData, pieLayout);
+    }
+
+    // Calculate and display histograms with initial values when the page is loaded
+    window.onload = calculateFutureValue;
+  </script>
+
+</body>
+
+</html>
