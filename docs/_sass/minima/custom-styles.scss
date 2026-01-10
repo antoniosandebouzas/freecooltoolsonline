@@ -1,2 +1,350 @@
-// Placeholder to allow defining custom styles that override everything else.
-// (Use `_sass/minima/custom-variables.scss` to override variable defaults)
+// Global styles for Organic Tech Squircles and reusable components
+// Centralized CSS for all pages
+
+:root {
+  --color-background-page: #ffffff;
+  --color-background-surface: #f8f9fa;
+  --color-border-subtle: #e0e0e0;
+  --color-text-primary: #202124;
+  --color-text-secondary: #5f6368;
+  --color-organic-beige: #e3dcd2;
+  --color-organic-brown: #8b7e74;
+  --color-organic-dark: #4a4542;
+  --color-signal-green: #1e8e3e;
+  --color-signal-green-light: #e6f4ea;
+  --spacing-unit: 8px;
+  --border-radius-ui: 16px;
+  --font-family-ui: 'Google Sans', sans-serif;
+  --font-family-code: 'Google Sans Code', monospace;
+}
+
+body,
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-ui);
+  background-color: var(--color-background-page);
+  color: var(--color-text-primary);
+  margin: 0;
+  padding: 40px 20px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-weight: 400;
+  font-size: 2.5rem;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+p.description {
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* enforce monospace for data */
+.squircle-label,
+.input-value,
+.slider-value-display {
+  font-family: var(--font-family-code);
+}
+
+/* Controls */
+.controls-panel {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 999px;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 20px;
+  z-index: 100;
+  margin-bottom: 60px;
+  backdrop-filter: blur(8px);
+}
+
+.control-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.slider-value-display {
+  background-color: var(--color-text-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  min-width: 40px;
+  text-align: center;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 200px;
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: var(--color-signal-green);
+  cursor: pointer;
+  margin-top: -8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: var(--color-border-subtle);
+  border-radius: 2px;
+}
+
+/* Visualization */
+.visualization-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  margin-bottom: 80px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.squircle-component {
+  --squircle-width: 200px;
+  --squircle-height: 200px;
+  --squircle-background-color: var(--color-border-subtle);
+  --squircle-text-color: var(--color-text-primary);
+  --squircle-clip-path: '';
+  width: var(--squircle-width);
+  height: var(--squircle-height);
+  background-color: var(--squircle-background-color);
+  clip-path: path(var(--squircle-clip-path));
+  transition: width 0.4s cubic-bezier(0.2, 0, 0, 1), height 0.4s cubic-bezier(0.2, 0, 0, 1), background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--squircle-text-color);
+  position: relative;
+  user-select: none;
+}
+
+.squircle-label {
+  font-size: 0.75rem;
+  margin-top: 8px;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+}
+
+.squircle-name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Variants */
+.variant-neutral-1 {
+  --squircle-width: 120px;
+  --squircle-height: 120px;
+  --squircle-background-color: var(--color-border-subtle);
+}
+
+.variant-neutral-2 {
+  --squircle-width: 220px;
+  --squircle-height: 160px;
+  --squircle-background-color: #d0d0d0;
+}
+
+.variant-organic-beige {
+  --squircle-width: 300px;
+  --squircle-height: 200px;
+  --squircle-background-color: var(--color-organic-beige);
+}
+
+.variant-organic-brown {
+  --squircle-width: 250px;
+  --squircle-height: 350px;
+  --squircle-background-color: var(--color-organic-brown);
+  --squircle-text-color: #ffffff;
+}
+
+.variant-organic-dark {
+  --squircle-width: 400px;
+  --squircle-height: 100px;
+  --squircle-background-color: var(--color-organic-dark);
+  --squircle-text-color: #ffffff;
+}
+
+/* Generator */
+.generator-section {
+  width: 100%;
+  max-width: 800px;
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.generator-interface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.input-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.text-input {
+  padding: 12px 16px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100px;
+  font-family: var(--font-family-code);
+  background-color: var(--color-background-surface);
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--color-signal-green);
+  background-color: #ffffff;
+}
+
+.color-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-subtle);
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  body {
+    padding: 24px 16px;
+  }
+
+  .controls-panel {
+    gap: 12px;
+    padding: 10px 16px;
+  }
+}
+
+/* --- Squircle-rect utilities (applies squircled corners to blocks & inline code) --- */
+.squircle-rect {
+  display: inline-block;
+  padding: 10px 14px;
+  background-color: var(--color-background-surface);
+  color: var(--color-text-primary);
+  border-radius: 12px;
+  /* graceful fallback */
+  clip-path: path(var(--squircle-clip-path));
+  transition: background-color 0.2s ease, color 0.2s ease, clip-path 0.2s ease;
+  position: relative;
+}
+
+.squircle-rect--accent {
+  background-color: var(--color-signal-green);
+  color: #ffffff;
+}
+
+/* Block-level adjustments */
+pre.squircle-rect {
+  display: block;
+  padding: 18px 20px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+blockquote.squircle-rect {
+  display: block;
+  padding: 18px 22px;
+  border-left: none;
+  background-color: var(--color-background-surface);
+}
+
+/* Inline code marker fallback */
+code.squircle-rect {
+  display: inline;
+  padding: 0 4px;
+  vertical-align: baseline;
+  font-family: var(--font-family-code);
+  font-size: 0.95rem;
+}
+
+/* Accessibility: ensure focus ring for keyboard users */
+.squircle-rect:focus {
+  outline: 3px solid rgba(30, 142, 62, 0.18);
+  outline-offset: 3px;
+}

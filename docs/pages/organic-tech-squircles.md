@@ -5,9 +5,8 @@ permalink: /squircles/
 squircles: true
 ---
 
-<div class="squircles-page">
-  <h1>Organic Tech Squircles</h1>
-  <p class="description">A mathematical exploration of form. These shapes transition linearly between diamond and square.<br>Colors are chosen to represent stability (Beige/Brown) and execution (Green).</p>
+<h1>Organic Tech Squircles</h1>
+<p class="description">A mathematical exploration of form. These shapes transition linearly between diamond and square.<br>Colors are chosen to represent stability (Beige/Brown) and execution (Green).</p>
 
   <div class="controls-panel">
     <label for="exponentSlider" class="control-label">Curvature</label>
@@ -83,4 +82,3 @@ squircles: true
 
     <p>Author: <strong>Toni</strong> — <a href="mailto:toni@freecooltoolsonline.com">toni@freecooltoolsonline.com</a></p>
   </section>
-</div>
