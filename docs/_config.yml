@@ -6,7 +6,7 @@ author:
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
-  Toni's free cool tools you can use online
+  Free browser-based tools — no sign-up, no install, no cost.
 
 # Build settings
 
@@ -28,9 +28,7 @@ plugins:
 # in order as they should show up.
 header_pages:
   - pages/money.md
-  - pages/we.md
-  - pages/about.md
-  - pages/organic-tech-squircles.md
+  - pages/dev.md
 
 # Set to `true` to show excerpts on the homepage.
 #show_excerpts: false
