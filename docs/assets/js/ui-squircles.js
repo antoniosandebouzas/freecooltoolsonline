@@ -1,6 +1,6 @@
 (function () {
-  var EXPONENT    = 3.0; // superellipse — softer than iOS (4.0), rounder than circular (2.0)
-  var CORNER_MAX  = 16;  // max corner radius — keeps buttons looking like rounded rects, not pills
+  var EXPONENT    = 4.0; // superellipse — softer than iOS (4.0), rounder than circular (2.0)
+  var CORNER_MAX  = 64;  // max corner radius — keeps buttons looking like rounded rects, not pills
 
   // Generates an SVG path for a squircle rounded rectangle.
   // Corner arcs are superellipses capped at CORNER_MAX; straight edges connect them.
@@ -68,17 +68,19 @@
   var listenerSet = new WeakSet();
 
   function applySquircle(el, defaultShadow, focusShadow) {
+    // Remove border BEFORE measuring: auto-width elements (buttons, cards) shrink when their
+    // border is removed. Measuring first then removing produces a path wider than the element,
+    // which gets clipped as a straight 90° edge at the right and bottom.
+    el.style.border       = 'none';
+    el.style.borderRadius = '0';
+
     var rect = el.getBoundingClientRect();
     var w = Math.round(rect.width);
     var h = Math.round(rect.height);
     if (w <= 0 || h <= 0) return;
 
-    el.style.clipPath     = 'path("' + generatePath(w, h) + '")';
-    el.style.borderRadius = '0';
+    el.style.clipPath = 'path("' + generatePath(w, h) + '")';
 
-    // CSS borders cut off diagonally at squircle edges — remove them.
-    // drop-shadow renders AFTER clip-path and follows the squircle outline.
-    el.style.border = 'none';
 
     // Colored buttons are visually defined by their background — skip gray outline.
     var colored = isColoredBtn(el);
