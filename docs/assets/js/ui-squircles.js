@@ -1,5 +1,5 @@
 (function () {
-  var EXPONENT    = 4.0; // iOS-style superellipse
+  var EXPONENT    = 3.0; // superellipse — softer than iOS (4.0), rounder than circular (2.0)
   var CORNER_MAX  = 16;  // max corner radius — keeps buttons looking like rounded rects, not pills
 
   // Generates an SVG path for a squircle rounded rectangle.
@@ -49,7 +49,8 @@
     '.btn',
     '.text-input',
     '.textarea-input',
-    '.result-card'
+    '.result-card',
+    '.output-panel'
   ].join(', ');
 
   function isColoredBtn(el) {
