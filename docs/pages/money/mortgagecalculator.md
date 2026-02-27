@@ -75,11 +75,11 @@ permalink: /money/mortgagecalculator/
 </div>
 
 <div class="result-cards">
-  <div class="result-card result-card--accent">
+  <div class="result-card result-card--blue">
     <div class="result-card__label">Monthly payment</div>
     <div class="result-card__value" id="monthlyPayment">—</div>
   </div>
-  <div class="result-card">
+  <div class="result-card result-card--red">
     <div class="result-card__label">Total interest</div>
     <div class="result-card__value" id="totalInterest">—</div>
   </div>
@@ -97,13 +97,14 @@ permalink: /money/mortgagecalculator/
 
 <script>
   var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
+  var CHART_FONT_MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace";
 
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
     return {
-      principal: s.getPropertyValue('--color-accent').trim()        || '#1e8e3e',
-      interest:  s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
-      bg:        s.getPropertyValue('--color-bg-page').trim()       || '#F7F7F7'
+      principal: s.getPropertyValue('--color-blue').trim()  || '#1a73e8',
+      interest:  s.getPropertyValue('--color-red').trim()   || '#d93025',
+      bg:        s.getPropertyValue('--color-bg-page').trim() || '#F5F5F5'
     };
   }
 
@@ -111,13 +112,14 @@ permalink: /money/mortgagecalculator/
     var sel = document.getElementById(id);
     var inp = document.getElementById(id + 'Custom');
     if (inp) inp.style.display = sel.value === 'custom' ? 'block' : 'none';
+    if (inp && sel.value === 'custom') inp.focus();
   }
 
   function val(id) {
     var sel = document.getElementById(id);
     if (sel.value === 'custom') {
-      var inp = document.getElementById(id + 'Custom');
-      return parseFloat(inp && inp.value) || 0;
+      var v = parseFloat(document.getElementById(id + 'Custom').value);
+      return isNaN(v) ? null : v;
     }
     return parseFloat(sel.value);
   }
@@ -136,7 +138,8 @@ permalink: /money/mortgagecalculator/
     var annualRate = val('annualRate');
     var termYears  = val('loanTerm');
 
-    if (!principal || !termYears) return;
+    if (principal === null || annualRate === null || termYears === null) return;
+    if (principal <= 0 || termYears <= 0) return;
 
     var monthlyRate = (annualRate / 100) / 12;
     var numPayments = termYears * 12;

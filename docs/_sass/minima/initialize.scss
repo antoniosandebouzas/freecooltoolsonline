@@ -3,7 +3,7 @@
 // Define defaults for each variable.
 
 $base-font-family: -apple-system, BlinkMacSystemFont, "Google Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif !default;
-$code-font-family: "SF Mono", "Google Sans Code", monospace !default;
+$code-font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "Google Sans Code", Consolas, monospace !default;
 $base-font-size: 16px !default;
 $base-font-weight: 400 !default;
 $small-font-size: $base-font-size * 0.875 !default;

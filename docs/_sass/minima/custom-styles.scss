@@ -3,39 +3,45 @@
 // Light mode defaults; dark mode overrides in the media query below.
 
 :root {
-  // ── Backgrounds ──────────────────────────────────────────────────────────
-  --color-bg-page:      #F7F7F7;
+  // ── Backgrounds — pure gray, no color tones ───────────────────────────────
+  --color-bg-page:      #F5F5F5;
   --color-bg-surface:   #FFFFFF;
-  --color-bg-controls:  rgba(247, 247, 247, 0.92);
+  --color-bg-controls:  rgba(245, 245, 245, 0.92);
 
   // ── Borders ──────────────────────────────────────────────────────────────
-  --color-border:       #E6E6E6;
-  --color-border-focus: #1e8e3e;
+  --color-border:       #E0E0E0;
+  --color-border-focus: #1a73e8;
   --border-width:       2px;
 
-  // ── Text ─────────────────────────────────────────────────────────────────
-  --color-text-primary:   #0D0D0D;
-  --color-text-secondary: #5f6368;
+  // ── Text — pure gray, no color tones ─────────────────────────────────────
+  --color-text-primary:   #212121;
+  --color-text-secondary: #757575;
   --color-text-inverse:   #FFFFFF;
 
-  // ── Accent (Signal Green) ─────────────────────────────────────────────────
-  --color-accent:       #1e8e3e;
-  --color-accent-dark:  #166e32;
-  --color-accent-light: #e6f4ea;
+  // ── Blue — links, navigation, default actions ─────────────────────────────
+  --color-blue:       #1a73e8;
+  --color-blue-dark:  #1557b0;
+  --color-blue-light: #e8f0fe;
 
-  // ── Organic palette ───────────────────────────────────────────────────────
+  // ── Green — positive outcomes, advance, success ────────────────────────────
+  --color-green:       #1e8e3e;
+  --color-green-dark:  #166e32;
+  --color-green-light: #e6f4ea;
+
+  // ── Red — errors, deletion, danger ────────────────────────────────────────
+  --color-red:         #d93025;
+  --color-red-dark:    #b31412;
+  --color-red-light:   #fce8e6;
+  --color-red-border:  #f5c6c2;
+
+  // ── Organic palette (decorative shapes only) ───────────────────────────────
   --color-organic-beige: #e3dcd2;
   --color-organic-brown: #8b7e74;
   --color-organic-dark:  #4a4542;
 
-  // ── Neutral squircle variants ─────────────────────────────────────────────
-  --color-neutral-1: #E6E6E6;
-  --color-neutral-2: #d0d0d0;
-
-  // ── Error states ──────────────────────────────────────────────────────────
-  --color-error-text:   #d93025;
-  --color-error-bg:     #fce8e6;
-  --color-error-border: #f5c6c2;
+  // ── Neutral variants — pure gray ──────────────────────────────────────────
+  --color-neutral-1: #E0E0E0;
+  --color-neutral-2: #BDBDBD;
 
   // ── Shape & spacing ───────────────────────────────────────────────────────
   --border-radius-ui: 12px;
@@ -43,43 +49,49 @@
 
   // ── Typography ────────────────────────────────────────────────────────────
   --font-family-ui:   -apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif;
-  --font-family-code: 'SF Mono', 'Google Sans Code', monospace;
+  --font-family-code: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    // Backgrounds
+    // Backgrounds — pure gray, no color tones
     --color-bg-page:      #000000;
-    --color-bg-surface:   #0D0D0D;
-    --color-bg-controls:  rgba(13, 13, 13, 0.92);
+    --color-bg-surface:   #121212;
+    --color-bg-controls:  rgba(18, 18, 18, 0.92);
 
     // Borders
-    --color-border:       #333333;
-    --color-border-focus: #34a853;
+    --color-border:       #2E2E2E;
+    --color-border-focus: #8ab4f8;
 
-    // Text
+    // Text — pure gray, no color tones
     --color-text-primary:   #FFFFFF;
-    --color-text-secondary: #9aa0a6;
-    --color-text-inverse:   #0D0D0D;
+    --color-text-secondary: #9E9E9E;
+    --color-text-inverse:   #000000;
 
-    // Accent
-    --color-accent:       #34a853;
-    --color-accent-dark:  #2d9147;
-    --color-accent-light: #1a2e1e;
+    // Blue
+    --color-blue:       #8ab4f8;
+    --color-blue-dark:  #aecbfa;
+    --color-blue-light: #0d2040;
+
+    // Green
+    --color-green:       #34a853;
+    --color-green-dark:  #2d9147;
+    --color-green-light: #1a2e1e;
+
+    // Red
+    --color-red:         #f28b82;
+    --color-red-dark:    #f6aea9;
+    --color-red-light:   #3c1f1d;
+    --color-red-border:  #5c2e2b;
 
     // Organic palette (darkened)
     --color-organic-beige: #3d3830;
     --color-organic-brown: #6b6058;
     --color-organic-dark:  #2e2c2a;
 
-    // Neutral variants
-    --color-neutral-1: #1A1A1A;
-    --color-neutral-2: #2a2a2a;
-
-    // Error states
-    --color-error-text:   #f28b82;
-    --color-error-bg:     #3c1f1d;
-    --color-error-border: #5c2e2b;
+    // Neutral variants — pure gray
+    --color-neutral-1: #1E1E1E;
+    --color-neutral-2: #2E2E2E;
   }
 }
 
@@ -89,6 +101,20 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+// ─── Links ────────────────────────────────────────────────────────────────────
+
+a {
+  color: var(--color-blue);
+}
+
+a:hover {
+  color: var(--color-blue-dark);
+}
+
+a:visited {
+  color: var(--color-blue);
 }
 
 // ─── Page Layout ──────────────────────────────────────────────────────────────
@@ -167,7 +193,7 @@ input[type=range]::-webkit-slider-thumb {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: var(--color-accent);
+  background: var(--color-blue);
   cursor: pointer;
   margin-top: -8px;
   transition: transform 0.1s ease;
@@ -371,7 +397,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .squircle-rect--accent {
-  background-color: var(--color-accent);
+  background-color: var(--color-blue);
   color: var(--color-text-inverse);
 }
 
@@ -398,7 +424,7 @@ code.squircle-rect {
 }
 
 .squircle-rect:focus {
-  outline: 3px solid var(--color-accent-light);
+  outline: 3px solid var(--color-blue-light);
   outline-offset: 3px;
 }
 
@@ -424,14 +450,36 @@ code.squircle-rect {
 }
 
 .btn--primary {
-  background-color: var(--color-accent);
+  background-color: var(--color-blue);
   color: var(--color-text-inverse);
-  border-color: var(--color-accent);
+  border-color: var(--color-blue);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-accent-dark);
-  border-color: var(--color-accent-dark);
+  background-color: var(--color-blue-dark);
+  border-color: var(--color-blue-dark);
+}
+
+.btn--success {
+  background-color: var(--color-green);
+  color: var(--color-text-inverse);
+  border-color: var(--color-green);
+}
+
+.btn--success:hover {
+  background-color: var(--color-green-dark);
+  border-color: var(--color-green-dark);
+}
+
+.btn--danger {
+  background-color: var(--color-red);
+  color: var(--color-text-inverse);
+  border-color: var(--color-red);
+}
+
+.btn--danger:hover {
+  background-color: var(--color-red-dark);
+  border-color: var(--color-red-dark);
 }
 
 .btn--small {
@@ -518,7 +566,15 @@ code.squircle-rect {
 }
 
 .result-card--accent .result-card__value {
-  color: var(--color-accent);
+  color: var(--color-green);
+}
+
+.result-card--blue .result-card__value {
+  color: var(--color-blue);
+}
+
+.result-card--red .result-card__value {
+  color: var(--color-red);
 }
 
 .tool-chart {
@@ -583,7 +639,7 @@ code.squircle-rect {
 .copy-feedback {
   font-size: 0.75rem;
   font-family: var(--font-family-ui);
-  color: var(--color-accent);
+  color: var(--color-blue);
   opacity: 0;
   transition: opacity 0.2s;
   margin-right: 8px;
@@ -618,9 +674,9 @@ code.squircle-rect {
 }
 
 .output-panel--error {
-  color: var(--color-error-text);
-  background-color: var(--color-error-bg);
-  border-color: var(--color-error-border);
+  color: var(--color-red);
+  background-color: var(--color-red-light);
+  border-color: var(--color-red-border);
   font-family: var(--font-family-ui);
   white-space: normal;
   word-break: normal;

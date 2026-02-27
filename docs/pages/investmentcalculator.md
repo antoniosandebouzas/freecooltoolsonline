@@ -111,14 +111,15 @@ permalink: /money/investmentcalculator/
 
 <script>
   var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
+  var CHART_FONT_MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace";
 
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
     return {
-      invested: s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
-      profit:   s.getPropertyValue('--color-accent').trim()        || '#1e8e3e',
+      invested: s.getPropertyValue('--color-blue').trim()          || '#1a73e8',
+      profit:   s.getPropertyValue('--color-green').trim()         || '#1e8e3e',
       future:   s.getPropertyValue('--color-organic-dark').trim()  || '#4a4542',
-      bg:       s.getPropertyValue('--color-bg-page').trim()       || '#F7F7F7'
+      bg:       s.getPropertyValue('--color-bg-page').trim()       || '#F5F5F5'
     };
   }
 
@@ -126,13 +127,14 @@ permalink: /money/investmentcalculator/
     var sel = document.getElementById(id);
     var inp = document.getElementById(id + 'Custom');
     if (inp) inp.style.display = sel.value === 'custom' ? 'block' : 'none';
+    if (inp && sel.value === 'custom') inp.focus();
   }
 
   function val(id) {
     var sel = document.getElementById(id);
     if (sel.value === 'custom') {
-      var inp = document.getElementById(id + 'Custom');
-      return parseFloat(inp && inp.value) || 0;
+      var v = parseFloat(document.getElementById(id + 'Custom').value);
+      return isNaN(v) ? null : v;
     }
     return parseFloat(sel.value);
   }
@@ -151,7 +153,8 @@ permalink: /money/investmentcalculator/
     var monthlyInvestment = val('monthlyInvestment');
     var annualInterest    = val('annualInterest');
 
-    if (!years || !monthlyInvestment) return;
+    if (years === null || monthlyInvestment === null || annualInterest === null) return;
+    if (years <= 0 || monthlyInvestment <= 0) return;
 
     var monthlyInterestRate = (annualInterest / 100) / 12;
     var totalMonths = years * 12;

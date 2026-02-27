@@ -9,48 +9,37 @@ $color-scheme-dark: false !default;
 // Light mode
 // ----------
 
-$french-rose: rgba(255, 63, 127, 1);
-$spring-green: rgba(63, 255, 127, 1);
-$azure: rgba(63, 127, 255, 1);
-$silver: rgba(191, 191, 191, 1);
-$orange-crayola: rgba(255, 126, 61, 1);
-$palatinate-blue: rgba(64, 64, 255, 1);
-$electric-violet: rgba(127, 63, 255, 1);
+$c-white:  #FFFFFF;
+$c-black:  #000000;
+$c-red:    #d93025;
+$c-green:  #1e8e3e;
+$c-blue:   #1a73e8;
+$gray-100: #F5F5F5;
+$gray-200: #E0E0E0;
+$gray-800: #1E1E1E;
+$gray-900: #212121;
 
-$color-galaic-white: #FFFFFF;
-$color-galaic-black: #000000;
-$color-galaic-red: #FF8080;
-$color-galaic-green: #80FF80;
-$color-galaic-blue: #8080FF;
-$color-galaic-yellow: #FFFF80;
-$color-galaic-cyan: #80FFFF;
-$color-galaic-magenta: #FF80FF;
-$color-galaic-darkwhite: #F7F7F7;
-$color-galaic-brightgray: #E6E6E6;
-$color-galaic-brightblack: #0D0D0D;
-$color-galaic-darkgray: #1A1A1A;
+$c-main: $gray-900;
 
-$color-galaic-main: $color-galaic-brightblack;
-
-$lm-brand-color: $color-galaic-main !default;
-$lm-brand-color-light: $color-galaic-darkwhite !default;
-$lm-brand-color-dark: $color-galaic-brightblack !default;
+$lm-brand-color: $c-main !default;
+$lm-brand-color-light: $gray-100 !default;
+$lm-brand-color-dark: $gray-900 !default;
 
 $lm-site-title-color: $lm-brand-color !default;
 
-$lm-text-color: $color-galaic-brightblack !default;
-$lm-background-color: $color-galaic-darkwhite !default;
-$lm-code-background-color: $color-galaic-white !default;
+$lm-text-color: $gray-900 !default;
+$lm-background-color: $gray-100 !default;
+$lm-code-background-color: $c-white !default;
 
-$lm-link-base-color: $color-galaic-blue !default;
-$lm-link-visited-color: $color-galaic-blue !default;
-$lm-link-hover-color: $color-galaic-green !default;
+$lm-link-base-color: $c-blue !default;
+$lm-link-visited-color: $c-blue !default;
+$lm-link-hover-color: #1557b0 !default;
 
-$lm-border-color-01: $color-galaic-brightblack !default;
+$lm-border-color-01: $gray-200 !default;
 
 $lm-table-text-color: $lm-text-color !default;
-$lm-table-zebra-color: $color-galaic-darkwhite !default;
-$lm-table-header-bg-color: $color-galaic-brightgray !default;
+$lm-table-zebra-color: $gray-100 !default;
+$lm-table-header-bg-color: $gray-200 !default;
 $lm-table-header-border: $lm-border-color-01 !default;
 $lm-table-border-color: $lm-border-color-01 !default;
 
@@ -375,25 +364,25 @@ $lm-table-border-color: $lm-border-color-01 !default;
 // Dark mode
 // ---------
 
-$dm-brand-color: $color-galaic-white !default;
-$dm-brand-color-light: $color-galaic-darkwhite !default;
-$dm-brand-color-dark: $color-galaic-brightblack !default;
+$dm-brand-color: $c-white !default;
+$dm-brand-color-light: $gray-100 !default;
+$dm-brand-color-dark: $gray-900 !default;
 
 $dm-site-title-color: $dm-brand-color !default;
 
-$dm-text-color: $color-galaic-white !default;
-$dm-background-color: $color-galaic-black !default;
-$dm-code-background-color: $color-galaic-brightblack !default;
+$dm-text-color: $c-white !default;
+$dm-background-color: $c-black !default;
+$dm-code-background-color: $gray-900 !default;
 
-$dm-link-base-color: $color-galaic-blue !default;
-$dm-link-visited-color: $color-galaic-blue !default;
-$dm-link-hover-color: $color-galaic-green !default;
+$dm-link-base-color: #8ab4f8 !default;
+$dm-link-visited-color: #8ab4f8 !default;
+$dm-link-hover-color: #aecbfa !default;
 
-$dm-border-color-01: $color-galaic-white !default;
+$dm-border-color-01: $gray-800 !default;
 
 $dm-table-text-color: $dm-text-color !default;
-$dm-table-zebra-color: $color-galaic-brightblack !default;
-$dm-table-header-bg-color: $color-galaic-darkgray !default;
+$dm-table-zebra-color: $gray-900 !default;
+$dm-table-header-bg-color: $gray-800 !default;
 $dm-table-header-border: $dm-border-color-01 !default;
 $dm-table-border-color: $dm-border-color-01 !default;
 

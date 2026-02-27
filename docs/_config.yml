@@ -18,6 +18,10 @@ theme: minima
 # add a line comment on "theme: minima" above.
 #remote_theme: jekyll/minima
 
+exclude:
+  - usage.md
+  - CODE_OF_CONDUCT.md
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag

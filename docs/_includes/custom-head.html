@@ -5,14 +5,24 @@ Placeholder to allow defining custom head, in principle, you can add anything he
 2. Customize default _includes/custom-head.html in your source directory and insert the given code snippet.
 {% endcomment %}
 
-{% comment %} Global Google Fonts for the entire site {% endcomment %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-  href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap"
-  rel="stylesheet">
+{% comment %} Load Google Fonts only on non-Apple devices (Apple has native fonts in stack) {% endcomment %}
+<script>
+  (function () {
+    if (/Mac|iPhone|iPad|iPod/.test(navigator.platform)) return;
+    var h = document.head;
+    function addLink(attrs) {
+      var l = document.createElement('link');
+      for (var k in attrs) l[k] = attrs[k];
+      h.appendChild(l);
+    }
+    addLink({ rel: 'preconnect', href: 'https://fonts.googleapis.com' });
+    addLink({ rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' });
+    addLink({
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap'
+    });
+  })();
+</script>
 
-{% comment %} Page-scoped deferred JS for squircles {% endcomment %}
-{% if page.squircles %}
-<script defer src="{{ '/assets/js/organic-tech-squircles.js' | relative_url }}"></script>
-{% endif %}
+{% comment %} Site-wide UI squircles — applied to all rounded elements {% endcomment %}
+<script defer src="{{ '/assets/js/ui-squircles.js' | relative_url }}"></script>

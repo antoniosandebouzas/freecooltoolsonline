@@ -5,5 +5,3 @@ permalink: /projects/Python/
 ---
 
 Python
-
-`print("Hello GALAIC")`

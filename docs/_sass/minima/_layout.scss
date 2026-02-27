@@ -131,7 +131,9 @@
     text-align: left;
   }
 
-  .dropdown:hover .dropdown-content {
+  // Desktop: show dropdown on hover or keyboard focus
+  .dropdown:hover .dropdown-content,
+  .dropdown:focus-within .dropdown-content {
     display: block;
   }
 
@@ -144,8 +146,35 @@
   }
 
   .dropdown-content a:hover {
-    background-color: var(--color-accent-light, #e6f4ea);
-    color: var(--color-accent, #1e8e3e);
+    background-color: var(--color-blue-light, #e8f0fe);
+    color: var(--color-blue, #1a73e8);
+  }
+
+  // Mobile: expand sub-items inline when nav is open — no hover required
+  @media screen and (max-width: $on-medium) {
+    .dropdown {
+      display: block;
+    }
+
+    .dropdown-content {
+      display: block;
+      position: static;
+      background: none;
+      border: none;
+      padding: 0;
+      min-width: 0;
+    }
+
+    .dropdown-content a {
+      padding: 3px ($spacing-unit * .5) 3px ($spacing-unit);
+      font-size: 0.9rem;
+      color: var(--color-text-secondary, #757575);
+    }
+
+    .dropdown-content a:hover {
+      color: var(--color-blue, #1a73e8);
+      background: none;
+    }
   }
 
 }
