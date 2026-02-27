@@ -116,10 +116,10 @@ permalink: /money/investmentcalculator/
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
     return {
-      invested: s.getPropertyValue('--color-blue').trim()          || '#1a73e8',
-      profit:   s.getPropertyValue('--color-green').trim()         || '#1e8e3e',
-      future:   s.getPropertyValue('--color-organic-dark').trim()  || '#4a4542',
-      bg:       s.getPropertyValue('--color-bg-page').trim()       || '#F5F5F5'
+      invested: s.getPropertyValue('--color-blue').trim()           || '#1a73e8',
+      profit:   s.getPropertyValue('--color-green').trim()          || '#1e8e3e',
+      neutral:  s.getPropertyValue('--color-text-secondary').trim() || '#757575',
+      bg:       s.getPropertyValue('--color-bg-page').trim()        || '#F5F5F5'
     };
   }
 
@@ -159,20 +159,18 @@ permalink: /money/investmentcalculator/
     var monthlyInterestRate = (annualInterest / 100) / 12;
     var totalMonths = years * 12;
 
-    var futureValues = [], totalInvestments = [], profits = [];
-    var annualFutureValues = [], annualTotalInvestments = [], annualProfits = [];
+    var totalInvestments = [], profits = [];
+    var annualTotalInvestments = [], annualProfits = [];
     var futureValue = 0, totalInvestment = 0;
 
     for (var i = 0; i < totalMonths; i++) {
       futureValue = (futureValue + monthlyInvestment) * (1 + monthlyInterestRate);
       totalInvestment += monthlyInvestment;
 
-      futureValues.push(futureValue);
       totalInvestments.push(totalInvestment);
       profits.push(futureValue - totalInvestment);
 
       if ((i + 1) % 12 === 0) {
-        annualFutureValues.push(futureValue);
         annualTotalInvestments.push(totalInvestment);
         annualProfits.push(futureValue - totalInvestment);
       }
@@ -182,35 +180,66 @@ permalink: /money/investmentcalculator/
     document.getElementById('totalInvestment').textContent = formatCurrency(totalInvestment);
     document.getElementById('profit').textContent          = formatCurrency(futureValue - totalInvestment);
 
-    drawChart(futureValues,       totalInvestments,       profits,       'Month', 'investmentChart');
-    drawChart(annualFutureValues, annualTotalInvestments, annualProfits, 'Year',  'annualChart');
+    drawMonthlyChart(totalInvestments, profits, 'investmentChart');
+    drawAnnualChart(annualTotalInvestments, annualProfits, years, 'annualChart');
     drawPieChart(totalInvestment, futureValue - totalInvestment);
   }
 
-  function drawChart(values, invested, profits, axisLabel, chartId) {
+  // Monthly growth: area chart (readable with 240+ data points)
+  function drawMonthlyChart(invested, profits, chartId) {
     var c      = getChartStyle();
-    var count  = values.length;
-    var labels = Array.from({ length: count }, function(_, i) { return i + 1; });
+    var count  = invested.length;
+    var months = Array.from({ length: count }, function(_, i) { return i + 1; });
 
-    var ticktext;
-    if (axisLabel === 'Month') {
-      ticktext = labels.map(function(m) {
-        return (m % 12 === 0) ? (m / 12) + ' Yr' : '';
-      });
-    } else {
-      ticktext = labels.map(function(y) { return y + ' Yr'; });
+    // Yearly tick marks only — avoids 240 cluttered labels
+    var tickvals = [], ticktext = [];
+    for (var m = 12; m <= count; m += 12) {
+      tickvals.push(m);
+      ticktext.push((m / 12) + ' Yr');
     }
 
     Plotly.newPlot(chartId, [
-      { x: labels, y: values,   type: 'bar', name: 'Final value',    marker: { color: c.future   } },
-      { x: labels, y: invested, type: 'bar', name: 'Total invested',  marker: { color: c.invested } },
-      { x: labels, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: c.profit   } }
+      {
+        x: months, y: invested, type: 'scatter', mode: 'lines', name: 'Total invested',
+        fill: 'tozeroy', line: { color: c.invested, width: 2 },
+        fillcolor: c.invested.replace(')', ', 0.15)').replace('rgb', 'rgba')
+      },
+      {
+        x: months,
+        y: profits.map(function(p, i) { return invested[i] + p; }),
+        type: 'scatter', mode: 'lines', name: 'Final value',
+        fill: 'tonexty', line: { color: c.profit, width: 2 },
+        fillcolor: c.profit.replace(')', ', 0.2)').replace('rgb', 'rgba')
+      }
     ], {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
       xaxis: {
-        title: axisLabel === 'Month' ? 'Months' : 'Years',
-        tickmode: 'array', tickvals: labels, ticktext: ticktext,
+        title: 'Months', tickmode: 'array', tickvals: tickvals, ticktext: ticktext,
+        tickfont: { family: CHART_FONT }
+      },
+      yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },
+      paper_bgcolor: c.bg, plot_bgcolor: c.bg,
+      font: { family: CHART_FONT },
+      margin: { t: 40, r: 20, b: 60, l: 80 }
+    }, { responsive: true });
+  }
+
+  // Annual breakdown: stacked bars (invested + interest = final value implicitly)
+  function drawAnnualChart(invested, profits, termYears, chartId) {
+    var c     = getChartStyle();
+    var years = Array.from({ length: termYears }, function(_, i) { return i + 1; });
+    var labels = years.map(function(y) { return y + ' Yr'; });
+
+    Plotly.newPlot(chartId, [
+      { x: years, y: invested, type: 'bar', name: 'Total invested',  marker: { color: c.invested } },
+      { x: years, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: c.profit   } }
+    ], {
+      barmode: 'stack',
+      showlegend: true,
+      legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
+      xaxis: {
+        title: 'Years', tickmode: 'array', tickvals: years, ticktext: labels,
         tickfont: { family: CHART_FONT }
       },
       yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },

@@ -80,12 +80,14 @@ Generate numeric sequences with a custom prefix, suffix, and separator.
 
     if (isNaN(start) || isNaN(end) || step === 0) return;
 
+    // Index-based arithmetic avoids float accumulation (e.g. 0.1+0.1+0.1 = 0.30000000000000004)
     var items = [];
-    var guard = 0;
-    for (var n = start; step > 0 ? n <= end : n >= end; n += step) {
-      var val = padW > 0 ? zeroPad(n, padW) : String(n);
-      items.push(prefix + val + suffix);
-      if (++guard > 10000) { items.push('… (truncated at 10,000 items)'); break; }
+    for (var i = 0; ; i++) {
+      var n = parseFloat((start + i * step).toPrecision(12));
+      if (step > 0 ? n > end : n < end) break;
+      var numStr = padW > 0 ? zeroPad(n, padW) : String(n);
+      items.push(prefix + numStr + suffix);
+      if (items.length >= 10000) { items.push('… (truncated at 10,000 items)'); break; }
     }
 
     outputText = items.join(sep);

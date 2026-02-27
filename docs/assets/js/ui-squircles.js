@@ -26,15 +26,13 @@
     return d + ' Z';
   }
 
+  // Exclude <select> (clips native dropdown arrow) and containers with overflow content
   var SELECTORS = [
     '.btn',
-    'select',
     '.text-input',
     '.textarea-input',
     '.result-card',
-    '.card',
-    '.output-panel',
-    '.controls-panel'
+    '.card'
   ].join(', ');
 
   function applySquircle(el) {
@@ -50,7 +48,10 @@
     document.querySelectorAll(SELECTORS).forEach(applySquircle);
   }
 
-  document.addEventListener('DOMContentLoaded', applyAll);
+  // requestAnimationFrame ensures layout is complete before measuring dimensions
+  document.addEventListener('DOMContentLoaded', function () {
+    requestAnimationFrame(applyAll);
+  });
 
   var resizeTimer;
   window.addEventListener('resize', function () {
@@ -58,6 +59,6 @@
     resizeTimer = setTimeout(applyAll, 100);
   });
 
-  // Expose for dynamic re-application (e.g. after Plotly renders)
+  // Expose for dynamic re-application (e.g. after charts render new elements)
   window.applyUISquircles = applyAll;
 })();
