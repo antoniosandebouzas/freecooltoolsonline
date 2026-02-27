@@ -9,7 +9,7 @@ permalink: /money/mortgagecalculator/
 <div class="tool-form input-group">
   <div class="input-wrapper">
     <label class="input-label" for="loanAmount">Loan amount</label>
-    <select id="loanAmount" onchange="calculateMortgage()">
+    <select id="loanAmount" onchange="toggleCustom('loanAmount'); calculateMortgage()">
       <option value="50000">$50,000</option>
       <option value="100000">$100,000</option>
       <option value="150000">$150,000</option>
@@ -24,12 +24,15 @@ permalink: /money/mortgagecalculator/
       <option value="1000000">$1,000,000</option>
       <option value="1500000">$1,500,000</option>
       <option value="2000000">$2,000,000</option>
+      <option value="custom">Custom…</option>
     </select>
+    <input type="number" class="text-input select-custom-input" id="loanAmountCustom"
+           placeholder="Amount ($)" min="1" step="1000" oninput="calculateMortgage()">
   </div>
 
   <div class="input-wrapper">
     <label class="input-label" for="annualRate">Annual rate</label>
-    <select id="annualRate" onchange="calculateMortgage()">
+    <select id="annualRate" onchange="toggleCustom('annualRate'); calculateMortgage()">
       <option value="1.0">1.0%</option>
       <option value="1.5">1.5%</option>
       <option value="2.0">2.0%</option>
@@ -49,19 +52,25 @@ permalink: /money/mortgagecalculator/
       <option value="9.0">9.0%</option>
       <option value="9.5">9.5%</option>
       <option value="10.0">10.0%</option>
+      <option value="custom">Custom…</option>
     </select>
+    <input type="number" class="text-input select-custom-input" id="annualRateCustom"
+           placeholder="Rate (%)" min="0" step="0.1" oninput="calculateMortgage()">
   </div>
 
   <div class="input-wrapper">
     <label class="input-label" for="loanTerm">Loan term</label>
-    <select id="loanTerm" onchange="calculateMortgage()">
+    <select id="loanTerm" onchange="toggleCustom('loanTerm'); calculateMortgage()">
       <option value="5">5 years</option>
       <option value="10">10 years</option>
       <option value="15">15 years</option>
       <option value="20">20 years</option>
       <option value="25">25 years</option>
       <option value="30" selected>30 years</option>
+      <option value="custom">Custom…</option>
     </select>
+    <input type="number" class="text-input select-custom-input" id="loanTermCustom"
+           placeholder="Years" min="1" step="1" oninput="calculateMortgage()">
   </div>
 </div>
 
@@ -87,7 +96,7 @@ permalink: /money/mortgagecalculator/
 <div class="tool-chart" id="amortizationChart"></div>
 
 <script>
-  var CHART_FONT = "'Google Sans', sans-serif";
+  var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
 
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
@@ -96,6 +105,21 @@ permalink: /money/mortgagecalculator/
       interest:  s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
       bg:        s.getPropertyValue('--color-bg-surface').trim()    || '#ffffff'
     };
+  }
+
+  function toggleCustom(id) {
+    var sel = document.getElementById(id);
+    var inp = document.getElementById(id + 'Custom');
+    if (inp) inp.style.display = sel.value === 'custom' ? 'block' : 'none';
+  }
+
+  function val(id) {
+    var sel = document.getElementById(id);
+    if (sel.value === 'custom') {
+      var inp = document.getElementById(id + 'Custom');
+      return parseFloat(inp && inp.value) || 0;
+    }
+    return parseFloat(sel.value);
   }
 
   function formatCurrency(value) {
@@ -108,12 +132,14 @@ permalink: /money/mortgagecalculator/
   }
 
   function calculateMortgage() {
-    var principal  = parseFloat(document.getElementById('loanAmount').value);
-    var annualRate = parseFloat(document.getElementById('annualRate').value);
-    var termYears  = parseFloat(document.getElementById('loanTerm').value);
+    var principal  = val('loanAmount');
+    var annualRate = val('annualRate');
+    var termYears  = val('loanTerm');
 
-    var monthlyRate  = (annualRate / 100) / 12;
-    var numPayments  = termYears * 12;
+    if (!principal || !termYears) return;
+
+    var monthlyRate = (annualRate / 100) / 12;
+    var numPayments = termYears * 12;
 
     var monthlyPayment;
     if (monthlyRate === 0) {
@@ -130,10 +156,8 @@ permalink: /money/mortgagecalculator/
     document.getElementById('totalInterest').textContent  = formatCurrency(totalInterest);
     document.getElementById('totalPaid').textContent      = formatCurrency(totalPaid);
 
-    // Build annual amortization data
     var balance = principal;
-    var annualPrincipal = [];
-    var annualInterest  = [];
+    var annualPrincipal = [], annualInterestArr = [];
     var accPrincipal = 0, accInterest = 0;
 
     for (var i = 0; i < numPayments; i++) {
@@ -145,31 +169,29 @@ permalink: /money/mortgagecalculator/
 
       if ((i + 1) % 12 === 0) {
         annualPrincipal.push(accPrincipal);
-        annualInterest.push(accInterest);
+        annualInterestArr.push(accInterest);
         accPrincipal = 0;
         accInterest  = 0;
       }
     }
 
     drawPieChart(principal, totalInterest);
-    drawAmortizationChart(annualPrincipal, annualInterest, termYears);
+    drawAmortizationChart(annualPrincipal, annualInterestArr, termYears);
   }
 
   function drawPieChart(principal, totalInterest) {
     var c = getChartStyle();
-    var data = [{
+    Plotly.newPlot('mortgagePie', [{
       labels: ['Principal', 'Total interest'],
       values: [principal, totalInterest],
-      type:   'pie',
+      type: 'pie',
       marker: { colors: [c.principal, c.interest] },
       textfont: { family: CHART_FONT }
-    }];
-
-    Plotly.newPlot('mortgagePie', data, {
+    }], {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
       paper_bgcolor: c.bg,
-      font:   { family: CHART_FONT },
+      font: { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 20, l: 20 }
     }, { responsive: true });
   }
@@ -179,37 +201,20 @@ permalink: /money/mortgagecalculator/
     var years  = Array.from({ length: termYears }, function(_, i) { return i + 1; });
     var labels = years.map(function(y) { return y + ' Yr'; });
 
-    var data = [
-      {
-        x: years, y: annualPrincipal,
-        type: 'bar', name: 'Principal paid',
-        marker: { color: c.principal }
-      },
-      {
-        x: years, y: annualInterest,
-        type: 'bar', name: 'Interest paid',
-        marker: { color: c.interest }
-      }
-    ];
-
-    Plotly.newPlot('amortizationChart', data, {
+    Plotly.newPlot('amortizationChart', [
+      { x: years, y: annualPrincipal, type: 'bar', name: 'Principal paid', marker: { color: c.principal } },
+      { x: years, y: annualInterest,  type: 'bar', name: 'Interest paid',  marker: { color: c.interest  } }
+    ], {
       barmode: 'stack',
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
       xaxis: {
-        title:    'Years',
-        tickmode: 'array',
-        tickvals: years,
-        ticktext: labels,
+        title: 'Years', tickmode: 'array', tickvals: years, ticktext: labels,
         tickfont: { family: CHART_FONT }
       },
-      yaxis: {
-        title:    'Amount (USD)',
-        tickfont: { family: CHART_FONT }
-      },
-      paper_bgcolor: c.bg,
-      plot_bgcolor:  c.bg,
-      font:   { family: CHART_FONT },
+      yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },
+      paper_bgcolor: c.bg, plot_bgcolor: c.bg,
+      font: { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 60, l: 80 }
     }, { responsive: true });
   }

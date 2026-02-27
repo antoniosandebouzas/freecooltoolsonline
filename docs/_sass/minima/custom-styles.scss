@@ -42,8 +42,8 @@
   --spacing-unit:     8px;
 
   // ── Typography ────────────────────────────────────────────────────────────
-  --font-family-ui:   'Google Sans', sans-serif;
-  --font-family-code: 'Google Sans Code', monospace;
+  --font-family-ui:   -apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif;
+  --font-family-code: 'SF Mono', 'Google Sans Code', monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -443,6 +443,14 @@ code.squircle-rect {
 .btn--small {
   padding: 8px 16px;
   font-size: 0.8rem;
+}
+
+// ─── Custom value input (shown when "Custom…" is selected) ───────────────────
+
+.select-custom-input {
+  display: none;
+  margin-top: 6px;
+  width: 100%;
 }
 
 // ─── Tool form ────────────────────────────────────────────────────────────────

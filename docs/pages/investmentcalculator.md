@@ -9,7 +9,7 @@ permalink: /money/investmentcalculator/
 <div class="tool-form input-group">
   <div class="input-wrapper">
     <label class="input-label" for="years">Duration</label>
-    <select id="years" onchange="calculateFutureValue()">
+    <select id="years" onchange="toggleCustom('years'); calculateFutureValue()">
       <option value="1">1 year</option>
       <option value="2">2 years</option>
       <option value="3">3 years</option>
@@ -28,12 +28,15 @@ permalink: /money/investmentcalculator/
       <option value="80">80 years</option>
       <option value="90">90 years</option>
       <option value="100">100 years</option>
+      <option value="custom">Custom…</option>
     </select>
+    <input type="number" class="text-input select-custom-input" id="yearsCustom"
+           placeholder="Years" min="1" step="1" oninput="calculateFutureValue()">
   </div>
 
   <div class="input-wrapper">
     <label class="input-label" for="monthlyInvestment">Monthly amount</label>
-    <select id="monthlyInvestment" onchange="calculateFutureValue()">
+    <select id="monthlyInvestment" onchange="toggleCustom('monthlyInvestment'); calculateFutureValue()">
       <option value="10">$10</option>
       <option value="20">$20</option>
       <option value="50">$50</option>
@@ -44,12 +47,15 @@ permalink: /money/investmentcalculator/
       <option value="2000">$2,000</option>
       <option value="5000">$5,000</option>
       <option value="10000">$10,000</option>
+      <option value="custom">Custom…</option>
     </select>
+    <input type="number" class="text-input select-custom-input" id="monthlyInvestmentCustom"
+           placeholder="Amount ($)" min="1" step="1" oninput="calculateFutureValue()">
   </div>
 
   <div class="input-wrapper">
     <label class="input-label" for="annualInterest">Annual return</label>
-    <select id="annualInterest" onchange="calculateFutureValue()">
+    <select id="annualInterest" onchange="toggleCustom('annualInterest'); calculateFutureValue()">
       <option value="0.0">0.0%</option>
       <option value="0.5">0.5%</option>
       <option value="1.0">1.0%</option>
@@ -72,7 +78,10 @@ permalink: /money/investmentcalculator/
       <option value="9.5">9.5%</option>
       <option value="10.0">10.0%</option>
       <option value="10.5">10.5%</option>
+      <option value="custom">Custom…</option>
     </select>
+    <input type="number" class="text-input select-custom-input" id="annualInterestCustom"
+           placeholder="Rate (%)" min="0" step="0.1" oninput="calculateFutureValue()">
   </div>
 </div>
 
@@ -101,7 +110,7 @@ permalink: /money/investmentcalculator/
 <div class="tool-chart" id="annualChart"></div>
 
 <script>
-  var CHART_FONT = "'Google Sans', sans-serif";
+  var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
 
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
@@ -111,6 +120,21 @@ permalink: /money/investmentcalculator/
       future:   s.getPropertyValue('--color-organic-dark').trim()  || '#4a4542',
       bg:       s.getPropertyValue('--color-bg-surface').trim()    || '#ffffff'
     };
+  }
+
+  function toggleCustom(id) {
+    var sel = document.getElementById(id);
+    var inp = document.getElementById(id + 'Custom');
+    if (inp) inp.style.display = sel.value === 'custom' ? 'block' : 'none';
+  }
+
+  function val(id) {
+    var sel = document.getElementById(id);
+    if (sel.value === 'custom') {
+      var inp = document.getElementById(id + 'Custom');
+      return parseFloat(inp && inp.value) || 0;
+    }
+    return parseFloat(sel.value);
   }
 
   function formatCurrency(value) {
@@ -123,22 +147,18 @@ permalink: /money/investmentcalculator/
   }
 
   function calculateFutureValue() {
-    var years = parseFloat(document.getElementById('years').value);
-    var monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value);
-    var annualInterest = parseFloat(document.getElementById('annualInterest').value);
+    var years             = val('years');
+    var monthlyInvestment = val('monthlyInvestment');
+    var annualInterest    = val('annualInterest');
+
+    if (!years || !monthlyInvestment) return;
 
     var monthlyInterestRate = (annualInterest / 100) / 12;
     var totalMonths = years * 12;
 
-    var futureValues = [];
-    var totalInvestments = [];
-    var profits = [];
-    var annualFutureValues = [];
-    var annualTotalInvestments = [];
-    var annualProfits = [];
-
-    var futureValue = 0;
-    var totalInvestment = 0;
+    var futureValues = [], totalInvestments = [], profits = [];
+    var annualFutureValues = [], annualTotalInvestments = [], annualProfits = [];
+    var futureValue = 0, totalInvestment = 0;
 
     for (var i = 0; i < totalMonths; i++) {
       futureValue = (futureValue + monthlyInvestment) * (1 + monthlyInterestRate);
@@ -178,54 +198,40 @@ permalink: /money/investmentcalculator/
       ticktext = labels.map(function(y) { return y + ' Yr'; });
     }
 
-    var data = [
+    Plotly.newPlot(chartId, [
       { x: labels, y: values,   type: 'bar', name: 'Final value',    marker: { color: c.future   } },
       { x: labels, y: invested, type: 'bar', name: 'Total invested',  marker: { color: c.invested } },
       { x: labels, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: c.profit   } }
-    ];
-
-    var layout = {
+    ], {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
       xaxis: {
-        title:    axisLabel === 'Month' ? 'Months' : 'Years',
-        tickmode: 'array',
-        tickvals: labels,
-        ticktext: ticktext,
+        title: axisLabel === 'Month' ? 'Months' : 'Years',
+        tickmode: 'array', tickvals: labels, ticktext: ticktext,
         tickfont: { family: CHART_FONT }
       },
-      yaxis: {
-        title:    'Amount (USD)',
-        tickfont: { family: CHART_FONT }
-      },
-      paper_bgcolor: c.bg,
-      plot_bgcolor:  c.bg,
-      font:   { family: CHART_FONT },
+      yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },
+      paper_bgcolor: c.bg, plot_bgcolor: c.bg,
+      font: { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 60, l: 80 }
-    };
-
-    Plotly.newPlot(chartId, data, layout, { responsive: true });
+    }, { responsive: true });
   }
 
   function drawPieChart(totalInvestment, profit) {
     var c = getChartStyle();
-    var data = [{
+    Plotly.newPlot('investmentPie', [{
       labels: ['Total invested', 'Interest earned'],
       values: [totalInvestment, profit],
-      type:   'pie',
+      type: 'pie',
       marker: { colors: [c.invested, c.profit] },
       textfont: { family: CHART_FONT }
-    }];
-
-    var layout = {
+    }], {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
       paper_bgcolor: c.bg,
-      font:   { family: CHART_FONT },
+      font: { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 20, l: 20 }
-    };
-
-    Plotly.newPlot('investmentPie', data, layout, { responsive: true });
+    }, { responsive: true });
   }
 
   window.addEventListener('DOMContentLoaded', calculateFutureValue);
