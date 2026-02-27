@@ -30,8 +30,26 @@ permalink: /money/investmentcalculator/
       <option value="100">100 years</option>
       <option value="custom">Custom…</option>
     </select>
-    <input type="number" class="text-input select-custom-input" id="yearsCustom"
+    <input type="number" inputmode="numeric" class="text-input select-custom-input" id="yearsCustom"
            placeholder="Years" min="1" step="1" oninput="calculateFutureValue()">
+  </div>
+
+  <div class="input-wrapper">
+    <label class="input-label" for="initialInvestment">Initial investment</label>
+    <select id="initialInvestment" onchange="toggleCustom('initialInvestment'); calculateFutureValue()">
+      <option value="0" selected>$0</option>
+      <option value="500">$500</option>
+      <option value="1000">$1,000</option>
+      <option value="2500">$2,500</option>
+      <option value="5000">$5,000</option>
+      <option value="10000">$10,000</option>
+      <option value="25000">$25,000</option>
+      <option value="50000">$50,000</option>
+      <option value="100000">$100,000</option>
+      <option value="custom">Custom…</option>
+    </select>
+    <input type="number" inputmode="numeric" class="text-input select-custom-input" id="initialInvestmentCustom"
+           placeholder="Amount ($)" min="0" step="1" oninput="calculateFutureValue()">
   </div>
 
   <div class="input-wrapper">
@@ -49,8 +67,8 @@ permalink: /money/investmentcalculator/
       <option value="10000">$10,000</option>
       <option value="custom">Custom…</option>
     </select>
-    <input type="number" class="text-input select-custom-input" id="monthlyInvestmentCustom"
-           placeholder="Amount ($)" min="1" step="1" oninput="calculateFutureValue()">
+    <input type="number" inputmode="numeric" class="text-input select-custom-input" id="monthlyInvestmentCustom"
+           placeholder="Amount ($)" min="0" step="1" oninput="calculateFutureValue()">
   </div>
 
   <div class="input-wrapper">
@@ -80,13 +98,13 @@ permalink: /money/investmentcalculator/
       <option value="10.5">10.5%</option>
       <option value="custom">Custom…</option>
     </select>
-    <input type="number" class="text-input select-custom-input" id="annualInterestCustom"
+    <input type="number" inputmode="decimal" class="text-input select-custom-input" id="annualInterestCustom"
            placeholder="Rate (%)" min="0" step="0.1" oninput="calculateFutureValue()">
   </div>
 </div>
 
 <div class="result-cards" id="result">
-  <div class="result-card">
+  <div class="result-card result-card--blue">
     <div class="result-card__label">Total invested</div>
     <div class="result-card__value" id="totalInvestment">—</div>
   </div>
@@ -160,39 +178,43 @@ permalink: /money/investmentcalculator/
 
   function calculateFutureValue() {
     var years             = val('years');
+    var initialInvestment = val('initialInvestment') || 0;
     var monthlyInvestment = val('monthlyInvestment');
     var annualInterest    = val('annualInterest');
 
     if (years === null || monthlyInvestment === null || annualInterest === null) return;
-    if (years <= 0 || monthlyInvestment <= 0) return;
+    if (years <= 0 || monthlyInvestment < 0 || initialInvestment < 0) return;
+    if (initialInvestment === 0 && monthlyInvestment === 0) return;
 
     var monthlyInterestRate = (annualInterest / 100) / 12;
     var totalMonths = years * 12;
 
     var totalInvestments = [], profits = [];
     var annualTotalInvestments = [], annualProfits = [];
-    var futureValue = 0, totalInvestment = 0;
+    var futureValue = initialInvestment, totalContributions = 0;
 
     for (var i = 0; i < totalMonths; i++) {
       futureValue = (futureValue + monthlyInvestment) * (1 + monthlyInterestRate);
-      totalInvestment += monthlyInvestment;
+      totalContributions += monthlyInvestment;
 
-      totalInvestments.push(totalInvestment);
-      profits.push(futureValue - totalInvestment);
+      var invested = initialInvestment + totalContributions;
+      totalInvestments.push(invested);
+      profits.push(futureValue - invested);
 
       if ((i + 1) % 12 === 0) {
-        annualTotalInvestments.push(totalInvestment);
-        annualProfits.push(futureValue - totalInvestment);
+        annualTotalInvestments.push(invested);
+        annualProfits.push(futureValue - invested);
       }
     }
 
+    var totalInvested = initialInvestment + totalContributions;
     document.getElementById('futureValue').textContent     = formatCurrency(futureValue);
-    document.getElementById('totalInvestment').textContent = formatCurrency(totalInvestment);
-    document.getElementById('profit').textContent          = formatCurrency(futureValue - totalInvestment);
+    document.getElementById('totalInvestment').textContent = formatCurrency(totalInvested);
+    document.getElementById('profit').textContent          = formatCurrency(futureValue - totalInvested);
 
     drawMonthlyChart(totalInvestments, profits, 'investmentChart');
     drawAnnualChart(annualTotalInvestments, annualProfits, years, 'annualChart');
-    drawPieChart(totalInvestment, futureValue - totalInvestment);
+    drawPieChart(totalInvested, futureValue - totalInvested);
   }
 
   // Monthly growth: area chart (readable with 240+ data points)

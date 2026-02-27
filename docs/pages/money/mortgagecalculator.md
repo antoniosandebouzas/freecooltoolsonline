@@ -8,7 +8,7 @@ permalink: /money/mortgagecalculator/
 
 <div class="tool-form input-group">
   <div class="input-wrapper">
-    <label class="input-label" for="loanAmount">Loan amount</label>
+    <label class="input-label" for="loanAmount">Home price</label>
     <select id="loanAmount" onchange="toggleCustom('loanAmount'); calculateMortgage()">
       <option value="50000">$50,000</option>
       <option value="100000">$100,000</option>
@@ -26,8 +26,24 @@ permalink: /money/mortgagecalculator/
       <option value="2000000">$2,000,000</option>
       <option value="custom">Custom…</option>
     </select>
-    <input type="number" class="text-input select-custom-input" id="loanAmountCustom"
+    <input type="number" inputmode="numeric" class="text-input select-custom-input" id="loanAmountCustom"
            placeholder="Amount ($)" min="1" step="1000" oninput="calculateMortgage()">
+  </div>
+
+  <div class="input-wrapper">
+    <label class="input-label" for="downPayment">Down payment</label>
+    <select id="downPayment" onchange="toggleCustom('downPayment'); calculateMortgage()">
+      <option value="0" selected>0%</option>
+      <option value="5">5%</option>
+      <option value="10">10%</option>
+      <option value="15">15%</option>
+      <option value="20">20%</option>
+      <option value="25">25%</option>
+      <option value="30">30%</option>
+      <option value="custom">Custom…</option>
+    </select>
+    <input type="number" inputmode="decimal" class="text-input select-custom-input" id="downPaymentCustom"
+           placeholder="%" min="0" max="99" step="0.5" oninput="calculateMortgage()">
   </div>
 
   <div class="input-wrapper">
@@ -54,7 +70,7 @@ permalink: /money/mortgagecalculator/
       <option value="10.0">10.0%</option>
       <option value="custom">Custom…</option>
     </select>
-    <input type="number" class="text-input select-custom-input" id="annualRateCustom"
+    <input type="number" inputmode="decimal" class="text-input select-custom-input" id="annualRateCustom"
            placeholder="Rate (%)" min="0" step="0.1" oninput="calculateMortgage()">
   </div>
 
@@ -69,7 +85,7 @@ permalink: /money/mortgagecalculator/
       <option value="30" selected>30 years</option>
       <option value="custom">Custom…</option>
     </select>
-    <input type="number" class="text-input select-custom-input" id="loanTermCustom"
+    <input type="number" inputmode="numeric" class="text-input select-custom-input" id="loanTermCustom"
            placeholder="Years" min="1" step="1" oninput="calculateMortgage()">
   </div>
 </div>
@@ -78,6 +94,10 @@ permalink: /money/mortgagecalculator/
   <div class="result-card result-card--blue">
     <div class="result-card__label">Monthly payment</div>
     <div class="result-card__value" id="monthlyPayment">—</div>
+  </div>
+  <div class="result-card">
+    <div class="result-card__label">Down payment</div>
+    <div class="result-card__value" id="downPaymentAmt">—</div>
   </div>
   <div class="result-card result-card--red">
     <div class="result-card__label">Total interest</div>
@@ -89,7 +109,7 @@ permalink: /money/mortgagecalculator/
   </div>
 </div>
 
-## Principal vs Interest
+## Payment Breakdown
 <div class="tool-chart" id="mortgagePie"></div>
 
 ## Amortization — Annual Breakdown
@@ -102,9 +122,10 @@ permalink: /money/mortgagecalculator/
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
     return {
-      principal: s.getPropertyValue('--color-blue').trim()  || '#1a73e8',
-      interest:  s.getPropertyValue('--color-red').trim()   || '#d93025',
-      bg:        s.getPropertyValue('--color-bg-page').trim() || '#F5F5F5'
+      principal: s.getPropertyValue('--color-blue').trim()           || '#1a73e8',
+      interest:  s.getPropertyValue('--color-red').trim()            || '#d93025',
+      neutral:   s.getPropertyValue('--color-text-secondary').trim() || '#757575',
+      bg:        s.getPropertyValue('--color-bg-page').trim()        || '#F5F5F5'
     };
   }
 
@@ -134,12 +155,17 @@ permalink: /money/mortgagecalculator/
   }
 
   function calculateMortgage() {
-    var principal  = val('loanAmount');
-    var annualRate = val('annualRate');
-    var termYears  = val('loanTerm');
+    var homePrice      = val('loanAmount');
+    var downPaymentPct = val('downPayment') || 0;
+    var annualRate     = val('annualRate');
+    var termYears      = val('loanTerm');
 
-    if (principal === null || annualRate === null || termYears === null) return;
-    if (principal <= 0 || termYears <= 0) return;
+    if (homePrice === null || annualRate === null || termYears === null) return;
+    if (homePrice <= 0 || termYears <= 0 || downPaymentPct < 0 || downPaymentPct >= 100) return;
+
+    var downPaymentAmt = homePrice * downPaymentPct / 100;
+    var principal      = homePrice - downPaymentAmt;
+    if (principal <= 0) return;
 
     var monthlyRate = (annualRate / 100) / 12;
     var numPayments = termYears * 12;
@@ -152,10 +178,12 @@ permalink: /money/mortgagecalculator/
       monthlyPayment = principal * (monthlyRate * factor) / (factor - 1);
     }
 
-    var totalPaid     = monthlyPayment * numPayments;
-    var totalInterest = totalPaid - principal;
+    var totalMortgagePaid = monthlyPayment * numPayments;
+    var totalInterest     = totalMortgagePaid - principal;
+    var totalPaid         = downPaymentAmt + totalMortgagePaid;
 
     document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
+    document.getElementById('downPaymentAmt').textContent = formatCurrency(downPaymentAmt);
     document.getElementById('totalInterest').textContent  = formatCurrency(totalInterest);
     document.getElementById('totalPaid').textContent      = formatCurrency(totalPaid);
 
@@ -178,17 +206,27 @@ permalink: /money/mortgagecalculator/
       }
     }
 
-    drawPieChart(principal, totalInterest);
+    drawPieChart(downPaymentAmt, principal, totalInterest);
     drawAmortizationChart(annualPrincipal, annualInterestArr, termYears);
   }
 
-  function drawPieChart(principal, totalInterest) {
+  function drawPieChart(downPayment, principal, totalInterest) {
     var c = getChartStyle();
+    var labels, values, colors;
+    if (downPayment > 0) {
+      labels = ['Down payment', 'Principal', 'Total interest'];
+      values = [downPayment, principal, totalInterest];
+      colors = [c.neutral, c.principal, c.interest];
+    } else {
+      labels = ['Principal', 'Total interest'];
+      values = [principal, totalInterest];
+      colors = [c.principal, c.interest];
+    }
     Plotly.newPlot('mortgagePie', [{
-      labels: ['Principal', 'Total interest'],
-      values: [principal, totalInterest],
+      labels: labels,
+      values: values,
       type: 'pie',
-      marker: { colors: [c.principal, c.interest] },
+      marker: { colors: colors },
       textfont: { family: CHART_FONT }
     }], {
       showlegend: true,
