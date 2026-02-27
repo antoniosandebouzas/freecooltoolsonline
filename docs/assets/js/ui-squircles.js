@@ -26,29 +26,66 @@
     return d + ' Z';
   }
 
-  // Exclude <select> (clips native dropdown arrow) and containers with overflow content
+  // Four-directional 0-blur drop-shadows give a crisp 1px outline.
+  // drop-shadow renders AFTER clip-path, so it correctly traces the squircle outline
+  // instead of the underlying rectangular border box.
+  function makeShadow(color) {
+    return 'drop-shadow(1px 0 0 ' + color + ') '
+         + 'drop-shadow(-1px 0 0 ' + color + ') '
+         + 'drop-shadow(0 1px 0 ' + color + ') '
+         + 'drop-shadow(0 -1px 0 ' + color + ')';
+  }
+
+  // Excluded: <select> (clips native dropdown arrow)
+  //           .card (has JS-less hover interaction we'd lose)
+  //           .output-panel / .controls-panel (overflow containers)
   var SELECTORS = [
     '.btn',
     '.text-input',
     '.textarea-input',
-    '.result-card',
-    '.card'
+    '.result-card'
   ].join(', ');
 
-  function applySquircle(el) {
+  // WeakSet tracks which elements already have focus/blur listeners
+  var listenerSet = new WeakSet();
+
+  function applySquircle(el, defaultShadow, focusShadow) {
     var rect = el.getBoundingClientRect();
     var w = Math.round(rect.width);
     var h = Math.round(rect.height);
     if (w <= 0 || h <= 0) return;
-    el.style.clipPath = 'path("' + generateSquirclePathData(w, h, EXPONENT) + '")';
+
+    el.style.clipPath    = 'path("' + generateSquirclePathData(w, h, EXPONENT) + '")';
     el.style.borderRadius = '0';
+
+    // CSS borders are rectangular — they get cut off diagonally at the squircle
+    // edge rather than following the curve. Replace with filter: drop-shadow(),
+    // which renders AFTER clip-path and correctly traces the squircle outline.
+    el.style.border = 'none';
+    el.style.filter = el === document.activeElement ? focusShadow : defaultShadow;
+
+    // Attach focus/blur listeners once to swap the shadow color
+    // (replaces the now-removed CSS border-color focus rule)
+    if (!listenerSet.has(el)) {
+      listenerSet.add(el);
+      el.addEventListener('focus', function () { this.style.filter = focusShadow; });
+      el.addEventListener('blur',  function () { this.style.filter = defaultShadow; });
+    }
   }
 
   function applyAll() {
-    document.querySelectorAll(SELECTORS).forEach(applySquircle);
+    var cs          = getComputedStyle(document.documentElement);
+    var borderColor = cs.getPropertyValue('--color-border').trim()       || '#E0E0E0';
+    var focusColor  = cs.getPropertyValue('--color-border-focus').trim() || '#1a73e8';
+    var defShadow   = makeShadow(borderColor);
+    var focShadow   = makeShadow(focusColor);
+
+    document.querySelectorAll(SELECTORS).forEach(function (el) {
+      applySquircle(el, defShadow, focShadow);
+    });
   }
 
-  // requestAnimationFrame ensures layout is complete before measuring dimensions
+  // rAF after DOMContentLoaded ensures layout is complete before measuring
   document.addEventListener('DOMContentLoaded', function () {
     requestAnimationFrame(applyAll);
   });
@@ -59,6 +96,13 @@
     resizeTimer = setTimeout(applyAll, 100);
   });
 
-  // Expose for dynamic re-application (e.g. after charts render new elements)
+  // Re-read border color token when dark/light mode toggles
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+      requestAnimationFrame(applyAll);
+    });
+  }
+
+  // Public API for dynamic content (e.g. after Plotly renders or content injected)
   window.applyUISquircles = applyAll;
 })();

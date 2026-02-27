@@ -113,6 +113,16 @@ permalink: /money/investmentcalculator/
   var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
   var CHART_FONT_MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace";
 
+  // CSS custom properties return hex values (#1a73e8), not rgb() — convert for opacity
+  function hexToRgba(hex, alpha) {
+    hex = hex.replace(/^#/, '');
+    if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    var r = parseInt(hex.slice(0, 2), 16);
+    var g = parseInt(hex.slice(2, 4), 16);
+    var b = parseInt(hex.slice(4, 6), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+  }
+
   function getChartStyle() {
     var s = getComputedStyle(document.documentElement);
     return {
@@ -202,14 +212,14 @@ permalink: /money/investmentcalculator/
       {
         x: months, y: invested, type: 'scatter', mode: 'lines', name: 'Total invested',
         fill: 'tozeroy', line: { color: c.invested, width: 2 },
-        fillcolor: c.invested.replace(')', ', 0.15)').replace('rgb', 'rgba')
+        fillcolor: hexToRgba(c.invested, 0.2)
       },
       {
         x: months,
         y: profits.map(function(p, i) { return invested[i] + p; }),
         type: 'scatter', mode: 'lines', name: 'Final value',
         fill: 'tonexty', line: { color: c.profit, width: 2 },
-        fillcolor: c.profit.replace(')', ', 0.2)').replace('rgb', 'rgba')
+        fillcolor: hexToRgba(c.profit, 0.25)
       }
     ], {
       showlegend: true,
