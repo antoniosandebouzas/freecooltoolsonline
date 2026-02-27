@@ -1,44 +1,50 @@
 (function () {
-  var EXPONENT = 4.0; // iOS-style superellipse
+  var EXPONENT    = 4.0; // iOS-style superellipse
+  var CORNER_MAX  = 16;  // max corner radius — keeps buttons looking like rounded rects, not pills
 
-  function generateSquirclePathData(width, height, exponent) {
+  // Generates an SVG path for a squircle rounded rectangle.
+  // Corner arcs are superellipses capped at CORNER_MAX; straight edges connect them.
+  function generatePath(width, height) {
     if (width <= 0 || height <= 0) return '';
-    var shortestSide = Math.min(width, height);
-    var cornerRadius = shortestSide / 2;
-    var deltaX = (width - shortestSide) / 2;
-    var deltaY = (height - shortestSide) / 2;
-    var centerX = width / 2;
-    var centerY = height / 2;
-    var n = 30;
-    var pts = [];
+
+    var r = Math.min(CORNER_MAX, Math.min(width, height) / 2);
+    var n = 20; // points per quarter arc
+
+    // Quarter-arc points relative to the corner center, first quadrant (cos→0, sin→r)
+    var arc = [];
     for (var i = 0; i <= n; i++) {
       var t = (i / n) * (Math.PI / 2);
-      pts.push({
-        x: cornerRadius * Math.pow(Math.cos(t), 2 / exponent),
-        y: cornerRadius * Math.pow(Math.sin(t), 2 / exponent)
+      arc.push({
+        x: r * Math.pow(Math.cos(t), 2 / EXPONENT),
+        y: r * Math.pow(Math.sin(t), 2 / EXPONENT)
       });
     }
-    var d = 'M ' + (centerX + pts[0].x + deltaX) + ' ' + (centerY + pts[0].y + deltaY);
-    for (var i = 0; i <= n; i++) d += ' L ' + (centerX + pts[i].x + deltaX) + ' ' + (centerY + pts[i].y + deltaY);
-    for (var i = n; i >= 0; i--) d += ' L ' + (centerX - pts[i].x - deltaX) + ' ' + (centerY + pts[i].y + deltaY);
-    for (var i = 0; i <= n; i++) d += ' L ' + (centerX - pts[i].x - deltaX) + ' ' + (centerY - pts[i].y - deltaY);
-    for (var i = n; i >= 0; i--) d += ' L ' + (centerX + pts[i].x + deltaX) + ' ' + (centerY - pts[i].y - deltaY);
+
+    // Corner centers
+    var x1 = r,         x2 = width - r;
+    var y1 = r,         y2 = height - r;
+
+    var d = '';
+    function pt(x, y) {
+      d += (d === '' ? 'M ' : ' L ') + x.toFixed(2) + ' ' + y.toFixed(2);
+    }
+
+    // Clockwise from top of top-right corner.
+    // Each corner uses the SAME arc index for both x and y (same theta = true superellipse).
+    // arc[n] = (0, r) = tangent start; arc[0] = (r, 0) = tangent end.
+    // Top-right: (x2, y1-r) → (x2+r, y1)
+    for (var i = 0; i <= n; i++) pt(x2 + arc[n - i].x, y1 - arc[n - i].y);
+    // Bottom-right: (x2+r, y2) → (x2, y2+r)
+    for (var i = 0; i <= n; i++) pt(x2 + arc[i].x, y2 + arc[i].y);
+    // Bottom-left: (x1, y2+r) → (x1-r, y2)
+    for (var i = 0; i <= n; i++) pt(x1 - arc[n - i].x, y2 + arc[n - i].y);
+    // Top-left: (x1-r, y1) → (x1, y1-r)
+    for (var i = 0; i <= n; i++) pt(x1 - arc[i].x, y1 - arc[i].y);
+
     return d + ' Z';
   }
 
-  // Four-directional 0-blur drop-shadows give a crisp 1px outline.
-  // drop-shadow renders AFTER clip-path, so it correctly traces the squircle outline
-  // instead of the underlying rectangular border box.
-  function makeShadow(color) {
-    return 'drop-shadow(1px 0 0 ' + color + ') '
-         + 'drop-shadow(-1px 0 0 ' + color + ') '
-         + 'drop-shadow(0 1px 0 ' + color + ') '
-         + 'drop-shadow(0 -1px 0 ' + color + ')';
-  }
-
-  // Excluded: <select> (clips native dropdown arrow)
-  //           .card (has JS-less hover interaction we'd lose)
-  //           .output-panel / .controls-panel (overflow containers)
+  // Exclude: <select> (native dropdown arrow clips), containers with overflow content
   var SELECTORS = [
     '.btn',
     '.text-input',
@@ -46,7 +52,18 @@
     '.result-card'
   ].join(', ');
 
-  // WeakSet tracks which elements already have focus/blur listeners
+  function isColoredBtn(el) {
+    return el.classList.contains('btn--primary')
+        || el.classList.contains('btn--success')
+        || el.classList.contains('btn--danger');
+  }
+
+  // Single drop-shadow traces the squircle outline cleanly.
+  // drop-shadow renders AFTER clip-path, so it follows the squircle curve.
+  function makeShadow(color) {
+    return 'drop-shadow(0 0 1px ' + color + ')';
+  }
+
   var listenerSet = new WeakSet();
 
   function applySquircle(el, defaultShadow, focusShadow) {
@@ -55,21 +72,25 @@
     var h = Math.round(rect.height);
     if (w <= 0 || h <= 0) return;
 
-    el.style.clipPath    = 'path("' + generateSquirclePathData(w, h, EXPONENT) + '")';
+    el.style.clipPath     = 'path("' + generatePath(w, h) + '")';
     el.style.borderRadius = '0';
 
-    // CSS borders are rectangular — they get cut off diagonally at the squircle
-    // edge rather than following the curve. Replace with filter: drop-shadow(),
-    // which renders AFTER clip-path and correctly traces the squircle outline.
+    // CSS borders cut off diagonally at squircle edges — remove them.
+    // drop-shadow renders AFTER clip-path and follows the squircle outline.
     el.style.border = 'none';
-    el.style.filter = el === document.activeElement ? focusShadow : defaultShadow;
 
-    // Attach focus/blur listeners once to swap the shadow color
-    // (replaces the now-removed CSS border-color focus rule)
+    // Colored buttons are visually defined by their background — skip gray outline.
+    var colored = isColoredBtn(el);
+    el.style.filter = colored ? 'none' : (el === document.activeElement ? focusShadow : defaultShadow);
+
     if (!listenerSet.has(el)) {
       listenerSet.add(el);
-      el.addEventListener('focus', function () { this.style.filter = focusShadow; });
-      el.addEventListener('blur',  function () { this.style.filter = defaultShadow; });
+      el.addEventListener('focus', function () {
+        this.style.filter = isColoredBtn(this) ? 'none' : focusShadow;
+      });
+      el.addEventListener('blur', function () {
+        this.style.filter = isColoredBtn(this) ? 'none' : defaultShadow;
+      });
     }
   }
 
@@ -85,7 +106,6 @@
     });
   }
 
-  // rAF after DOMContentLoaded ensures layout is complete before measuring
   document.addEventListener('DOMContentLoaded', function () {
     requestAnimationFrame(applyAll);
   });
@@ -96,13 +116,11 @@
     resizeTimer = setTimeout(applyAll, 100);
   });
 
-  // Re-read border color token when dark/light mode toggles
   if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
       requestAnimationFrame(applyAll);
     });
   }
 
-  // Public API for dynamic content (e.g. after Plotly renders or content injected)
   window.applyUISquircles = applyAll;
 })();
