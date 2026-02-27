@@ -1,45 +1,40 @@
 (function () {
-  var EXPONENT    = 4.0; // superellipse — softer than iOS (4.0), rounder than circular (2.0)
-  var CORNER_MAX  = 64;  // max corner radius — keeps buttons looking like rounded rects, not pills
+  var EXPONENT = 4.0; // superellipse — softer than iOS (4.0), rounder than circular (2.0)
 
   // Generates an SVG path for a squircle rounded rectangle.
-  // Corner arcs are superellipses capped at CORNER_MAX; straight edges connect them.
+  // Uses a center-based approach: cornerRadius = shortestSide/2, with deltaX/deltaY offsets
+  // to extend the superellipse naturally into rectangular shapes.
   function generatePath(width, height) {
     if (width <= 0 || height <= 0) return '';
 
-    var r = Math.min(CORNER_MAX, Math.min(width, height) / 2);
-    var n = 20; // points per quarter arc
+    var s  = Math.min(width, height); // shortest side
+    var r  = s / 2;                   // corner radius = half of shortest side
+    var dX = (width  - s) / 2;        // horizontal stretch offset
+    var dY = (height - s) / 2;        // vertical stretch offset
+    var cx = width  / 2;
+    var cy = height / 2;
+    var n  = 30; // points per quarter arc
 
-    // Quarter-arc points relative to the corner center, first quadrant (cos→0, sin→r)
-    var arc = [];
+    // Quarter-arc points in first quadrant (bottom-right)
+    var pts = [];
     for (var i = 0; i <= n; i++) {
       var t = (i / n) * (Math.PI / 2);
-      arc.push({
+      pts.push({
         x: r * Math.pow(Math.cos(t), 2 / EXPONENT),
         y: r * Math.pow(Math.sin(t), 2 / EXPONENT)
       });
     }
 
-    // Corner centers
-    var x1 = r,         x2 = width - r;
-    var y1 = r,         y2 = height - r;
-
-    var d = '';
-    function pt(x, y) {
-      d += (d === '' ? 'M ' : ' L ') + x.toFixed(2) + ' ' + y.toFixed(2);
-    }
-
-    // Clockwise from top of top-right corner.
-    // Each corner uses the SAME arc index for both x and y (same theta = true superellipse).
-    // arc[n] = (0, r) = tangent start; arc[0] = (r, 0) = tangent end.
-    // Top-right: (x2, y1-r) → (x2+r, y1)
-    for (var i = 0; i <= n; i++) pt(x2 + arc[n - i].x, y1 - arc[n - i].y);
-    // Bottom-right: (x2+r, y2) → (x2, y2+r)
-    for (var i = 0; i <= n; i++) pt(x2 + arc[i].x, y2 + arc[i].y);
-    // Bottom-left: (x1, y2+r) → (x1-r, y2)
-    for (var i = 0; i <= n; i++) pt(x1 - arc[n - i].x, y2 + arc[n - i].y);
-    // Top-left: (x1-r, y1) → (x1, y1-r)
-    for (var i = 0; i <= n; i++) pt(x1 - arc[i].x, y1 - arc[i].y);
+    // Start at rightmost point (theta=0: x=r, y=0), go clockwise
+    var d = 'M ' + (cx + pts[0].x + dX).toFixed(2) + ' ' + (cy + pts[0].y + dY).toFixed(2);
+    // Q1: bottom-right (forward: theta 0→π/2)
+    for (var i = 0; i <= n; i++) d += ' L ' + (cx + pts[i].x + dX).toFixed(2) + ' ' + (cy + pts[i].y + dY).toFixed(2);
+    // Q2: bottom-left (backward: theta π/2→0, negate x)
+    for (var i = n; i >= 0; i--) d += ' L ' + (cx - pts[i].x - dX).toFixed(2) + ' ' + (cy + pts[i].y + dY).toFixed(2);
+    // Q3: top-left (forward: theta 0→π/2, negate both)
+    for (var i = 0; i <= n; i++) d += ' L ' + (cx - pts[i].x - dX).toFixed(2) + ' ' + (cy - pts[i].y - dY).toFixed(2);
+    // Q4: top-right (backward: theta π/2→0, negate y)
+    for (var i = n; i >= 0; i--) d += ' L ' + (cx + pts[i].x + dX).toFixed(2) + ' ' + (cy - pts[i].y - dY).toFixed(2);
 
     return d + ' Z';
   }
