@@ -103,13 +103,6 @@
 
 // ─── Typography ───────────────────────────────────────────────────────────────
 
-.page-content h1 {
-  font-weight: 400;
-  font-size: 2.25rem;
-  margin: 0 0 16px;
-  letter-spacing: -0.5px;
-}
-
 p.description {
   color: var(--color-text-secondary);
   max-width: 600px;
@@ -321,7 +314,8 @@ input[type=range]::-webkit-slider-runnable-track {
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius-ui);
   font-size: 1rem;
-  width: 100px;
+  width: auto;
+  min-width: 100px;
   font-family: var(--font-family-code);
   background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
@@ -460,6 +454,11 @@ code.squircle-rect {
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 32px;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .tool-form select {
@@ -487,6 +486,11 @@ code.squircle-rect {
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 40px;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .result-card {
@@ -520,6 +524,9 @@ code.squircle-rect {
 .tool-chart {
   margin-bottom: 40px;
   width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 // ─── Tool layout (dev tools) ──────────────────────────────────────────────────
@@ -527,6 +534,8 @@ code.squircle-rect {
 .tool-layout {
   width: 100%;
   max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -537,6 +546,7 @@ code.squircle-rect {
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
 }
 
 // ─── Textarea ─────────────────────────────────────────────────────────────────

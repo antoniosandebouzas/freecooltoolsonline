@@ -118,7 +118,7 @@ permalink: /money/investmentcalculator/
       invested: s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
       profit:   s.getPropertyValue('--color-accent').trim()        || '#1e8e3e',
       future:   s.getPropertyValue('--color-organic-dark').trim()  || '#4a4542',
-      bg:       s.getPropertyValue('--color-bg-surface').trim()    || '#ffffff'
+      bg:       s.getPropertyValue('--color-bg-page').trim()       || '#F7F7F7'
     };
   }
 

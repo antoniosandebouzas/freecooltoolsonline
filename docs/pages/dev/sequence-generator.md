@@ -29,15 +29,15 @@ Generate numeric sequences with a custom prefix, suffix, and separator.
   <div class="input-group">
     <div class="input-wrapper">
       <label class="input-label" for="seqPrefix">Prefix</label>
-      <input type="text" class="text-input" id="seqPrefix" placeholder="e.g. item_" style="width:140px">
+      <input type="text" class="text-input" id="seqPrefix" placeholder="e.g. item_">
     </div>
     <div class="input-wrapper">
       <label class="input-label" for="seqSuffix">Suffix</label>
-      <input type="text" class="text-input" id="seqSuffix" placeholder="e.g. ;" style="width:140px">
+      <input type="text" class="text-input" id="seqSuffix" placeholder="e.g. ;">
     </div>
     <div class="input-wrapper">
       <label class="input-label" for="seqSep">Separator</label>
-      <input type="text" class="text-input" id="seqSep" value="\n" placeholder="\n  or  ,  " style="width:140px">
+      <input type="text" class="text-input" id="seqSep" value="\n" placeholder="\n or ,">
     </div>
   </div>
 

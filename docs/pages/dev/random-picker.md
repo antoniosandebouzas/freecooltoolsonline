@@ -9,7 +9,7 @@ Pick one or more random items from a list.
 <div class="tool-layout">
   <div class="input-wrapper">
     <label class="input-label" for="listInput">Your list</label>
-    <textarea class="textarea-input" id="listInput" placeholder="Apple&#10;Banana&#10;Cherry&#10;Date&#10;Elderberry" style="min-height:200px"></textarea>
+    <textarea class="textarea-input" id="listInput" placeholder="Apple&#10;Banana&#10;Cherry&#10;Date&#10;Elderberry"></textarea>
   </div>
 
   <div class="input-group">

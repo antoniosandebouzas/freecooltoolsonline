@@ -9,13 +9,13 @@ Sort all object keys alphabetically at every level of nesting.
 <div class="tool-layout">
   <div class="input-wrapper">
     <label class="input-label" for="jsonInput">Paste JSON</label>
-    <textarea class="textarea-input" id="jsonInput" placeholder='{"zebra":1,"apple":2,"mango":{"b":3,"a":4}}' style="min-height:220px"></textarea>
+    <textarea class="textarea-input" id="jsonInput" placeholder='{"zebra":1,"apple":2,"mango":{"b":3,"a":4}}'></textarea>
   </div>
 
   <div class="input-group">
     <div class="input-wrapper">
       <label class="input-label" for="indentSize">Indent</label>
-      <select class="text-input" id="indentSize" style="width:auto;min-width:130px">
+      <select class="text-input" id="indentSize">
         <option value="2" selected>2 spaces</option>
         <option value="4">4 spaces</option>
         <option value="tab">tab</option>

@@ -103,7 +103,7 @@ permalink: /money/mortgagecalculator/
     return {
       principal: s.getPropertyValue('--color-accent').trim()        || '#1e8e3e',
       interest:  s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
-      bg:        s.getPropertyValue('--color-bg-surface').trim()    || '#ffffff'
+      bg:        s.getPropertyValue('--color-bg-page').trim()       || '#F7F7F7'
     };
   }
 
