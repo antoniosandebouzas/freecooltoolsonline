@@ -87,11 +87,16 @@ permalink: /money/mortgagecalculator/
 <div class="tool-chart" id="amortizationChart"></div>
 
 <script>
-  var CHART_FONT   = "'Google Sans', sans-serif";
-  var CHART_COLORS = {
-    principal: '#1e8e3e',
-    interest:  '#8b7e74'
-  };
+  var CHART_FONT = "'Google Sans', sans-serif";
+
+  function getChartStyle() {
+    var s = getComputedStyle(document.documentElement);
+    return {
+      principal: s.getPropertyValue('--color-accent').trim()        || '#1e8e3e',
+      interest:  s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
+      bg:        s.getPropertyValue('--color-bg-surface').trim()    || '#ffffff'
+    };
+  }
 
   function formatCurrency(value) {
     return value.toLocaleString('en-US', {
@@ -151,24 +156,26 @@ permalink: /money/mortgagecalculator/
   }
 
   function drawPieChart(principal, totalInterest) {
+    var c = getChartStyle();
     var data = [{
       labels: ['Principal', 'Total interest'],
       values: [principal, totalInterest],
       type:   'pie',
-      marker: { colors: [CHART_COLORS.principal, CHART_COLORS.interest] },
+      marker: { colors: [c.principal, c.interest] },
       textfont: { family: CHART_FONT }
     }];
 
     Plotly.newPlot('mortgagePie', data, {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
-      paper_bgcolor: '#FFF',
+      paper_bgcolor: c.bg,
       font:   { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 20, l: 20 }
     }, { responsive: true });
   }
 
   function drawAmortizationChart(annualPrincipal, annualInterest, termYears) {
+    var c      = getChartStyle();
     var years  = Array.from({ length: termYears }, function(_, i) { return i + 1; });
     var labels = years.map(function(y) { return y + ' Yr'; });
 
@@ -176,12 +183,12 @@ permalink: /money/mortgagecalculator/
       {
         x: years, y: annualPrincipal,
         type: 'bar', name: 'Principal paid',
-        marker: { color: CHART_COLORS.principal }
+        marker: { color: c.principal }
       },
       {
         x: years, y: annualInterest,
         type: 'bar', name: 'Interest paid',
-        marker: { color: CHART_COLORS.interest }
+        marker: { color: c.interest }
       }
     ];
 
@@ -200,8 +207,8 @@ permalink: /money/mortgagecalculator/
         title:    'Amount (USD)',
         tickfont: { family: CHART_FONT }
       },
-      paper_bgcolor: '#FFF',
-      plot_bgcolor:  '#FFF',
+      paper_bgcolor: c.bg,
+      plot_bgcolor:  c.bg,
       font:   { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 60, l: 80 }
     }, { responsive: true });

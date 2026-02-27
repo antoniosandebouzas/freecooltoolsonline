@@ -102,11 +102,16 @@ permalink: /money/investmentcalculator/
 
 <script>
   var CHART_FONT = "'Google Sans', sans-serif";
-  var CHART_COLORS = {
-    invested: '#8b7e74',
-    profit:   '#1e8e3e',
-    future:   '#4a4542'
-  };
+
+  function getChartStyle() {
+    var s = getComputedStyle(document.documentElement);
+    return {
+      invested: s.getPropertyValue('--color-organic-brown').trim() || '#8b7e74',
+      profit:   s.getPropertyValue('--color-accent').trim()        || '#1e8e3e',
+      future:   s.getPropertyValue('--color-organic-dark').trim()  || '#4a4542',
+      bg:       s.getPropertyValue('--color-bg-surface').trim()    || '#ffffff'
+    };
+  }
 
   function formatCurrency(value) {
     return value.toLocaleString('en-US', {
@@ -160,6 +165,7 @@ permalink: /money/investmentcalculator/
   }
 
   function drawChart(values, invested, profits, axisLabel, chartId) {
+    var c      = getChartStyle();
     var count  = values.length;
     var labels = Array.from({ length: count }, function(_, i) { return i + 1; });
 
@@ -173,9 +179,9 @@ permalink: /money/investmentcalculator/
     }
 
     var data = [
-      { x: labels, y: values,   type: 'bar', name: 'Final value',    marker: { color: CHART_COLORS.future   } },
-      { x: labels, y: invested, type: 'bar', name: 'Total invested',  marker: { color: CHART_COLORS.invested } },
-      { x: labels, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: CHART_COLORS.profit   } }
+      { x: labels, y: values,   type: 'bar', name: 'Final value',    marker: { color: c.future   } },
+      { x: labels, y: invested, type: 'bar', name: 'Total invested',  marker: { color: c.invested } },
+      { x: labels, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: c.profit   } }
     ];
 
     var layout = {
@@ -192,8 +198,8 @@ permalink: /money/investmentcalculator/
         title:    'Amount (USD)',
         tickfont: { family: CHART_FONT }
       },
-      paper_bgcolor: '#FFF',
-      plot_bgcolor:  '#FFF',
+      paper_bgcolor: c.bg,
+      plot_bgcolor:  c.bg,
       font:   { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 60, l: 80 }
     };
@@ -202,18 +208,19 @@ permalink: /money/investmentcalculator/
   }
 
   function drawPieChart(totalInvestment, profit) {
+    var c = getChartStyle();
     var data = [{
       labels: ['Total invested', 'Interest earned'],
       values: [totalInvestment, profit],
       type:   'pie',
-      marker: { colors: [CHART_COLORS.invested, CHART_COLORS.profit] },
+      marker: { colors: [c.invested, c.profit] },
       textfont: { family: CHART_FONT }
     }];
 
     var layout = {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
-      paper_bgcolor: '#FFF',
+      paper_bgcolor: c.bg,
       font:   { family: CHART_FONT },
       margin: { t: 40, r: 20, b: 20, l: 20 }
     };

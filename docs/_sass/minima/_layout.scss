@@ -2,18 +2,12 @@
  * Site header
  */
 .site-header {
-  // border-top: 5px solid $border-color-01;
-  // border-bottom: 1px solid $border-color-01;
-  //min-height: $spacing-unit * 1.865;
   line-height: $base-line-height * $base-font-size * 2.25;
-
-  // Positioning context for the mobile navigation icon
-  //position: relative;
   position: sticky;
   top: 0;
   z-index: 2;
   background-color: $code-background-color;
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid $border-color-01;
 }
 
 .site-title {
@@ -150,7 +144,8 @@
   }
 
   .dropdown-content a:hover {
-    background-color: $lm-link-hover-color;
+    background-color: var(--color-accent-light, #e6f4ea);
+    color: var(--color-accent, #1e8e3e);
   }
 
 }
@@ -420,32 +415,30 @@ h3 {
 }
 
 select {
-  margin: 0px;
-  margin-left: 10px;
-  padding: 10px;
+  margin: 0;
+  padding: 10px 16px;
   font-size: $base-font-size;
   font-family: $base-font-family;
-  border: 0px;
+  border: 2px solid $border-color-01;
   outline: none;
-  border-radius: 15px;
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   background-color: $code-background-color;
-  transition: 0.25s;
+  color: $text-color;
+  transition: border-color 0.2s;
 }
 
-select:hover {
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.02);
+select:hover,
+select:focus {
+  border-color: $brand-color;
 }
 
 .card {
-  border: 0px;
-  outline: none;
-  border-radius: 15px;
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.1);
-  transition: 0.25s;
+  border: 2px solid $border-color-01;
+  border-radius: 12px;
+  transition: border-color 0.2s;
 }
 
 .card:hover {
-  box-shadow: 2.5px 5px 10px rgba(0, 0, 0, 0.02);
+  border-color: $brand-color;
 }
 

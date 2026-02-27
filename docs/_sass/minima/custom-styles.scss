@@ -1,54 +1,113 @@
-// Global styles for Organic Tech Squircles and reusable components
-// Centralized CSS for all pages
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+// All colors defined here as CSS custom properties.
+// Light mode defaults; dark mode overrides in the media query below.
 
 :root {
-  --color-background-page: #ffffff;
-  --color-background-surface: #f8f9fa;
-  --color-border-subtle: #e0e0e0;
-  --color-text-primary: #202124;
+  // ── Backgrounds ──────────────────────────────────────────────────────────
+  --color-bg-page:      #F7F7F7;
+  --color-bg-surface:   #FFFFFF;
+  --color-bg-controls:  rgba(247, 247, 247, 0.92);
+
+  // ── Borders ──────────────────────────────────────────────────────────────
+  --color-border:       #E6E6E6;
+  --color-border-focus: #1e8e3e;
+  --border-width:       2px;
+
+  // ── Text ─────────────────────────────────────────────────────────────────
+  --color-text-primary:   #0D0D0D;
   --color-text-secondary: #5f6368;
+  --color-text-inverse:   #FFFFFF;
+
+  // ── Accent (Signal Green) ─────────────────────────────────────────────────
+  --color-accent:       #1e8e3e;
+  --color-accent-dark:  #166e32;
+  --color-accent-light: #e6f4ea;
+
+  // ── Organic palette ───────────────────────────────────────────────────────
   --color-organic-beige: #e3dcd2;
   --color-organic-brown: #8b7e74;
-  --color-organic-dark: #4a4542;
-  --color-signal-green: #1e8e3e;
-  --color-signal-green-light: #e6f4ea;
-  --spacing-unit: 8px;
-  --border-radius-ui: 16px;
-  --font-family-ui: 'Google Sans', sans-serif;
+  --color-organic-dark:  #4a4542;
+
+  // ── Neutral squircle variants ─────────────────────────────────────────────
+  --color-neutral-1: #E6E6E6;
+  --color-neutral-2: #d0d0d0;
+
+  // ── Error states ──────────────────────────────────────────────────────────
+  --color-error-text:   #d93025;
+  --color-error-bg:     #fce8e6;
+  --color-error-border: #f5c6c2;
+
+  // ── Shape & spacing ───────────────────────────────────────────────────────
+  --border-radius-ui: 12px;
+  --spacing-unit:     8px;
+
+  // ── Typography ────────────────────────────────────────────────────────────
+  --font-family-ui:   'Google Sans', sans-serif;
   --font-family-code: 'Google Sans Code', monospace;
 }
 
-body,
-* {
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Backgrounds
+    --color-bg-page:      #000000;
+    --color-bg-surface:   #0D0D0D;
+    --color-bg-controls:  rgba(13, 13, 13, 0.92);
+
+    // Borders
+    --color-border:       #333333;
+    --color-border-focus: #34a853;
+
+    // Text
+    --color-text-primary:   #FFFFFF;
+    --color-text-secondary: #9aa0a6;
+    --color-text-inverse:   #0D0D0D;
+
+    // Accent
+    --color-accent:       #34a853;
+    --color-accent-dark:  #2d9147;
+    --color-accent-light: #1a2e1e;
+
+    // Organic palette (darkened)
+    --color-organic-beige: #3d3830;
+    --color-organic-brown: #6b6058;
+    --color-organic-dark:  #2e2c2a;
+
+    // Neutral variants
+    --color-neutral-1: #1A1A1A;
+    --color-neutral-2: #2a2a2a;
+
+    // Error states
+    --color-error-text:   #f28b82;
+    --color-error-bg:     #3c1f1d;
+    --color-error-border: #5c2e2b;
+  }
+}
+
+// ─── Base Reset ───────────────────────────────────────────────────────────────
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+// ─── Page Layout ──────────────────────────────────────────────────────────────
+
 .page-content {
   font-family: var(--font-family-ui);
-  background-color: var(--color-background-page);
+  background-color: var(--color-bg-page);
   color: var(--color-text-primary);
-  margin: 0;
-  padding: 40px 20px;
+  padding: 48px 24px;
   line-height: 1.6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-h1 {
+// ─── Typography ───────────────────────────────────────────────────────────────
+
+.page-content h1 {
   font-weight: 400;
-  font-size: 2.5rem;
-  margin: 0 0 16px 0;
+  font-size: 2.25rem;
+  margin: 0 0 16px;
   letter-spacing: -0.5px;
-}
-
-h2 {
-  font-weight: 400;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 24px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 p.description {
@@ -58,23 +117,24 @@ p.description {
   margin-bottom: 48px;
 }
 
-/* enforce monospace for data */
+// ─── Monospace data ───────────────────────────────────────────────────────────
+
 .squircle-label,
 .input-value,
 .slider-value-display {
   font-family: var(--font-family-code);
 }
 
-/* Controls */
+// ─── Controls panel ───────────────────────────────────────────────────────────
+
 .controls-panel {
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--color-border-subtle);
+  background-color: var(--color-bg-controls);
+  border: var(--border-width) solid var(--color-border);
   border-radius: 999px;
   padding: 12px 32px;
   display: flex;
   align-items: center;
   gap: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 20px;
   z-index: 100;
@@ -87,11 +147,12 @@ p.description {
   font-weight: 700;
   color: var(--color-text-secondary);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .slider-value-display {
   background-color: var(--color-text-primary);
-  color: white;
+  color: var(--color-text-inverse);
   padding: 4px 12px;
   border-radius: 4px;
   font-size: 0.875rem;
@@ -99,6 +160,8 @@ p.description {
   min-width: 40px;
   text-align: center;
 }
+
+// ─── Range input ──────────────────────────────────────────────────────────────
 
 input[type=range] {
   -webkit-appearance: none;
@@ -111,10 +174,9 @@ input[type=range]::-webkit-slider-thumb {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: var(--color-signal-green);
+  background: var(--color-accent);
   cursor: pointer;
   margin-top: -8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: transform 0.1s ease;
 }
 
@@ -125,11 +187,12 @@ input[type=range]::-webkit-slider-thumb:hover {
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 4px;
-  background: var(--color-border-subtle);
+  background: var(--color-border);
   border-radius: 2px;
 }
 
-/* Visualization */
+// ─── Visualization grid ───────────────────────────────────────────────────────
+
 .visualization-grid {
   display: flex;
   flex-wrap: wrap;
@@ -140,17 +203,21 @@ input[type=range]::-webkit-slider-runnable-track {
   max-width: 1200px;
 }
 
+// ─── Squircle components ──────────────────────────────────────────────────────
+
 .squircle-component {
   --squircle-width: 200px;
   --squircle-height: 200px;
-  --squircle-background-color: var(--color-border-subtle);
+  --squircle-background-color: var(--color-neutral-1);
   --squircle-text-color: var(--color-text-primary);
   --squircle-clip-path: '';
   width: var(--squircle-width);
   height: var(--squircle-height);
   background-color: var(--squircle-background-color);
   clip-path: path(var(--squircle-clip-path));
-  transition: width 0.4s cubic-bezier(0.2, 0, 0, 1), height 0.4s cubic-bezier(0.2, 0, 0, 1), background-color 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.2, 0, 0, 1),
+              height 0.4s cubic-bezier(0.2, 0, 0, 1),
+              background-color 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -172,17 +239,17 @@ input[type=range]::-webkit-slider-runnable-track {
   font-size: 1rem;
 }
 
-/* Variants */
+// Squircle variants
 .variant-neutral-1 {
   --squircle-width: 120px;
   --squircle-height: 120px;
-  --squircle-background-color: var(--color-border-subtle);
+  --squircle-background-color: var(--color-neutral-1);
 }
 
 .variant-neutral-2 {
   --squircle-width: 220px;
   --squircle-height: 160px;
-  --squircle-background-color: #d0d0d0;
+  --squircle-background-color: var(--color-neutral-2);
 }
 
 .variant-organic-beige {
@@ -195,21 +262,22 @@ input[type=range]::-webkit-slider-runnable-track {
   --squircle-width: 250px;
   --squircle-height: 350px;
   --squircle-background-color: var(--color-organic-brown);
-  --squircle-text-color: #ffffff;
+  --squircle-text-color: var(--color-text-inverse);
 }
 
 .variant-organic-dark {
   --squircle-width: 400px;
   --squircle-height: 100px;
   --squircle-background-color: var(--color-organic-dark);
-  --squircle-text-color: #ffffff;
+  --squircle-text-color: var(--color-text-inverse);
 }
 
-/* Generator */
+// ─── Generator section ────────────────────────────────────────────────────────
+
 .generator-section {
   width: 100%;
   max-width: 800px;
-  border-top: 1px solid var(--color-border-subtle);
+  border-top: var(--border-width) solid var(--color-border);
   padding-top: 40px;
   display: flex;
   flex-direction: column;
@@ -222,6 +290,8 @@ input[type=range]::-webkit-slider-runnable-track {
   align-items: center;
   gap: 32px;
 }
+
+// ─── Input groups & labels ────────────────────────────────────────────────────
 
 .input-group {
   display: flex;
@@ -244,22 +314,26 @@ input[type=range]::-webkit-slider-runnable-track {
   letter-spacing: 0.5px;
 }
 
+// ─── Text inputs ──────────────────────────────────────────────────────────────
+
 .text-input {
   padding: 12px 16px;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 8px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-ui);
   font-size: 1rem;
   width: 100px;
   font-family: var(--font-family-code);
-  background-color: var(--color-background-surface);
-  transition: border-color 0.2s, background-color 0.2s;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  transition: border-color 0.2s;
 }
 
 .text-input:focus {
   outline: none;
-  border-color: var(--color-signal-green);
-  background-color: #ffffff;
+  border-color: var(--color-border-focus);
 }
+
+// ─── Color picker ─────────────────────────────────────────────────────────────
 
 .color-input-container {
   position: relative;
@@ -284,42 +358,29 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 input[type="color"]::-webkit-color-swatch {
-  border: none;
+  border: var(--border-width) solid var(--color-border);
   border-radius: 50%;
-  border: 1px solid var(--color-border-subtle);
 }
 
-/* Responsive tweaks */
-@media (max-width: 640px) {
-  .page-content {
-    padding: 24px 16px;
-  }
+// ─── Squircle-rect utilities ──────────────────────────────────────────────────
+// Applies squircled corners to blocks & inline code.
 
-  .controls-panel {
-    gap: 12px;
-    padding: 10px 16px;
-  }
-}
-
-/* --- Squircle-rect utilities (applies squircled corners to blocks & inline code) --- */
 .squircle-rect {
   display: inline-block;
   padding: 10px 14px;
-  background-color: var(--color-background-surface);
+  background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
-  border-radius: 12px;
-  /* graceful fallback */
+  border-radius: var(--border-radius-ui);
   clip-path: path(var(--squircle-clip-path));
   transition: background-color 0.2s ease, color 0.2s ease, clip-path 0.2s ease;
   position: relative;
 }
 
 .squircle-rect--accent {
-  background-color: var(--color-signal-green);
-  color: #ffffff;
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
 }
 
-/* Block-level adjustments */
 pre.squircle-rect {
   display: block;
   padding: 18px 20px;
@@ -331,10 +392,9 @@ blockquote.squircle-rect {
   display: block;
   padding: 18px 22px;
   border-left: none;
-  background-color: var(--color-background-surface);
+  background-color: var(--color-bg-surface);
 }
 
-/* Inline code marker fallback */
 code.squircle-rect {
   display: inline;
   padding: 0 4px;
@@ -343,23 +403,21 @@ code.squircle-rect {
   font-size: 0.95rem;
 }
 
-/* Accessibility: ensure focus ring for keyboard users */
 .squircle-rect:focus {
-  outline: 3px solid rgba(30, 142, 62, 0.18);
+  outline: 3px solid var(--color-accent-light);
   outline-offset: 3px;
 }
 
-// ─── Shared Tool Components ───────────────────────────────────────────────────
+// ─── Buttons ──────────────────────────────────────────────────────────────────
 
-/* Buttons */
 .btn {
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-ui);
   font-family: var(--font-family-ui);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  border: 1px solid var(--color-border-subtle);
-  background-color: var(--color-background-surface);
+  border: var(--border-width) solid var(--color-border);
+  background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
   cursor: pointer;
   transition: background-color 0.15s, border-color 0.15s, color 0.15s;
@@ -372,22 +430,23 @@ code.squircle-rect {
 }
 
 .btn--primary {
-  background-color: var(--color-signal-green);
-  color: #ffffff;
-  border-color: var(--color-signal-green);
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  border-color: var(--color-accent);
 }
 
 .btn--primary:hover {
-  background-color: #166e32;
-  border-color: #166e32;
+  background-color: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
 }
 
 .btn--small {
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-size: 0.8rem;
 }
 
-/* Calculator-style form (selects) — used by money tools */
+// ─── Tool form ────────────────────────────────────────────────────────────────
+
 .tool-form {
   display: flex;
   flex-wrap: wrap;
@@ -396,24 +455,25 @@ code.squircle-rect {
 }
 
 .tool-form select {
-  padding: 12px 16px;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 8px;
+  padding: 12px 20px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-ui);
   font-size: 1rem;
   font-family: var(--font-family-code);
-  background-color: var(--color-background-surface);
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
   transition: border-color 0.2s;
   cursor: pointer;
-  min-width: 150px;
+  min-width: 160px;
 }
 
 .tool-form select:focus {
   outline: none;
-  border-color: var(--color-signal-green);
-  background-color: #ffffff;
+  border-color: var(--color-border-focus);
 }
 
-/* Result cards — used by money calculators */
+// ─── Result cards ─────────────────────────────────────────────────────────────
+
 .result-cards {
   display: flex;
   gap: 16px;
@@ -422,11 +482,11 @@ code.squircle-rect {
 }
 
 .result-card {
-  padding: 16px 24px;
-  background-color: var(--color-background-surface);
+  padding: 20px 28px;
+  background-color: var(--color-bg-surface);
   border-radius: var(--border-radius-ui);
-  border: 1px solid var(--color-border-subtle);
-  min-width: 160px;
+  border: var(--border-width) solid var(--color-border);
+  min-width: 180px;
 }
 
 .result-card__label {
@@ -435,18 +495,18 @@ code.squircle-rect {
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .result-card__value {
   font-family: var(--font-family-code);
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   font-weight: 700;
   color: var(--color-text-primary);
 }
 
 .result-card--accent .result-card__value {
-  color: var(--color-signal-green);
+  color: var(--color-accent);
 }
 
 .tool-chart {
@@ -454,10 +514,11 @@ code.squircle-rect {
   width: 100%;
 }
 
-/* Text tool layout — used by dev tools */
+// ─── Tool layout (dev tools) ──────────────────────────────────────────────────
+
 .tool-layout {
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -470,26 +531,29 @@ code.squircle-rect {
   align-items: center;
 }
 
+// ─── Textarea ─────────────────────────────────────────────────────────────────
+
 .textarea-input {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 8px;
+  padding: 16px 20px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-ui);
   font-family: var(--font-family-code);
-  font-size: 0.875rem;
-  background-color: var(--color-background-surface);
-  resize: vertical;
-  min-height: 160px;
-  transition: border-color 0.2s, background-color 0.2s;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
+  resize: vertical;
+  min-height: 200px;
+  transition: border-color 0.2s;
+  line-height: 1.6;
 }
 
 .textarea-input:focus {
   outline: none;
-  border-color: var(--color-signal-green);
-  background-color: #ffffff;
+  border-color: var(--color-border-focus);
 }
+
+// ─── Output ───────────────────────────────────────────────────────────────────
 
 .output-block-header {
   display: flex;
@@ -501,7 +565,7 @@ code.squircle-rect {
 .copy-feedback {
   font-size: 0.75rem;
   font-family: var(--font-family-ui);
-  color: var(--color-signal-green);
+  color: var(--color-accent);
   opacity: 0;
   transition: opacity 0.2s;
   margin-right: 8px;
@@ -513,17 +577,17 @@ code.squircle-rect {
 
 .output-panel {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 8px;
+  padding: 16px 20px;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius-ui);
   font-family: var(--font-family-code);
-  font-size: 0.875rem;
-  background-color: var(--color-background-surface);
-  min-height: 100px;
+  font-size: 0.9rem;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  min-height: 120px;
   white-space: pre-wrap;
   word-break: break-all;
   line-height: 1.6;
-  color: var(--color-text-primary);
   overflow-x: auto;
 }
 
@@ -536,16 +600,35 @@ code.squircle-rect {
 }
 
 .output-panel--error {
-  color: #d93025;
-  background-color: #fce8e6;
-  border-color: #f5c6c2;
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
   font-family: var(--font-family-ui);
   white-space: normal;
   word-break: normal;
 }
 
+// ─── Responsive ───────────────────────────────────────────────────────────────
+
 @media (max-width: 640px) {
-  .result-cards { gap: 12px; }
-  .result-card  { min-width: 130px; }
-  .tool-form    { gap: 12px; }
+  .page-content {
+    padding: 24px 16px;
+  }
+
+  .controls-panel {
+    gap: 12px;
+    padding: 10px 16px;
+  }
+
+  .result-cards {
+    gap: 12px;
+  }
+
+  .result-card {
+    min-width: 140px;
+  }
+
+  .tool-form {
+    gap: 12px;
+  }
 }
