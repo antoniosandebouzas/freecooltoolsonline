@@ -24,5 +24,8 @@ Placeholder to allow defining custom head, in principle, you can add anything he
   })();
 </script>
 
+{% comment %} Shared tool utilities (copyOutput, toggleCustom, val, formatCurrency, chart helpers) {% endcomment %}
+<script src="{{ '/assets/js/tool-utils.js' | relative_url }}"></script>
+
 {% comment %} Site-wide UI squircles — applied to all rounded elements {% endcomment %}
 <script defer src="{{ '/assets/js/ui-squircles.js' | relative_url }}"></script>

@@ -15,7 +15,7 @@ Paste any JSON to prettify and validate it.
   <div class="input-group">
     <div class="input-wrapper">
       <label class="input-label" for="indentSize">Indent</label>
-      <select class="text-input" id="indentSize">
+      <select id="indentSize">
         <option value="2" selected>2 spaces</option>
         <option value="4">4 spaces</option>
         <option value="tab">tab</option>
@@ -41,8 +41,7 @@ Paste any JSON to prettify and validate it.
 </div>
 
 <script>
-  var outputEl   = document.getElementById('output');
-  var outputText = '';
+  var outputEl = document.getElementById('output');
 
   function getIndent() {
     var v = document.getElementById('indentSize').value;
@@ -50,13 +49,13 @@ Paste any JSON to prettify and validate it.
   }
 
   function showResult(text) {
-    outputText = text;
+    window._toolOutput = text;
     outputEl.textContent = text;
     outputEl.className   = 'output-panel';
   }
 
   function showError(msg) {
-    outputText = '';
+    window._toolOutput = '';
     outputEl.textContent = 'Error: ' + msg;
     outputEl.className   = 'output-panel output-panel--error';
   }
@@ -73,13 +72,5 @@ Paste any JSON to prettify and validate it.
     if (!input) return;
     try   { showResult(JSON.stringify(JSON.parse(input))); }
     catch (e) { showError(e.message); }
-  }
-
-  function copyOutput() {
-    if (!outputText) return;
-    var fb = document.getElementById('copyFeedback');
-    function show() { fb.classList.add('copy-feedback--visible'); setTimeout(function() { fb.classList.remove('copy-feedback--visible'); }, 1500); }
-    if (navigator.clipboard) { navigator.clipboard.writeText(outputText).then(show); }
-    else { var t = document.createElement('textarea'); t.value = outputText; t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); show(); }
   }
 </script>

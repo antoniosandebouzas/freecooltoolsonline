@@ -39,13 +39,13 @@
     return d + ' Z';
   }
 
-  // Exclude: <select> (native dropdown arrow clips), containers with overflow content
   var SELECTORS = [
     '.btn',
     '.text-input',
     '.textarea-input',
     '.result-card',
-    '.output-panel'
+    '.output-panel',
+    'select'
   ].join(', ');
 
   function isColoredBtn(el) {
@@ -54,18 +54,16 @@
         || el.classList.contains('btn--danger');
   }
 
-  // Single drop-shadow traces the squircle outline cleanly.
   // drop-shadow renders AFTER clip-path, so it follows the squircle curve.
   function makeShadow(color) {
     return 'drop-shadow(0 0 1px ' + color + ')';
   }
 
   var listenerSet = new WeakSet();
+  var sizeMap     = new WeakMap(); // tracks last applied w×h per element
 
   function applySquircle(el, defaultShadow, focusShadow) {
-    // Remove border BEFORE measuring: auto-width elements (buttons, cards) shrink when their
-    // border is removed. Measuring first then removing produces a path wider than the element,
-    // which gets clipped as a straight 90° edge at the right and bottom.
+    // Remove border BEFORE measuring: auto-width elements shrink when border is removed.
     el.style.border       = 'none';
     el.style.borderRadius = '0';
 
@@ -74,10 +72,13 @@
     var h = Math.round(rect.height);
     if (w <= 0 || h <= 0) return;
 
-    el.style.clipPath = 'path("' + generatePath(w, h) + '")';
+    // Skip re-generating the path if size hasn't changed
+    var prev = sizeMap.get(el);
+    if (!prev || prev.w !== w || prev.h !== h) {
+      el.style.clipPath = 'path("' + generatePath(w, h) + '")';
+      sizeMap.set(el, { w: w, h: h });
+    }
 
-
-    // Colored buttons are visually defined by their background — skip gray outline.
     var colored = isColoredBtn(el);
     el.style.filter = colored ? 'none' : (el === document.activeElement ? focusShadow : defaultShadow);
 
@@ -92,20 +93,99 @@
     }
   }
 
-  function applyAll() {
-    var cs          = getComputedStyle(document.documentElement);
-    var borderColor = cs.getPropertyValue('--color-border').trim()       || '#E0E0E0';
-    var focusColor  = cs.getPropertyValue('--color-border-focus').trim() || '#1a73e8';
-    var defShadow   = makeShadow(borderColor);
-    var focShadow   = makeShadow(focusColor);
+  // ── Cached shadow values (recomputed on theme change) ──────────────────────
+  var defShadow, focShadow;
 
+  function refreshShadows() {
+    var cs     = getComputedStyle(document.documentElement);
+    var border = cs.getPropertyValue('--color-border').trim()       || '#E0E0E0';
+    var focus  = cs.getPropertyValue('--color-border-focus').trim() || '#1a73e8';
+    defShadow  = makeShadow(border);
+    focShadow  = makeShadow(focus);
+  }
+
+  function applyAll() {
+    refreshShadows();
     document.querySelectorAll(SELECTORS).forEach(function (el) {
       applySquircle(el, defShadow, focShadow);
     });
   }
 
+  // Apply squircle to a single element (used by observers)
+  function applySingle(el) {
+    if (!el.matches || !el.matches(SELECTORS)) return;
+    if (!defShadow) refreshShadows();
+    applySquircle(el, defShadow, focShadow);
+  }
+
+  // ── Textarea auto-resize ───────────────────────────────────────────────────
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+    // Re-apply squircle since height changed
+    applySingle(el);
+  }
+
+  function setupTextareaAutoResize() {
+    document.querySelectorAll('.textarea-input').forEach(function (el) {
+      if (listenerSet.has(el) && el._autoResize) return;
+      el._autoResize = true;
+      el.addEventListener('input', function () { autoResize(this); });
+      // Initial size
+      autoResize(el);
+    });
+  }
+
+  // ── ResizeObserver — re-apply squircle when any tracked element changes size
+  var resizeObserver;
+  var observedSet = new WeakSet();
+
+  function observeElement(el) {
+    if (!resizeObserver || observedSet.has(el)) return;
+    observedSet.add(el);
+    resizeObserver.observe(el);
+  }
+
+  function initResizeObserver() {
+    if (typeof ResizeObserver === 'undefined') return;
+    resizeObserver = new ResizeObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        applySingle(entries[i].target);
+      }
+    });
+  }
+
+  // ── MutationObserver — detect newly visible / added elements ───────────────
+  function initMutationObserver() {
+    if (typeof MutationObserver === 'undefined') return;
+    var mutTimer;
+    new MutationObserver(function () {
+      clearTimeout(mutTimer);
+      mutTimer = setTimeout(function () {
+        document.querySelectorAll(SELECTORS).forEach(function (el) {
+          applySingle(el);
+          observeElement(el);
+        });
+        setupTextareaAutoResize();
+      }, 50);
+    }).observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
+  }
+
+  // ── Init ────────────────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
-    requestAnimationFrame(applyAll);
+    initResizeObserver();
+    requestAnimationFrame(function () {
+      applyAll();
+      setupTextareaAutoResize();
+      // Start observing all matched elements for resize
+      document.querySelectorAll(SELECTORS).forEach(observeElement);
+      initMutationObserver();
+    });
   });
 
   var resizeTimer;

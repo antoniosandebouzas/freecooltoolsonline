@@ -128,54 +128,6 @@ permalink: /money/investmentcalculator/
 <div class="tool-chart" id="annualChart"></div>
 
 <script>
-  var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
-  var CHART_FONT_MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace";
-
-  // CSS custom properties return hex values (#1a73e8), not rgb() — convert for opacity
-  function hexToRgba(hex, alpha) {
-    hex = hex.replace(/^#/, '');
-    if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-    var r = parseInt(hex.slice(0, 2), 16);
-    var g = parseInt(hex.slice(2, 4), 16);
-    var b = parseInt(hex.slice(4, 6), 16);
-    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-  }
-
-  function getChartStyle() {
-    var s = getComputedStyle(document.documentElement);
-    return {
-      invested: s.getPropertyValue('--color-blue').trim()           || '#1a73e8',
-      profit:   s.getPropertyValue('--color-green').trim()          || '#1e8e3e',
-      neutral:  s.getPropertyValue('--color-text-secondary').trim() || '#757575',
-      bg:       s.getPropertyValue('--color-bg-page').trim()        || '#F5F5F5'
-    };
-  }
-
-  function toggleCustom(id) {
-    var sel = document.getElementById(id);
-    var inp = document.getElementById(id + 'Custom');
-    if (inp) inp.style.display = sel.value === 'custom' ? 'block' : 'none';
-    if (inp && sel.value === 'custom') inp.focus();
-  }
-
-  function val(id) {
-    var sel = document.getElementById(id);
-    if (sel.value === 'custom') {
-      var v = parseFloat(document.getElementById(id + 'Custom').value);
-      return isNaN(v) ? null : v;
-    }
-    return parseFloat(sel.value);
-  }
-
-  function formatCurrency(value) {
-    return value.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
-
   function calculateFutureValue() {
     var years             = val('years');
     var initialInvestment = val('initialInvestment') || 0;
@@ -212,44 +164,39 @@ permalink: /money/investmentcalculator/
     document.getElementById('totalInvestment').textContent = formatCurrency(totalInvested);
     document.getElementById('profit').textContent          = formatCurrency(futureValue - totalInvested);
 
-    drawMonthlyChart(totalInvestments, profits, 'investmentChart');
-    drawAnnualChart(annualTotalInvestments, annualProfits, years, 'annualChart');
+    drawMonthlyChart(totalInvestments, profits);
+    drawAnnualChart(annualTotalInvestments, annualProfits, years);
     drawPieChart(totalInvested, futureValue - totalInvested);
   }
 
-  // Monthly growth: area chart (readable with 240+ data points)
-  function drawMonthlyChart(invested, profits, chartId) {
-    var c      = getChartStyle();
+  function drawMonthlyChart(invested, profits) {
+    var c      = getChartColors();
     var count  = invested.length;
     var months = Array.from({ length: count }, function(_, i) { return i + 1; });
 
-    // Yearly tick marks only — avoids 240 cluttered labels
     var tickvals = [], ticktext = [];
     for (var m = 12; m <= count; m += 12) {
       tickvals.push(m);
       ticktext.push((m / 12) + ' Yr');
     }
 
-    Plotly.newPlot(chartId, [
+    Plotly.newPlot('investmentChart', [
       {
         x: months, y: invested, type: 'scatter', mode: 'lines', name: 'Total invested',
-        fill: 'tozeroy', line: { color: c.invested, width: 2 },
-        fillcolor: hexToRgba(c.invested, 0.2)
+        fill: 'tozeroy', line: { color: c.blue, width: 2 },
+        fillcolor: hexToRgba(c.blue, 0.2)
       },
       {
         x: months,
         y: profits.map(function(p, i) { return invested[i] + p; }),
         type: 'scatter', mode: 'lines', name: 'Final value',
-        fill: 'tonexty', line: { color: c.profit, width: 2 },
-        fillcolor: hexToRgba(c.profit, 0.25)
+        fill: 'tonexty', line: { color: c.green, width: 2 },
+        fillcolor: hexToRgba(c.green, 0.25)
       }
     ], {
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
-      xaxis: {
-        title: 'Months', tickmode: 'array', tickvals: tickvals, ticktext: ticktext,
-        tickfont: { family: CHART_FONT }
-      },
+      xaxis: { title: 'Months', tickmode: 'array', tickvals: tickvals, ticktext: ticktext, tickfont: { family: CHART_FONT } },
       yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },
       paper_bgcolor: c.bg, plot_bgcolor: c.bg,
       font: { family: CHART_FONT },
@@ -257,23 +204,19 @@ permalink: /money/investmentcalculator/
     }, { responsive: true });
   }
 
-  // Annual breakdown: stacked bars (invested + interest = final value implicitly)
-  function drawAnnualChart(invested, profits, termYears, chartId) {
-    var c     = getChartStyle();
+  function drawAnnualChart(invested, profits, termYears) {
+    var c     = getChartColors();
     var years = Array.from({ length: termYears }, function(_, i) { return i + 1; });
     var labels = years.map(function(y) { return y + ' Yr'; });
 
-    Plotly.newPlot(chartId, [
-      { x: years, y: invested, type: 'bar', name: 'Total invested',  marker: { color: c.invested } },
-      { x: years, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: c.profit   } }
+    Plotly.newPlot('annualChart', [
+      { x: years, y: invested, type: 'bar', name: 'Total invested',  marker: { color: c.blue  } },
+      { x: years, y: profits,  type: 'bar', name: 'Interest earned', marker: { color: c.green } }
     ], {
       barmode: 'stack',
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
-      xaxis: {
-        title: 'Years', tickmode: 'array', tickvals: years, ticktext: labels,
-        tickfont: { family: CHART_FONT }
-      },
+      xaxis: { title: 'Years', tickmode: 'array', tickvals: years, ticktext: labels, tickfont: { family: CHART_FONT } },
       yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },
       paper_bgcolor: c.bg, plot_bgcolor: c.bg,
       font: { family: CHART_FONT },
@@ -282,12 +225,12 @@ permalink: /money/investmentcalculator/
   }
 
   function drawPieChart(totalInvestment, profit) {
-    var c = getChartStyle();
+    var c = getChartColors();
     Plotly.newPlot('investmentPie', [{
       labels: ['Total invested', 'Interest earned'],
       values: [totalInvestment, profit],
       type: 'pie',
-      marker: { colors: [c.invested, c.profit] },
+      marker: { colors: [c.blue, c.green] },
       textfont: { family: CHART_FONT }
     }], {
       showlegend: true,

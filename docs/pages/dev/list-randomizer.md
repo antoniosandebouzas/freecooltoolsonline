@@ -29,8 +29,7 @@ Paste a list (one item per line) and shuffle it instantly.
 </div>
 
 <script>
-  var outputEl   = document.getElementById('output');
-  var outputText = '';
+  var outputEl = document.getElementById('output');
 
   function randomizeList() {
     var input = document.getElementById('listInput').value.trim();
@@ -40,22 +39,13 @@ Paste a list (one item per line) and shuffle it instantly.
       .map(function(s) { return s.trim(); })
       .filter(function(s) { return s.length > 0; });
 
-    // Fisher-Yates shuffle
     for (var i = items.length - 1; i > 0; i--) {
       var j   = Math.floor(Math.random() * (i + 1));
       var tmp = items[i]; items[i] = items[j]; items[j] = tmp;
     }
 
-    outputText = items.join('\n');
-    outputEl.textContent = outputText;
+    window._toolOutput = items.join('\n');
+    outputEl.textContent = window._toolOutput;
     outputEl.className   = 'output-panel';
-  }
-
-  function copyOutput() {
-    if (!outputText) return;
-    var fb = document.getElementById('copyFeedback');
-    function show() { fb.classList.add('copy-feedback--visible'); setTimeout(function() { fb.classList.remove('copy-feedback--visible'); }, 1500); }
-    if (navigator.clipboard) { navigator.clipboard.writeText(outputText).then(show); }
-    else { var t = document.createElement('textarea'); t.value = outputText; t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); show(); }
   }
 </script>

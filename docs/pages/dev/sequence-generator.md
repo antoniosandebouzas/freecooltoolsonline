@@ -58,8 +58,7 @@ Generate numeric sequences with a custom prefix, suffix, and separator.
 </div>
 
 <script>
-  var outputEl   = document.getElementById('output');
-  var outputText = '';
+  var outputEl = document.getElementById('output');
 
   function zeroPad(n, width) {
     var s = String(Math.abs(n));
@@ -80,7 +79,6 @@ Generate numeric sequences with a custom prefix, suffix, and separator.
 
     if (isNaN(start) || isNaN(end) || step === 0) return;
 
-    // Index-based arithmetic avoids float accumulation (e.g. 0.1+0.1+0.1 = 0.30000000000000004)
     var items = [];
     for (var i = 0; ; i++) {
       var n = parseFloat((start + i * step).toPrecision(12));
@@ -90,17 +88,9 @@ Generate numeric sequences with a custom prefix, suffix, and separator.
       if (items.length >= 10000) { items.push('… (truncated at 10,000 items)'); break; }
     }
 
-    outputText = items.join(sep);
-    outputEl.textContent = outputText;
+    window._toolOutput = items.join(sep);
+    outputEl.textContent = window._toolOutput;
     outputEl.className   = 'output-panel';
-  }
-
-  function copyOutput() {
-    if (!outputText) return;
-    var fb = document.getElementById('copyFeedback');
-    function show() { fb.classList.add('copy-feedback--visible'); setTimeout(function() { fb.classList.remove('copy-feedback--visible'); }, 1500); }
-    if (navigator.clipboard) { navigator.clipboard.writeText(outputText).then(show); }
-    else { var t = document.createElement('textarea'); t.value = outputText; t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); show(); }
   }
 
   window.addEventListener('DOMContentLoaded', generateSeq);

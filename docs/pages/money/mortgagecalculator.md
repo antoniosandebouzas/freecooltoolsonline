@@ -116,44 +116,6 @@ permalink: /money/mortgagecalculator/
 <div class="tool-chart" id="amortizationChart"></div>
 
 <script>
-  var CHART_FONT = "-apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif";
-  var CHART_FONT_MONO = "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace";
-
-  function getChartStyle() {
-    var s = getComputedStyle(document.documentElement);
-    return {
-      principal: s.getPropertyValue('--color-blue').trim()           || '#1a73e8',
-      interest:  s.getPropertyValue('--color-red').trim()            || '#d93025',
-      neutral:   s.getPropertyValue('--color-text-secondary').trim() || '#757575',
-      bg:        s.getPropertyValue('--color-bg-page').trim()        || '#F5F5F5'
-    };
-  }
-
-  function toggleCustom(id) {
-    var sel = document.getElementById(id);
-    var inp = document.getElementById(id + 'Custom');
-    if (inp) inp.style.display = sel.value === 'custom' ? 'block' : 'none';
-    if (inp && sel.value === 'custom') inp.focus();
-  }
-
-  function val(id) {
-    var sel = document.getElementById(id);
-    if (sel.value === 'custom') {
-      var v = parseFloat(document.getElementById(id + 'Custom').value);
-      return isNaN(v) ? null : v;
-    }
-    return parseFloat(sel.value);
-  }
-
-  function formatCurrency(value) {
-    return value.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  }
-
   function calculateMortgage() {
     var homePrice      = val('loanAmount');
     var downPaymentPct = val('downPayment') || 0;
@@ -211,21 +173,19 @@ permalink: /money/mortgagecalculator/
   }
 
   function drawPieChart(downPayment, principal, totalInterest) {
-    var c = getChartStyle();
+    var c = getChartColors();
     var labels, values, colors;
     if (downPayment > 0) {
       labels = ['Down payment', 'Principal', 'Total interest'];
       values = [downPayment, principal, totalInterest];
-      colors = [c.neutral, c.principal, c.interest];
+      colors = [c.neutral, c.blue, c.red];
     } else {
       labels = ['Principal', 'Total interest'];
       values = [principal, totalInterest];
-      colors = [c.principal, c.interest];
+      colors = [c.blue, c.red];
     }
     Plotly.newPlot('mortgagePie', [{
-      labels: labels,
-      values: values,
-      type: 'pie',
+      labels: labels, values: values, type: 'pie',
       marker: { colors: colors },
       textfont: { family: CHART_FONT }
     }], {
@@ -238,21 +198,18 @@ permalink: /money/mortgagecalculator/
   }
 
   function drawAmortizationChart(annualPrincipal, annualInterest, termYears) {
-    var c      = getChartStyle();
-    var years  = Array.from({ length: termYears }, function(_, i) { return i + 1; });
+    var c     = getChartColors();
+    var years = Array.from({ length: termYears }, function(_, i) { return i + 1; });
     var labels = years.map(function(y) { return y + ' Yr'; });
 
     Plotly.newPlot('amortizationChart', [
-      { x: years, y: annualPrincipal, type: 'bar', name: 'Principal paid', marker: { color: c.principal } },
-      { x: years, y: annualInterest,  type: 'bar', name: 'Interest paid',  marker: { color: c.interest  } }
+      { x: years, y: annualPrincipal, type: 'bar', name: 'Principal paid', marker: { color: c.blue } },
+      { x: years, y: annualInterest,  type: 'bar', name: 'Interest paid',  marker: { color: c.red  } }
     ], {
       barmode: 'stack',
       showlegend: true,
       legend: { orientation: 'h', yanchor: 'bottom', y: 1.05, xanchor: 'center', x: 0.5 },
-      xaxis: {
-        title: 'Years', tickmode: 'array', tickvals: years, ticktext: labels,
-        tickfont: { family: CHART_FONT }
-      },
+      xaxis: { title: 'Years', tickmode: 'array', tickvals: years, ticktext: labels, tickfont: { family: CHART_FONT } },
       yaxis: { title: 'Amount (USD)', tickfont: { family: CHART_FONT } },
       paper_bgcolor: c.bg, plot_bgcolor: c.bg,
       font: { family: CHART_FONT },

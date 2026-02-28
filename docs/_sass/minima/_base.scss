@@ -67,7 +67,6 @@ figure,
 
 hr {
   border: none;
-  border-top: 2px solid $border-color-01;
   margin-top: $spacing-unit;
   margin-bottom: $spacing-unit;
 }
@@ -158,7 +157,7 @@ a {
  */
 blockquote {
   color: $brand-color;
-  border-left: 2px solid $border-color-01;
+  border-left: none;
   padding-left: $spacing-unit * .5;
   @include relative-font-size(1.125);
   font-style: italic;
@@ -181,8 +180,8 @@ code {
   font-family: $code-font-family;
   // font-size: 0.9375em;
   font-size: 1em;
-  border: 0px solid $border-color-01;
-  border-radius: 10px;
+  border: none;
+  border-radius: 0;
   background-color: $code-background-color;
 }
 
@@ -202,7 +201,7 @@ pre {
 }
 
 .highlight {
-  border-radius: 10px;
+  border-radius: 0;
   background: $code-background-color;
   @extend %vertical-rhythm;
 
@@ -267,8 +266,8 @@ table {
   text-align: $table-text-align;
   color: $table-text-color;
   border-collapse: collapse;
-  border: 0px solid $table-border-color;
-  border-radius: 10px;
+  border: none;
+  border-radius: 0;
 
   tr {
     &:nth-child(odd) {
@@ -287,40 +286,19 @@ table {
 
   th {
     background-color: $table-header-bg-color;
-    border: 0px solid $table-header-border;
+    border: none;
   }
 
   td {
-    border: 0px solid $table-border-color;
+    border: none;
     font-family: $code-font-family;
   }
 
   @include media-query($on-laptop) {
     display: block;
     overflow-x: auto;
-    //-webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
   }
-}
-
-table tr:first-child th:first-child {
-  border-top-left-radius: 10px;
-  /* Top left rounded corner */
-}
-
-table tr:first-child th:last-child {
-  border-top-right-radius: 10px;
-  /* Top right rounded corner */
-}
-
-table tr:last-child td:first-child {
-  border-bottom-left-radius: 10px;
-  /* Bottom left rounded corner */
-}
-
-table tr:last-child td:last-child {
-  border-bottom-right-radius: 10px;
-  /* Bottom right rounded corner */
 }
 
 li::marker {
