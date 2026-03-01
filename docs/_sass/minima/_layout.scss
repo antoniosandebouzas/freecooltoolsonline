@@ -449,13 +449,13 @@ select {
   appearance: none;
   margin: 0;
   padding: 12px 40px 12px 16px;
-  height: 48px;
+  height: var(--height-input);
   font-size: $base-font-size;
   font-family: $base-font-family;
   border: none;
   outline: none;
   border-radius: 0;
-  clip-path: inset(0 round 20px);
+  clip-path: inset(0 round var(--squircle-fallback));
   background-color: $code-background-color;
   color: $text-color;
   cursor: pointer;

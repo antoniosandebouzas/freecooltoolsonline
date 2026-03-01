@@ -47,6 +47,17 @@
   --border-radius-ui: 12px;
   --spacing-unit:     8px;
 
+  // ── Sizing — central control for all interactive elements ────────────────
+  --height-input:       48px;
+  --height-input-small: 36px;
+  --width-input-number: 140px;
+  --squircle-fallback:  20px;
+  --max-width-content:  900px;
+
+  // ── Label typography ────────────────────────────────────────────────────
+  --font-size-label: 0.75rem;
+  --font-size-body:  0.9rem;
+
   // ── Typography ────────────────────────────────────────────────────────────
   --font-family-ui:   -apple-system, BlinkMacSystemFont, 'Google Sans', sans-serif;
   --font-family-code: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, 'Google Sans Code', Consolas, monospace;
@@ -247,7 +258,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .squircle-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-label);
   margin-top: 8px;
   opacity: 0.7;
   letter-spacing: 0.5px;
@@ -326,7 +337,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .input-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-label);
   font-weight: 700;
   color: var(--color-text-secondary);
   text-transform: uppercase;
@@ -337,10 +348,10 @@ input[type=range]::-webkit-slider-runnable-track {
 
 .text-input {
   padding: 12px 16px;
-  height: 48px;
+  height: var(--height-input);
   border: none;
   border-radius: 0;
-  clip-path: inset(0 round 20px);
+  clip-path: inset(0 round var(--squircle-fallback));
   font-size: 1rem;
   width: auto;
   min-width: 100px;
@@ -351,7 +362,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .text-input[type="number"] {
-  width: 140px;
+  width: var(--width-input-number);
 }
 
 .text-input:focus {
@@ -369,8 +380,8 @@ input[type=range]::-webkit-slider-runnable-track {
 input[type="color"] {
   -webkit-appearance: none;
   border: none;
-  width: 48px;
-  height: 48px;
+  width: var(--height-input);
+  height: var(--height-input);
   border-radius: 50%;
   cursor: pointer;
   background: none;
@@ -437,11 +448,11 @@ code.squircle-rect {
 
 .btn {
   padding: 12px 24px;
-  height: 48px;
+  height: var(--height-input);
   border-radius: 0;
-  clip-path: inset(0 round 20px);
+  clip-path: inset(0 round var(--squircle-fallback));
   font-family: var(--font-family-ui);
-  font-size: 0.9rem;
+  font-size: var(--font-size-body);
   font-weight: 500;
   border: none;
   background-color: var(--color-bg-surface);
@@ -484,7 +495,7 @@ code.squircle-rect {
 
 .btn--small {
   padding: 8px 16px;
-  height: 36px;
+  height: var(--height-input-small);
   font-size: 0.8rem;
 }
 
@@ -493,7 +504,7 @@ code.squircle-rect {
 .select-custom-input {
   display: none;
   margin-top: 6px;
-  width: 140px;
+  width: var(--width-input-number);
 }
 
 // ─── Tool form ────────────────────────────────────────────────────────────────
@@ -504,7 +515,7 @@ code.squircle-rect {
   gap: 16px;
   margin-bottom: 32px;
   justify-content: center;
-  max-width: 900px;
+  max-width: var(--max-width-content);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -518,7 +529,7 @@ code.squircle-rect {
   flex-wrap: wrap;
   margin-bottom: 40px;
   justify-content: center;
-  max-width: 900px;
+  max-width: var(--max-width-content);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -528,13 +539,13 @@ code.squircle-rect {
   padding: 20px 28px;
   background-color: var(--color-bg-surface);
   border-radius: 0;
-  clip-path: inset(0 round 20px);
+  clip-path: inset(0 round var(--squircle-fallback));
   border: none;
   min-width: 180px;
 }
 
 .result-card__label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-label);
   font-weight: 700;
   color: var(--color-text-secondary);
   text-transform: uppercase;
@@ -564,7 +575,7 @@ code.squircle-rect {
 .tool-chart {
   margin-bottom: 40px;
   width: 100%;
-  max-width: 900px;
+  max-width: var(--max-width-content);
   margin-left: auto;
   margin-right: auto;
 }
@@ -573,7 +584,7 @@ code.squircle-rect {
 
 .tool-layout {
   width: 100%;
-  max-width: 900px;
+  max-width: var(--max-width-content);
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -596,9 +607,9 @@ code.squircle-rect {
   padding: 16px 20px;
   border: none;
   border-radius: 0;
-  clip-path: inset(0 round 20px);
+  clip-path: inset(0 round var(--squircle-fallback));
   font-family: var(--font-family-code);
-  font-size: 0.9rem;
+  font-size: var(--font-size-body);
   background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
   resize: none;
@@ -622,7 +633,7 @@ code.squircle-rect {
 }
 
 .copy-feedback {
-  font-size: 0.75rem;
+  font-size: var(--font-size-label);
   font-family: var(--font-family-ui);
   color: var(--color-blue);
   opacity: 0;
@@ -639,9 +650,9 @@ code.squircle-rect {
   padding: 16px 20px;
   border: none;
   border-radius: 0;
-  clip-path: inset(0 round 20px);
+  clip-path: inset(0 round var(--squircle-fallback));
   font-family: var(--font-family-code);
-  font-size: 0.9rem;
+  font-size: var(--font-size-body);
   background-color: var(--color-bg-surface);
   color: var(--color-text-primary);
   min-height: 120px;
