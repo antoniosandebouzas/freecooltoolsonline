@@ -8,9 +8,9 @@
     if (width <= 0 || height <= 0) return '';
 
     var s  = Math.min(width, height); // shortest side
-    var r  = s / 2;                   // corner radius = half of shortest side
-    var dX = (width  - s) / 2;        // horizontal stretch offset
-    var dY = (height - s) / 2;        // vertical stretch offset
+    var r  = Math.min(s / 2, 64);     // corner radius, capped at 128/2 = 64px
+    var dX = width  / 2 - r;          // horizontal straight-line extension
+    var dY = height / 2 - r;          // vertical straight-line extension
     var cx = width  / 2;
     var cy = height / 2;
     var n  = 30; // points per quarter arc

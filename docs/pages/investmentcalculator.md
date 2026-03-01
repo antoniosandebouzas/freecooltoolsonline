@@ -101,6 +101,31 @@ permalink: /money/investmentcalculator/
     <input type="number" inputmode="decimal" class="text-input select-custom-input" id="annualInterestCustom"
            placeholder="Rate (%)" min="0" step="0.1" oninput="calculateFutureValue()">
   </div>
+
+  <div class="input-wrapper">
+    <label class="input-label" for="inflation">Adjust for inflation</label>
+    <select id="inflation" onchange="toggleCustom('inflation'); calculateFutureValue()">
+      <option value="0.0" selected>0.0%</option>
+      <option value="1.8">1.8%</option>
+      <option value="1.9">1.9%</option>
+      <option value="2.0">2.0%</option>
+      <option value="2.1">2.1%</option>
+      <option value="2.2">2.2%</option>
+      <option value="2.3">2.3%</option>
+      <option value="2.4">2.4%</option>
+      <option value="2.5">2.5%</option>
+      <option value="2.6">2.6%</option>
+      <option value="2.7">2.7%</option>
+      <option value="2.8">2.8%</option>
+      <option value="2.9">2.9%</option>
+      <option value="3.0">3.0%</option>
+      <option value="3.1">3.1%</option>
+      <option value="3.2">3.2%</option>
+      <option value="custom">Custom…</option>
+    </select>
+    <input type="number" inputmode="decimal" class="text-input select-custom-input" id="inflationCustom"
+           placeholder="Rate (%)" min="0" step="0.1" oninput="calculateFutureValue()">
+  </div>
 </div>
 
 <div class="result-cards" id="result">
@@ -115,6 +140,10 @@ permalink: /money/investmentcalculator/
   <div class="result-card">
     <div class="result-card__label">Final value</div>
     <div class="result-card__value" id="futureValue">—</div>
+  </div>
+  <div class="result-card result-card--red" id="inflationCard" style="display:none">
+    <div class="result-card__label">Inflation-adjusted</div>
+    <div class="result-card__value" id="adjustedValue">—</div>
   </div>
 </div>
 
@@ -133,6 +162,7 @@ permalink: /money/investmentcalculator/
     var initialInvestment = val('initialInvestment') || 0;
     var monthlyInvestment = val('monthlyInvestment');
     var annualInterest    = val('annualInterest');
+    var inflationRate     = val('inflation') || 0;
 
     if (years === null || monthlyInvestment === null || annualInterest === null) return;
     if (years <= 0 || monthlyInvestment < 0 || initialInvestment < 0) return;
@@ -163,6 +193,15 @@ permalink: /money/investmentcalculator/
     document.getElementById('futureValue').textContent     = formatCurrency(futureValue);
     document.getElementById('totalInvestment').textContent = formatCurrency(totalInvested);
     document.getElementById('profit').textContent          = formatCurrency(futureValue - totalInvested);
+
+    var card = document.getElementById('inflationCard');
+    if (inflationRate > 0) {
+      var adjusted = futureValue / Math.pow(1 + inflationRate / 100, years);
+      document.getElementById('adjustedValue').textContent = formatCurrency(adjusted);
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
 
     drawMonthlyChart(totalInvestments, profits);
     drawAnnualChart(annualTotalInvestments, annualProfits, years);
