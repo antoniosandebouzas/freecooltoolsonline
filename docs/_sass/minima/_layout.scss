@@ -455,7 +455,7 @@ select {
   border: none;
   outline: none;
   border-radius: 0;
-  clip-path: inset(0 round var(--squircle-fallback));
+  clip-path: inset(0);
   background-color: $code-background-color;
   color: $text-color;
   cursor: pointer;

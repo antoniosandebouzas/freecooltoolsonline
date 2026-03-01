@@ -51,6 +51,7 @@ Generate numeric sequences with a custom prefix, suffix, and separator.
       <span>
         <span class="copy-feedback" id="copyFeedback">Copied!</span>
         <button class="btn btn--small" onclick="copyOutput()">Copy</button>
+        <button class="btn btn--small" onclick="downloadOutput('txt')">Download</button>
       </span>
     </div>
     <div class="output-panel output-panel--empty" id="output">Sequence will appear here.</div>

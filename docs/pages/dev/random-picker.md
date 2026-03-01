@@ -29,6 +29,7 @@ Pick one or more random items from a list.
       <span>
         <span class="copy-feedback" id="copyFeedback">Copied!</span>
         <button class="btn btn--small" onclick="copyOutput()">Copy</button>
+        <button class="btn btn--small" onclick="downloadOutput('txt')">Download</button>
       </span>
     </div>
     <div class="output-panel output-panel--empty" id="output">Picked items will appear here.</div>

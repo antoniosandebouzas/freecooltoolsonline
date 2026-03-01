@@ -1,10 +1,10 @@
 ---
 layout: page
-title: JSON Formatter
-permalink: /dev/json-formatter/
+title: JSON Tools
+permalink: /dev/json-tools/
 ---
 
-Paste any JSON to prettify and validate it.
+Format, minify, sort keys, stringify, or destringify JSON.
 
 <div class="tool-layout">
   <div class="input-wrapper">
@@ -26,6 +26,7 @@ Paste any JSON to prettify and validate it.
   <div class="tool-actions">
     <button class="btn btn--primary" onclick="formatJson()">Format</button>
     <button class="btn" onclick="minifyJson()">Minify</button>
+    <button class="btn" onclick="sortJson()">Sort Keys</button>
     <button class="btn" onclick="stringify()">Stringify</button>
     <button class="btn" onclick="destringify()">Destringify</button>
   </div>
@@ -36,9 +37,10 @@ Paste any JSON to prettify and validate it.
       <span>
         <span class="copy-feedback" id="copyFeedback">Copied!</span>
         <button class="btn btn--small" onclick="copyOutput()">Copy</button>
+        <button class="btn btn--small" onclick="downloadOutput('json')">Download</button>
       </span>
     </div>
-    <div class="output-panel output-panel--empty" id="output">Formatted JSON will appear here.</div>
+    <div class="output-panel output-panel--empty" id="output">Result will appear here.</div>
   </div>
 </div>
 
@@ -73,6 +75,23 @@ Paste any JSON to prettify and validate it.
     var input = document.getElementById('jsonInput').value.trim();
     if (!input) return;
     try   { showResult(JSON.stringify(JSON.parse(input))); }
+    catch (e) { showError(e.message); }
+  }
+
+  function sortKeys(obj) {
+    if (Array.isArray(obj)) return obj.map(sortKeys);
+    if (obj !== null && typeof obj === 'object') {
+      var out = {};
+      Object.keys(obj).sort().forEach(function(k) { out[k] = sortKeys(obj[k]); });
+      return out;
+    }
+    return obj;
+  }
+
+  function sortJson() {
+    var input = document.getElementById('jsonInput').value.trim();
+    if (!input) return;
+    try   { showResult(JSON.stringify(sortKeys(JSON.parse(input)), null, getIndent())); }
     catch (e) { showError(e.message); }
   }
 

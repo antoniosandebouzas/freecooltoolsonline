@@ -24,6 +24,20 @@ function copyOutput() {
   }
 }
 
+// ── Download output as file ──────────────────────────────────────────────────
+function downloadOutput(ext) {
+  var text = window._toolOutput;
+  if (!text) return;
+  var blob = new Blob([text], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'output.' + (ext || 'txt');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
 // ── Custom-select toggle (money calculators) ─────────────────────────────────
 function toggleCustom(id) {
   var sel = document.getElementById(id);
