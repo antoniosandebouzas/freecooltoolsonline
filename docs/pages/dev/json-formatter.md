@@ -26,6 +26,8 @@ Paste any JSON to prettify and validate it.
   <div class="tool-actions">
     <button class="btn btn--primary" onclick="formatJson()">Format</button>
     <button class="btn" onclick="minifyJson()">Minify</button>
+    <button class="btn" onclick="stringify()">Stringify</button>
+    <button class="btn" onclick="destringify()">Destringify</button>
   </div>
 
   <div class="output-block">
@@ -72,5 +74,25 @@ Paste any JSON to prettify and validate it.
     if (!input) return;
     try   { showResult(JSON.stringify(JSON.parse(input))); }
     catch (e) { showError(e.message); }
+  }
+
+  function stringify() {
+    var input = document.getElementById('jsonInput').value.trim();
+    if (!input) return;
+    try {
+      JSON.parse(input);
+      showResult(JSON.stringify(input));
+    } catch (e) { showError(e.message); }
+  }
+
+  function destringify() {
+    var input = document.getElementById('jsonInput').value.trim();
+    if (!input) return;
+    try {
+      var unescaped = JSON.parse(input);
+      if (typeof unescaped !== 'string') { showError('Input is not a JSON string'); return; }
+      JSON.parse(unescaped);
+      showResult(JSON.stringify(JSON.parse(unescaped), null, getIndent()));
+    } catch (e) { showError(e.message); }
   }
 </script>

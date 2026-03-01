@@ -12,7 +12,7 @@ Useful browser-based tools — free, instant, no sign-up required.
 
 ## Dev Tools
 
-- **[JSON Formatter](/dev/json-formatter/)** — Prettify and validate JSON in one click
+- **[JSON Formatter](/dev/json-formatter/)** — Prettify, minify, stringify, and destringify JSON
 - **[JSON Sorter](/dev/json-sorter/)** — Sort all object keys alphabetically at any depth
 - **[List Randomizer](/dev/list-randomizer/)** — Shuffle any list instantly
 - **[Random Picker](/dev/random-picker/)** — Pick one or more random items from a list
