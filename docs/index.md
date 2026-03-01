@@ -1,9 +1,7 @@
 ---
 layout: page
-title: Free Cool Tools Online
+title: free cool tools online
 ---
-
-# Free Cool Tools Online
 
 Useful browser-based tools — free, instant, no sign-up required.
 
